@@ -29,6 +29,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('feedbacks');
+        if (!app()->isProduction()) {
+            Schema::dropIfExists('feedbacks');
+        }
     }
 };

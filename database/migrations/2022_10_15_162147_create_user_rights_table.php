@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('user_rights', function (Blueprint $table) {
-            $table->foreignId('user_id')->referenced('users')->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->referenced()->cascadeOnDelete()->cascadeOnUpdate();
             $table->boolean('admin_panel_access')->default(0);
             $table->timestamps();
         });
@@ -27,6 +28,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_rights');
+        if (!app()->isProduction()) {
+            Schema::dropIfExists('user_rights');
+        }
     }
 };

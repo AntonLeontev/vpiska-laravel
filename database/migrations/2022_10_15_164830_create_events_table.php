@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,10 +16,10 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('creator_id')->referenced('users')->cascadeOnDelete();
+            $table->foreignIdFor(User::class, 'creator_id')->referenced()->cascadeOnDelete()->cascadeOnUpdate();
             $table->dateTime('starts_at');
             $table->dateTime('ends_at');
-            $table->decimal('price');
+            $table->unsignedInteger('price');
             $table->integer('city');
             $table->string('city_name');
             $table->string('street');
@@ -36,6 +37,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        if (!app()->isProduction()) {
+            Schema::dropIfExists('events');
+        }
     }
 };

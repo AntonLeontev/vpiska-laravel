@@ -23,8 +23,7 @@ return new class extends Migration
             $table->string('email')->unique('email');
             $table->boolean('email_confirmed')->default(0);
             $table->string('password');
-            $table->boolean('activated')->default(0);
-            $table->decimal('balance')->default(0);
+            $table->integer('balance')->default(0);
             $table->string('photo_path');
             $table->rememberToken();
             $table->timestamps();
@@ -38,6 +37,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        if (!app()->isProduction()) {
+            Schema::dropIfExists('users');
+        }
     }
 };

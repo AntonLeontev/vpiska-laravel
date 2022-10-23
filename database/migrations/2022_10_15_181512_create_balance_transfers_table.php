@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('direction');
-            $table->decimal('sum');
+            $table->integer('sum');
             $table->string('description');
             $table->timestamps();
         });
@@ -30,6 +30,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('balance_transfers');
+        if (!app()->isProduction()) {
+            Schema::dropIfExists('balance_transfers');
+        }
     }
 };

@@ -46,11 +46,16 @@ class User extends Authenticatable
 
     public function event()
     {
-        $this->hasMany(Event::class);
+        return $this->hasMany(Event::class);
     }
 
     public function order()
     {
-        $this->hasMany(Order::class);
+        return $this->hasMany(Order::class);
+    }
+
+    public function balanceTransfers()
+    {
+        return $this->hasMany(BalanceTransfer::class);
     }
 }

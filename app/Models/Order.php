@@ -19,11 +19,11 @@ class Order extends Model
 
     public function customer()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function event()
     {
-        $this->belongsTo(Event::class);
+        return $this->belongsTo(Event::class);
     }
 }

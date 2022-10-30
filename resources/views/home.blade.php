@@ -9,7 +9,7 @@
                 <div class="button__row">
                     <x-home.primary-button>
                         <x-slot:route>
-                            {{ route('create') }}
+                            {{ route('events.create') }}
                         </x-slot:route>
                         <x-slot:image>
                             {{Vite::image('icons/plus.svg')}}
@@ -27,7 +27,7 @@
                     {{-- //TODO select city --}}
                     <x-home.primary-button>
                         <x-slot:route>
-                            {{ route('find') }}
+                            {{ route('events.index') }}
                         </x-slot:route>
                         <x-slot:image>
                             {{Vite::image('icons/search.svg')}}

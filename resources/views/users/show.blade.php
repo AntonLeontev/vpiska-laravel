@@ -150,6 +150,7 @@
                                         </div>
                                     </label>
                                     <script>
+																			// TODO Photo upload
                                         $("#js-file").change(function() {
                                             if (window.FormData === undefined) {
                                                 alert("В вашем браузере загрузка файлов не поддерживается");
@@ -207,6 +208,7 @@
                     <div class="reviews__title">
                         <p>Отзывы</p>
                     </div>
+										{{-- //TODO Reviews --}}
 
 
 

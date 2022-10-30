@@ -22,13 +22,20 @@ class Event extends Model
         'max_members',
     ];
 
+    protected $with = ['creator', 'orders', 'photos'];
+
     public function photos()
     {
-        $this->hasMany(EventPhoto::class);
+        return $this->hasMany(EventPhoto::class);
     }
 
     public function orders()
     {
-        $this->hasMany(Order::class);
+        return $this->hasMany(Order::class);
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class);
     }
 }

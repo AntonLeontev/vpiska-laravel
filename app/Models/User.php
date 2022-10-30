@@ -39,6 +39,11 @@ class User extends Authenticatable
         'photo_path' => ''
     ];
 
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
     public function event()
     {
         $this->hasMany(Event::class);

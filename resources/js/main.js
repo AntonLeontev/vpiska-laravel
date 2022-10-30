@@ -364,8 +364,8 @@ $(document).ready(function () {
         });
     }
 
-    /*------------- Register --------------*/
-    $("#register").submit((event) => {
+    /*------------- Register, SignIn --------------*/
+    $(".form_auth").submit((event) => {
         event.preventDefault();
         let form = $(event.target);
         let actionUrl = form.attr("action");
@@ -375,72 +375,29 @@ $(document).ready(function () {
             data: form.serialize(),
             success: function (data) {
                 if (data.status === "ok") {
-                    Swal.fire("Регистрация успешна");
+                    location.reload();
                     return;
                 }
-                console.log(data);
-                return;
+                Swal.fire({
+                    titleText: "Ошибка",
+                    text: data.message,
+                    icon: "error",
+                });
             },
+            error: (data) => {},
         });
     });
 
-    // login
-    function setCookie(name, value, days) {
-        var expires = "";
-        if (days) {
-            var date = new Date();
-            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-            expires = "; expires=" + date.toUTCString();
-        }
-        document.cookie = name + "=" + (value || "") + expires + "; path=/";
-    }
-
-    $("#login").submit(function (e) {
-        e.preventDefault();
-        let form = $(this);
-        let actionUrl = form.attr("action");
-        //let actionUrl = 'login_user.php';
-        $.ajax({
-            type: "POST",
-            url: actionUrl,
+    /*------------- logout ------------*/
+    $(".form_logout").submit((event) => {
+        event.preventDefault();
+        let form = $(event.target);
+        $.post({
+            url: "/logout",
             data: form.serialize(),
             success: function (data) {
-                //console.log(data);
-                //return;
-
-                if (data == "error_1") {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Ошибка...",
-                        text: "Проверьте правильность введенных данных!",
-                    });
-                } else if (data == "success") {
-                    $("#login")[0].reset();
-
-                    setTimeout(function () {
-                        window.location = "https://vpiska.online/";
-                    }, 2600);
-                    Swal.fire({
-                        icon: "success",
-                        title: "Успешная авторизация!",
-                        text: "Сейчас вы будете перенаправлены",
-                        showConfirmButton: false,
-                        timer: 2500,
-                    });
-                } else {
-                    //new vvv 	не используется,оставлено пока для ориентира.
-                    //setCookie('vpiska',data,7);
-                    $("#login")[0].reset();
-                    setTimeout(function () {
-                        window.location = "https://vpiska.online/";
-                    }, 2600);
-                    Swal.fire({
-                        icon: "success",
-                        title: "Успешная авторизация!",
-                        text: "Сейчас вы будете перенаправлены",
-                        showConfirmButton: false,
-                        timer: 2500,
-                    });
+                if (data.status === "ok") {
+                    location.replace("/");
                 }
             },
         });

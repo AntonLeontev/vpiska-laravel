@@ -35,10 +35,6 @@ class RegisteredUserController extends Controller
      */
     public function store(RegistrationFormRequest $request)
     {
-        // if (!auth()->attempt($request->validated())) {
-        //     return $request;
-        // }
-        
         $user = User::create(['first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,'sex' => $request->sex,

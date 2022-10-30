@@ -17,9 +17,11 @@ class FeedbackFactory extends Factory
      */
     public function definition()
     {
+        $users = User::all('id');
+
         return [
-            'author_id' => User::inRandomOrder()->first(),
-            'user_id' => User::inRandomOrder()->first(),
+            'author_id' => $users->random(),
+            'user_id' => $users->random(),
             'text' => fake()->text(200),
         ];
     }

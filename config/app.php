@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\ViteServiceProvider;
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -82,7 +83,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -195,6 +196,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
+        ViteServiceProvider::class,
 
     ],
 

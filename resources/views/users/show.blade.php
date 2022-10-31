@@ -57,7 +57,7 @@
                             <div class="user__1">
                                 <div class="user__block">
                                     <div class="user__photo">
-                                        <img src="" alt="фото профиля">
+                                        <img src="{{$user->photo_path}}" alt="фото профиля">
                                     </div>
                                     <div class="user__name__mobile">
                                         <p><b>{{ $user->full_name }}</b></p>
@@ -92,13 +92,10 @@
                                             </a>
                                         </div>
                                     @endif
-
                                 @endauth
-
                             </div>
                             <div class="user__3">
                                 @auth
-
                                     @if (auth()->user()->id === $user->id)
                                         <div class="user__rating">
                                             <form class="form_logout">
@@ -177,7 +174,6 @@
                                                             location.reload();
                                                         }
                                                     });
-
                                                 }
                                             }
                                         });

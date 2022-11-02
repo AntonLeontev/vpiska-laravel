@@ -3,12 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -19,7 +21,7 @@ class User extends Authenticatable
         'city_code',
         'city_name',
         'email',
-        'email_confirmed',
+        'email_verified_at',
         'password',
         'balance',
         'photo_path',
@@ -31,9 +33,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $casts = [
-        'email_confirmed' => 'boolean',
-    ];
+    protected $casts = [];
 
     protected $attributes = [
         'photo_path' => ''
@@ -57,5 +57,10 @@ class User extends Authenticatable
     public function balanceTransfers()
     {
         return $this->hasMany(BalanceTransfer::class);
+    }
+
+    public function emailConfirmationHash()
+    {
+        return $this->hasOne(EmailConfirmationHash::class);
     }
 }

@@ -25,7 +25,7 @@ class UserFactory extends Factory
             'city_code' => rand(1, 5),
             'city_name' => fake()->city(),
             'email' => fake()->unique()->safeEmail(),
-            'email_confirmed' => rand(0, 1),
+            'email_verified_at' => $this->faker->dateTime(),
             'password' => Hash::make('12345678'), // password
             'balance' => rand(1, 5000) * 100,
             'photo_path' => $this->faker->fixturesImage('avatars', '/images/avatars'),

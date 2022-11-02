@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('city_code')->nullable();
             $table->string('city_name')->nullable();
             $table->string('email')->unique('email');
-            $table->boolean('email_confirmed')->default(0);
+            $table->dateTime('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('balance')->default(0);
             $table->string('photo_path');

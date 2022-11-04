@@ -18,8 +18,11 @@ Route::get('/create', function () {
     return view('create');
 })->name('create');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::view('/public-offer', 'static.public-offer')->name('offer');
+Route::view('/terms-of-use', 'static.terms-of-use')->name('terms');
+Route::view('/privacy-policy', 'static.privacy-policy')->name('policy');
+Route::view('/payment-security', 'static.payment-security')->name('payment-security');
+Route::view('/processing-of-personal-data', 'static.processing-of-personal-data')->name('processing');
+Route::view('/dissemination-of-personal-data', 'static.dissemination-of-personal-data')->name('dissamination');
 
 require __DIR__ . '/auth.php';

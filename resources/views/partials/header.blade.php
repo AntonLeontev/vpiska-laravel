@@ -111,12 +111,12 @@
 {{-- //TODO routes --}}
                                 <label class="checkbox" for="rules">
                                     Согласен с 
-                                    <a href="https://vpiska.online/privacy-policy.php">
+                                    <a href="{{route('policy')}}">
                                         политикой конфидециальности
                                     </a>, а так же 
-                                    <a href="https://vpiska.online/processing_of_personal_data.php">обработку</a>
+                                    <a href="{{route('processing')}}">обработку</a>
                                     и
-                                    <a href="https://vpiska.online/dissemination_of_personal_data.hp">распространение</a> персональных данных.
+                                    <a href="{{route('dissamination')}}">распространение</a> персональных данных.
                                 </label>
                             </div>
                             <div class="create__submit__button">

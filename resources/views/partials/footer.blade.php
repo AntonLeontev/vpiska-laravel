@@ -109,10 +109,10 @@
         <div class="footer__row">
             <div class="footer__link">
                 <ul class="footer__list">
-                    <li><a href="/public-offer.php">Публичная оферта</a></li>
-                    <li><a href="/terms-of-use.php">Пользовательское соглашение</a></li>
-                    <li><a href="/privacy-policy.php">Политика конфиденциальности</a></li>
-                    <li><a href="/payment-security.php">Безопасность платежей</a></li>
+                    <li><a href="{{route('offer')}}">Публичная оферта</a></li>
+                    <li><a href="{{route('terms')}}">Пользовательское соглашение</a></li>
+                    <li><a href="{{route('policy')}}">Политика конфиденциальности</a></li>
+                    <li><a href="{{route('payment-security')}}">Безопасность платежей</a></li>
                 </ul>
             </div>
             <div class="footer__apps">

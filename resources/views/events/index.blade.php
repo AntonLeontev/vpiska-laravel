@@ -71,13 +71,14 @@
                                     <div class="find-card__busy">
                                         <p>
                                             <span>Занято мест:</span>
+                                            {{-- //TODO Filter accepted orders --}}
                                             {{ $event->orders->count() ?? 0 }}/{{ $event->max_members }}
                                         </p>
                                     </div>
 
                                     <div class="find-card__busy">
                                         <p>
-                                            <span>Цена:</span> {{ $event->price / 100 }}₽
+                                            <span>Цена:</span> {{ $event->price }}₽
                                         </p>
                                     </div>
                                 </div>

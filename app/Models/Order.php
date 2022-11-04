@@ -17,6 +17,10 @@ class Order extends Model
         'code',
     ];
 
+    protected $with = [
+        'customer'
+    ];
+
     public function customer()
     {
         return $this->belongsTo(User::class);

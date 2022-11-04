@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Event extends Model
 {
@@ -19,10 +21,45 @@ class Event extends Model
         'street',
         'building',
         'phone',
+        'description',
         'max_members',
     ];
 
     protected $with = ['creator', 'orders', 'photos'];
+
+    protected function price(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => ($value / 100),
+            set: fn ($value) => ($value * 100)
+        );
+    }
+
+    public function getStartDateAttribute()
+    {
+        $carbon =  Carbon::parse($this->starts_at);
+        return $carbon->translatedFormat('d F');
+    }
+
+    public function getStartTimeAttribute()
+    {
+        $carbon =  Carbon::parse($this->starts_at);
+        return $carbon->translatedFormat('H:i');
+    }
+
+    public function currentUserOrder(): Order|bool
+    {
+        if (auth()->user()) {
+            return false;
+        }
+
+        return $this->orders->first(function ($value, $key) {
+            if ($value->customer_id === auth()->user()->id) {
+                return true;
+            }
+            return false;
+        });
+    }
 
     public function photos()
     {

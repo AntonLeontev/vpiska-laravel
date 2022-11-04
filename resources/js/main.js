@@ -195,7 +195,7 @@ $(document).ready(function () {
                 dataType: "json",
                 data: {
                     user_id: target.dataset.user_id,
-                    activity_id: target.dataset.activity_id,
+                    event_id: target.dataset.event_id,
                 },
                 success: (data) => {
                     if (data.state === "ok") {
@@ -402,4 +402,34 @@ $(document).ready(function () {
             },
         });
     });
+
+    /*--------------- Share Button -----------------*/
+    let shareButton = document.getElementById("share-button");
+    if (shareButton) {
+        shareButton.addEventListener("click", function () {
+            if (navigator.share) {
+                navigator
+                    .share({
+                        title: "Успей посетить мероприятие!",
+                        text: "Пошли со мной на это классное мероприятие!",
+                        url: window.location.href,
+                    })
+                    .then(function () {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Успешно!",
+                            text: "Вы успешно поделились ссылкой!",
+                            showConfirmButton: false,
+                            timer: 2500,
+                        });
+                    });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Ошибка...",
+                    text: "Вы не можете поделиться с данного браузера!",
+                });
+            }
+        });
+    }
 });

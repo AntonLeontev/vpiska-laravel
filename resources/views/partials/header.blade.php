@@ -1,4 +1,4 @@
-<x-home.modal id="select_city">
+<x-common.modal id="select_city">
         <h3 class="close__title">Выберите ваш город</h3>
         <div class="select__row">
             <div class="select__input">
@@ -19,9 +19,9 @@
                 </form>
             </div>
         </div>
-</x-home.modal>
+</x-common.modal>
 @guest
-    <x-home.modal id="register_2">
+    <x-common.modal id="register_2">
         <div class="tabs">
 
             <input type="radio" name="tab-btn" id="tab-btn-1" value="" checked>
@@ -108,7 +108,7 @@
                         <div class="registr_confirm">
                             <div class="submit__checkbox">
                                 <input type="checkbox" id="rules" name="scales" required checked>
-
+{{-- //TODO routes --}}
                                 <label class="checkbox" for="rules">
                                     Согласен с 
                                     <a href="https://vpiska.online/privacy-policy.php">
@@ -139,7 +139,7 @@
                 </div>
             </div>
         </div>
-    </x-home.modal>
+    </x-common.modal>
 @endguest
 <div class="header">
     <div class="container">
@@ -197,7 +197,7 @@
                                 <p>{{auth()->user()->first_name}}</p>
                             </div>
                             {{-- //TODO add user photo link --}}
-                            <div class="profile__img"><img src="{{ Vite::image('icons/') }}" alt="profile_photo"></div>
+                            <div class="profile__img"><img src="{{auth()->user()->photo_path}}" alt="profile_photo"></div>
                         </div>
                     </a>
                 @endauth

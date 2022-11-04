@@ -1,4 +1,4 @@
-<x-home.modal id="mobile_select_city">
+<x-common.modal id="mobile_select_city">
         <h3>ВЫБЕРИТЕ ВАШ ГОРОД</h3>
         <div class="select__row">
             <div class="select__input">
@@ -20,7 +20,7 @@
                 </form>
             </div>
         </div>
-</x-home.modal>
+</x-common.modal>
 
 <div class="navbar">
     <div class="navbar__city">

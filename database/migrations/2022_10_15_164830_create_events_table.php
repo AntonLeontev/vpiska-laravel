@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('building');
             $table->string('phone');
             $table->integer('max_members');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

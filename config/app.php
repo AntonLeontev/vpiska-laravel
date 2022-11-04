@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\BladeServiceProvider;
 use App\Providers\Faker\FakerServiceProvider;
 use App\Providers\ViteServiceProvider;
 use Illuminate\Support\Facades\Facade;
@@ -199,7 +200,7 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         ViteServiceProvider::class,
         FakerServiceProvider::class,
-
+        BladeServiceProvider::class,
     ],
 
     /*

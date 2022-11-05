@@ -23,6 +23,6 @@ Route::view('/terms-of-use', 'static.terms-of-use')->name('terms');
 Route::view('/privacy-policy', 'static.privacy-policy')->name('policy');
 Route::view('/payment-security', 'static.payment-security')->name('payment-security');
 Route::view('/processing-of-personal-data', 'static.processing-of-personal-data')->name('processing');
-Route::view('/dissemination-of-personal-data', 'static.dissemination-of-personal-data')->name('dissamination');
+Route::view('/dissemination-of-personal-data', 'static.dissemination-of-personal-data')->name('dissemination');
 
 require __DIR__ . '/auth.php';

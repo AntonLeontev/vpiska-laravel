@@ -108,7 +108,6 @@
                         <div class="registr_confirm">
                             <div class="submit__checkbox">
                                 <input type="checkbox" id="rules" name="scales" required checked>
-{{-- //TODO routes --}}
                                 <label class="checkbox" for="rules">
                                     Согласен с 
                                     <a href="{{route('policy')}}">
@@ -116,7 +115,7 @@
                                     </a>, а так же 
                                     <a href="{{route('processing')}}">обработку</a>
                                     и
-                                    <a href="{{route('dissamination')}}">распространение</a> персональных данных.
+                                    <a href="{{route('dissemination')}}">распространение</a> персональных данных.
                                 </label>
                             </div>
                             <div class="create__submit__button">

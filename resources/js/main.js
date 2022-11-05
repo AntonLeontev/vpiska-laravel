@@ -375,14 +375,16 @@ $(document).ready(function () {
             data: form.serialize(),
             success: function (data) {
                 if (data.status === "ok") {
-                    location.reload();
+                    redirect(data.redirect);
                     return;
                 }
-                Swal.fire({
-                    titleText: "Ошибка",
-                    text: data.message,
-                    icon: "error",
-                });
+
+                if (data.status === "message") {
+                    Swal.fire({
+                        text: data.message,
+                    });
+                    return;
+                }
             },
             error: (data) => {
                 let errors = data.responseJSON.errors;
@@ -399,6 +401,17 @@ $(document).ready(function () {
             },
         });
     });
+
+    function redirect(url) {
+        if (url === "reload") {
+            location.reload();
+            return;
+        }
+
+        if (url === "") return;
+
+        location.replace(url);
+    }
 
     /*------------- logout ------------*/
     $(".form_logout").submit((event) => {

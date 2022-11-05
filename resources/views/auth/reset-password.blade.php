@@ -1,14 +1,13 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+@extends('layouts.single-form')
 
-        <form method="POST" action="{{ route('password.update') }}">
+@section('title', 'Новый пароль')
+
+@section('content')
+<div class="content">
+    <div class="wrapper-center">
+        <form class="form_auth form-center" method="POST" action="{{ route('password.update') }}">
             @csrf
-
+            <h3 class="close__title">Новый пароль</h3>
             <!-- Password Reset Token -->
             <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
@@ -23,7 +22,7 @@
 
             <!-- Password -->
             <div class="mt-4">
-                <x-input-label for="password" :value="__('Password')" />
+                <x-input-label for="password" :value="__('Пароль')" />
 
                 <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required />
 
@@ -32,7 +31,7 @@
 
             <!-- Confirm Password -->
             <div class="mt-4">
-                <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                <x-input-label for="password_confirmation" :value="__('Повторите пароль')" />
 
                 <x-text-input id="password_confirmation" class="block mt-1 w-full"
                                     type="password"
@@ -41,11 +40,9 @@
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <x-primary-button>
-                    {{ __('Reset Password') }}
-                </x-primary-button>
-            </div>
+            <x-common.submit-button class="form__submit-button">Сохранить пароль</x-common.submit-button>
         </form>
-    </x-auth-card>
-</x-guest-layout>
+    </div>
+</div>
+@endsection
+

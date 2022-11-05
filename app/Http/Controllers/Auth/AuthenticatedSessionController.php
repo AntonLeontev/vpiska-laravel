@@ -33,12 +33,12 @@ class AuthenticatedSessionController extends Controller
         try {
             $request->authenticate();
         } catch (ValidationException $e) {
-            return Response::json(['message' => $e->getMessage()]);
+            return Response::json(['status' => 'message', 'message' => $e->getMessage()]);
         }
 
         $request->session()->regenerate();
 
-        return Response::json(['status' => 'ok']);
+        return Response::json(['status' => 'ok', 'redirect' => 'reload']);
     }
 
     /**
@@ -55,6 +55,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return Response::json(['status' => 'ok']);
+        return Response::json(['status' => 'ok', 'redirect' => route('home')]);
     }
 }

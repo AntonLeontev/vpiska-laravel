@@ -44,6 +44,6 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-        return Response::json(['status' => 'ok']);      
+        return Response::json(['status' => 'ok', 'redirect' => 'reload']);      
     }
 }

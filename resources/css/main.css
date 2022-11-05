@@ -111,6 +111,45 @@ body {
 	font-weight: 600;
 }
 
+.wrapper-center{
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.form-center {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	row-gap: 5px;
+	max-width: 400px;
+	width: 98%;
+}
+
+.form-center div {
+	width: 100%;
+}
+
+.form-center .form__submit-button {
+	margin-top: 20px;
+}
+
+.button_submit {
+	background: #8300b0;
+	width: 100%;
+	padding: 10px;
+	border-radius: 7px;
+	box-shadow: -4px 26px 38px -4px rgba(131, 0, 176, 0.42);
+	font-family: "JostStandart";
+	font-style: normal;
+	font-weight: 600;
+	font-size: 24px;
+	color: #fff;
+	cursor: pointer;
+}
 
 /*--------------------- ScrollBar ---------------------*/
 

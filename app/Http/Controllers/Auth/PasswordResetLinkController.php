@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Response;
 
 class PasswordResetLinkController extends Controller
 {
@@ -39,9 +40,8 @@ class PasswordResetLinkController extends Controller
             $request->only('email')
         );
 
-        return $status == Password::RESET_LINK_SENT
-                    ? back()->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                            ->withErrors(['email' => __($status)]);
+        return $status == Password::RESET_LINK_SENT || $status == Password::INVALID_USER
+            ? Response::json(['status' => 'message', 'message' => "Ссылка отправлена на почту " . $request->email])
+            : Response::json(['status' => 'message', 'message' => 'Ошибка отправки']);
     }
 }

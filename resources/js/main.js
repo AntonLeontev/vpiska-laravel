@@ -384,7 +384,19 @@ $(document).ready(function () {
                     icon: "error",
                 });
             },
-            error: (data) => {},
+            error: (data) => {
+                let errors = data.responseJSON.errors;
+                let message = "";
+                for (let text in errors) {
+                    message += errors[text].join(`\n`) + `\n`;
+                }
+
+                Swal.fire({
+                    titleText: "Ошибка",
+                    text: message,
+                    icon: "error",
+                });
+            },
         });
     });
 

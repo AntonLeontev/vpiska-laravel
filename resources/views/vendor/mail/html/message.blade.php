@@ -2,7 +2,7 @@
 {{-- Header --}}
 <x-slot:header>
 <x-mail::header :url="config('app.url')">
-{{ config('app.name') }}
+<img src="https://vpiska.online/images/logo.png" class="logo" alt="Vpiska Logo">
 </x-mail::header>
 </x-slot:header>
 

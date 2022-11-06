@@ -25,7 +25,7 @@ class RegistrationFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'string', 'max:25'],
+            'first_name' => ['required', 'string', 'max:25', 'min:2'],
             'last_name' => ['string', 'max:25', 'nullable'],
             'sex' => ['required', 'integer', 'min:0', 'max:1'],
             'email' => ['required', 'string', 'email:dns', 'max:255', 'unique:users'],

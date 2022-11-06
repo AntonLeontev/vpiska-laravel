@@ -364,8 +364,8 @@ $(document).ready(function () {
         });
     }
 
-    /*------------- Register, SignIn --------------*/
-    $(".form_auth").submit((event) => {
+    /*------------- form submit handler --------------*/
+    $("form").submit((event) => {
         event.preventDefault();
         let form = $(event.target);
         let actionUrl = form.attr("action");
@@ -393,11 +393,16 @@ $(document).ready(function () {
                     message += errors[text].join(`\n`) + `\n`;
                 }
 
+                if (!message) {
+                    message = data.responseJSON.message;
+                }
+
                 Swal.fire({
                     titleText: "Ошибка",
                     text: message,
                     icon: "error",
                 });
+                console.log(data);
             },
         });
     });
@@ -412,21 +417,6 @@ $(document).ready(function () {
 
         location.replace(url);
     }
-
-    /*------------- logout ------------*/
-    $(".form_logout").submit((event) => {
-        event.preventDefault();
-        let form = $(event.target);
-        $.post({
-            url: "/logout",
-            data: form.serialize(),
-            success: function (data) {
-                if (data.status === "ok") {
-                    location.replace("/");
-                }
-            },
-        });
-    });
 
     /*--------------- Share Button -----------------*/
     let shareButton = document.getElementById("share-button");

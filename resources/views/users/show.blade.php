@@ -7,12 +7,12 @@
     <div class="content">
         @auth
             @if (auth()->user()->id === $user->id)
-                <x-home.modal id="edit_profile">
+                <x-common.modal id="edit_profile">
                     <div class="edit__profile__title">
                         <p>Редактирование профиля</p>
                     </div>
                     <div class="edit__profile">
-                        <form action="../assets/query/update_profile.php" method="post">
+                        <form action="" method="post">
                             <input type="hidden" name="id" value="{{ $user->id }}">
                             <div class="edit__name__input"><input type="text" placeholder="Ваше имя" name="first_name"
                                     value="{{ $user->first_name }}" required></div>
@@ -25,7 +25,7 @@
                             <div class="edit__submit__button"><button type="submit">Подтвердить</button></div>
                         </form>
                     </div>
-                </x-home.modal>
+                </x-common.modal>
             @endif
         @endauth
 
@@ -98,7 +98,7 @@
                                 @auth
                                     @if (auth()->user()->id === $user->id)
                                         <div class="user__rating">
-                                            <form class="form_logout">
+                                            <form class="form_logout" action="/logout" method="POST">
                                                 @csrf
                                                 <div class="user__exit">
                                                     <button type='submit'>

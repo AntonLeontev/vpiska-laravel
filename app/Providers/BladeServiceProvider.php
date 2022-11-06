@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Event;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -69,6 +71,23 @@ class BladeServiceProvider extends ServiceProvider
 
             //TODO isPaid
             return false;
+        });
+
+        Blade::if('hasTooManyEvents', function (User $user) {
+            if (Event::where('ends_at', '>', Carbon::create('now'))->where('creator_id', $user->id)->count()) {
+                // if ($user->events->where('ends_at', '>', Carbon::create('now'))->count()) {
+                return true;
+            }
+
+            return false;
+        });
+
+        Blade::if('userActivated', function (User $user) {
+            if (is_null($user->email_verified_at)) {
+                return false;
+            }
+
+            return true;
         });
     }
 }

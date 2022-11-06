@@ -394,7 +394,7 @@ $(document).ready(function () {
                 }
 
                 if (!message) {
-                    message = data.responseJSON.message;
+                    message = "Попробуйте перезагрузить страницу";
                 }
 
                 Swal.fire({

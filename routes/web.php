@@ -8,15 +8,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomepageController::class)->name('home');
 
 Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+Route::get('/balance', [UserController::class, 'balance'])->name('balance');
 
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::get('/events/create', [EventController::class, 'create'])->middleware('auth')->name('events.create');
+Route::post('/events/create', [EventController::class, 'store'])->name('events.store');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
-Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
 Route::get('/events/edit/{event}', [EventController::class, 'edit'])->name('events.edit');
-
-Route::get('/create', function () {
-    return view('create');
-})->name('create');
+Route::post('/events/edit/{event}', [EventController::class, 'update'])->name('events.update');
 
 Route::view('/public-offer', 'static.public-offer')->name('offer');
 Route::view('/terms-of-use', 'static.terms-of-use')->name('terms');

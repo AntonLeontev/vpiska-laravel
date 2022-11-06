@@ -1,13 +1,13 @@
 @extends('layouts.single-form')
 
-@section('title', 'Новый пароль')
+@section('title', 'Восстановление пароля')
 
 @section('content')
 <div class="content">
     <div class="wrapper-center">
         <form class="form_auth form-center" method="POST" action="{{ route('password.update') }}">
             @csrf
-            <h3 class="close__title">Новый пароль</h3>
+            <h3 class="close__title">Восстановление пароля</h3>
             <!-- Password Reset Token -->
             <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
@@ -22,7 +22,7 @@
 
             <!-- Password -->
             <div class="mt-4">
-                <x-input-label for="password" :value="__('Пароль')" />
+                <x-input-label for="password" :value="__('Новый пароль')" />
 
                 <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required />
 

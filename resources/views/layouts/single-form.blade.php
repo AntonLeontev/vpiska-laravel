@@ -13,7 +13,14 @@
     </head>
     <body>
         <div class="wrapper">
-            @yield('content')
+            <div class="content">
+                <div class="wrapper-center">
+                    <a href="{{route('home')}}">
+                        <img class="" src="{{Vite::image('logo.png')}}" alt="logo" width="200px">
+                    </a>
+                    @yield('content')
+                </div>
+            </div>    
         </div>
     </body>
 </html>

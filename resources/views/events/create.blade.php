@@ -7,21 +7,17 @@
 @section('content')
     <div class="content">
 
-			@guest
-					<x-common.alert>Войдите чтобы создать новое мероприятие</x-common.alert>
-			@endguest
-			@auth
-				@unlessuserActivated(auth()->user())
-						<x-common.alert>Ваш аккаунт не активирован. Вы не можете создать мероприятие</x-common.alert>
-				@enduserActivated
+        @unlessuserActivated(auth()->user())
+            <x-common.alert>Ваш аккаунт не активирован. Вы не можете создать мероприятие</x-common.alert>
+        @enduserActivated
 
-				@hasTooManyEvents(auth()->user())
-						<x-common.alert>У вас уже есть активное мероприятие. Вы не можете создать новое</x-common.alert>
-				@endhasTooManyEvents
-				
-				
-				
-			
+        @hasTooManyEvents(auth()->user())
+            <x-common.alert>У вас уже есть активное мероприятие. Вы не можете создать новое</x-common.alert>
+        @endhasTooManyEvents
+
+
+
+
         <div class="activity">
             <div class="container">
                 <div class="activity__row">
@@ -33,23 +29,16 @@
                             <p><b>Создание</b></p>
                         </div>
                         <div class="title__close">
-                            <p><a href="/"><img src="{{Vite::image('icons/close.svg')}}" alt="close"></a></p>
+                            <p><a href="/"><img src="{{ Vite::image('icons/close.svg') }}" alt="close"></a></p>
                         </div>
                     </div>
 
                     <div class="activity__form activity__form--mobile">
 
-                        <form action="{{route('events.store')}}" method="POST" enctype="multipart/form-data" id=""
-                            autocomplete="disabled">
-                            <fieldset 
-															@unlessuserActivated(auth()->user())
-																disabled
-															@enduserActivated
-
-															@hasTooManyEvents(auth()->user())
-																disabled
-															@endhasTooManyEvents
-														>
+                        <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data"
+                            id="" autocomplete="disabled">
+                            <fieldset @unlessuserActivated(auth()->user()) disabled @enduserActivated
+                                @hasTooManyEvents(auth()->user()) disabled @endhasTooManyEvents>
                                 <div class="activity__location">
 
                                     <div class="info__time">
@@ -121,7 +110,7 @@
                                                     max="14999" placeholder="Цена" required>
                                                 <span>При входе на мероприятие, Участники сообщают Создателю цифровой код,
                                                     который можно активировать на странице <a
-                                                        href="{{route('balance')}}">баланса</a> и
+                                                        href="{{ route('balance') }}">баланса</a> и
                                                     вывести средства на Ваш счёт</span>
                                             </div>
                                         </div>
@@ -166,7 +155,7 @@
                                         <div class="description__gallery">
                                             <label for="js-file">
                                                 <div class="description__add">
-                                                    <div class="add__image"><img src="{{Vite::image('icons/plus.svg')}}"
+                                                    <div class="add__image"><img src="{{ Vite::image('icons/plus.svg') }}"
                                                             alt="add"></div>
                                                     <div class="add__text">
                                                         <p><b>Добавить фото</b></p>
@@ -259,11 +248,10 @@
                                     <div class="submit__checkbox">
                                         <input type="checkbox" id="rules" name="scales" required checked>
                                         <label class="checkbox" for="rules">Согласен с <a
-                                                href="{{route('policy')}}">политикой
+                                                href="{{ route('policy') }}">политикой
                                                 конфидециальности</a>, а так же <a
-                                                href="{{route('processing')}}">обработку</a>
-                                            и <a
-                                                href="{{route('dissemination')}}">распространение</a>
+                                                href="{{ route('processing') }}">обработку</a>
+                                            и <a href="{{ route('dissemination') }}">распространение</a>
                                             персональных данных.</label>
                                     </div>
                                 </div>
@@ -277,17 +265,10 @@
                     <div class="activity__form activity__form--desktop">
 
 
-                        <form action="{{route('events.store')}}" method="POST" enctype="multipart/form-data"
+                        <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data"
                             id="" autocomplete="disabled">
-                            <fieldset 
-															@unlessuserActivated(auth()->user())
-																disabled
-															@enduserActivated
-
-															@hasTooManyEvents(auth()->user())
-																disabled
-															@endhasTooManyEvents
-														>
+                            <fieldset @unlessuserActivated(auth()->user()) disabled @enduserActivated
+                                @hasTooManyEvents(auth()->user()) disabled @endhasTooManyEvents>
                                 <div class="activity__location">
                                     <div class="location__title">
                                         <p>Адрес мероприятия</p>
@@ -375,7 +356,7 @@
                                         <div class="description__gallery">
                                             <label for="js-file">
                                                 <div class="description__add">
-                                                    <div class="add__image"><img src="{{Vite::image('icons/plus.svg')}}"
+                                                    <div class="add__image"><img src="{{ Vite::image('icons/plus.svg') }}"
                                                             alt="add"></div>
                                                     <div class="add__text">
                                                         <p><b>Добавить фото</b></p>
@@ -482,11 +463,10 @@
                                     <div class="submit__checkbox">
                                         <input type="checkbox" id="rules" name="scales" required checked>
                                         <label class="checkbox" for="rules">Согласен с <a
-                                                href="{{route('policy')}}">политикой
+                                                href="{{ route('policy') }}">политикой
                                                 конфидециальности</a>, а так же <a
-                                                href="{{route('processing')}}">обработку</a>
-                                            и <a
-                                                href="{{route('dissemination')}}">распространение</a>
+                                                href="{{ route('processing') }}">обработку</a>
+                                            и <a href="{{ route('dissemination') }}">распространение</a>
                                             персональных данных.</label>
                                     </div>
                                 </div>
@@ -540,5 +520,4 @@
 
         })
     </script>
-		@endauth
 @endsection

@@ -3,8 +3,7 @@
 @section('title', 'Восстановление пароля')
 
 @section('content')
-<div class="content">
-    <div class="wrapper-center">
+
         <form class="form_auth form-center" method="POST" action="{{ route('password.update') }}">
             @csrf
             <h3 class="close__title">Восстановление пароля</h3>
@@ -42,7 +41,5 @@
 
             <x-common.submit-button class="form__submit-button">Сохранить пароль</x-common.submit-button>
         </form>
-    </div>
-</div>
 @endsection
 

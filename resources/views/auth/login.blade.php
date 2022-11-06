@@ -3,8 +3,6 @@
 @section('title', 'Вход на сайт')
 
 @section('content')
-    <div class="content">
-        <div class="wrapper-center">
             <form method="POST" action="{{ route('login') }}">
             @csrf
             <h3 class="close__title">Вход на сайт</h3>
@@ -50,6 +48,4 @@
                 </x-common.submit-button>
             </div>
         </form>
-        </div>
-    </div>
 @endsection

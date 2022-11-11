@@ -27,7 +27,7 @@ class RegistrationFormRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'max:25', 'min:2'],
             'last_name' => ['string', 'max:25', 'nullable'],
-            'sex' => ['required', 'integer', 'min:0', 'max:1'],
+            'sex' => ['required', 'string', 'in:male,female'],
             'email' => ['required', 'string', 'email:dns', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::defaults()],
             'scales' => ['required', 'in:on']

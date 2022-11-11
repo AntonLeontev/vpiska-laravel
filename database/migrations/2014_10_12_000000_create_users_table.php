@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->boolean('sex');
+            $table->string('sex');
             $table->integer('city_code')->nullable();
             $table->string('city_name')->nullable();
             $table->string('email')->unique('email');

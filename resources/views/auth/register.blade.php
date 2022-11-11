@@ -15,11 +15,11 @@
                      </div>
                      <form action="query/register_user.php" method="post" id="register">
                         <div class="registr__form">
-                           <div class="registr__name"><input type="text" placeholder="Имя" name="name" required></div>
-                           <div class="registr__surname"><input type="text" placeholder="Фамилия" name="surname" required></div>
+                           <div class="registr__name"><input type="text" placeholder="Имя" name="first_name" required></div>
+                           <div class="registr__surname"><input type="text" placeholder="Фамилия" name="last_name" required></div>
                            <div class="registr__email"><input type="email" placeholder="E-mail" name="email" required></div>
-                           <div class="registr__password"><input type="password" placeholder="Пароль" name="pass" required></div>
-                           <div class="registr__repassword"><input type="password" placeholder="Повторите пароль" name="repass" required></div>
+                           <div class="registr__password"><input type="password" placeholder="Пароль" name="password" required></div>
+                           <div class="registr__repassword"><input type="password" placeholder="Повторите пароль" name="confirm_password" required></div>
 
                            <div class="registr__testq">
                                 {{-- //TODO placeholder, value --}}

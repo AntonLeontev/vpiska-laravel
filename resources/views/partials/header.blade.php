@@ -3,16 +3,13 @@
     <div class="select__row">
         <div class="select__input">
             {{-- //TODO form action --}}
-            <form action="../assets/query/update_city.php" method="POST" id="select_cit">
+            <form action="../assets/query/update_city.php" method="POST" id="select_cit" class="select_city_form">
+                <input type="text" disabled value="" name="city_fias_id" id="city_fias_id">
                 <div class="input__select">
                     <input autocomplete="off" list="modal_select_city" name="modal_select_city" type="text"
-                        id="select_city_modal" oninput="select_city_modal_header()" placeholder="Выберите город"
+                        id="select_city_input" class="select_city_input" placeholder="Выберите город"
                         required>
                 </div>
-                <input type="hidden" value="" name="u_id">
-                <ul id="modal_select_city">
-
-                </ul>
                 <div class="edit__submit__button">
                     <button type="submit">Подтвердить</button>
                 </div>
@@ -85,8 +82,8 @@
                             <div class="registr__sex">
                                 <select name="sex" required>
                                     <option disabled selected>Выберете ваш пол</option>
-                                    <option value="0">Мужской</option>
-                                    <option value="1">Женский</option>
+                                    <option value="male">Мужской</option>
+                                    <option value="female">Женский</option>
                                 </select>
                             </div>
                             <div class="registr__email">
@@ -174,7 +171,7 @@
 
             </div>
             @auth
-                <a href="../assets/balance.php">
+                <a href="{{route('balance')}}">
                     <div class="header__balance">
                         <div class="balance__row">
                             <div class="balance__status">
@@ -192,13 +189,14 @@
                 </div>
             </a>
             @auth
-                <a href="../assets/weed.php">
+                <a href="{{route('users.events')}}">
                     <div class="header__message">
                         <div class="message__row">
                             <div class="message__status">
                                 <p id="weed">notif</p>
                             </div>
-                            <div class="message__img"><img src="{{ Vite::image('icons/weed.png') }}" alt="message">
+                            <div class="message__img">
+                                <img src="{{ Vite::image('icons/bell.png') }}" alt="message">
                             </div>
                         </div>
                     </div>

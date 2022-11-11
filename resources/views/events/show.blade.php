@@ -33,7 +33,7 @@
                                 <label class="pay_from_account">
                                     <input type="checkbox" class="pay_from_account_checkbox" name="pay_from_account"
                                         id="pay_from_account">
-                                    Оплатить со счета (на счету {{ $event->balance }} р)
+                                    Оплатить со счета (на счету {{ auth()->user()->balance }} р)
                                 </label>
                             @endif
                             <br>
@@ -123,7 +123,7 @@
                         </div>
                     @endisCreator
 
-                    @isOrdered
+                    @isOrdered($event)
                         <x-common.alert>
                             @isPaid($event)
                                 Вы подавали заявку на вписку. Заявка оплачена
@@ -161,7 +161,7 @@
                                         ВПИСАТЬСЯ
                                     @endguest
                                     @auth
-                                        @unlessisOrdered
+                                        @unlessisOrdered($event)
                                             ВПИСАТЬСЯ
                                         @else
                                             ОПЛАТИТЬ
@@ -280,7 +280,7 @@
                                                         Вписаться
                                                     @endguest
                                                     @auth
-                                                        @isOrdered
+                                                        @isOrdered($event)
                                                             Оплатить
                                                         @else
                                                             Вписаться
@@ -338,7 +338,7 @@
                         @endforeach
                     </div>
                     @auth
-                        <x-common.modal id="">
+                        {{-- <x-common.modal id="">
                             @if ($event->currentUserOrder()->status == 0)
                                 <h4>Ожидает одобрения</h4>
                             @elseif ($event->currentUserOrder()->status == 1)
@@ -348,7 +348,7 @@
                             @elseif ($event->currentUserOrder()->status == 2)
                                 <h4>Заявку отклонили</h4>
                             @endif
-                        </x-common.modal>
+                        </x-common.modal> --}}
                     @endauth
                 </div>
 

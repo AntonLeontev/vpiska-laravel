@@ -43,7 +43,7 @@
                         <img src="{{ Vite::image('icons/wallet.svg') }}" alt="balance">
                     </div>
                     <div class="navbar__balance__title">
-                        <p>bal</p>
+                        <p>{{auth()->user()->balance}}</p>
                     </div>
                 </div>
             </a>
@@ -80,14 +80,13 @@
 
     <div class="navbar__profile">
         @auth
-            {{-- //TODO user_id, user_photo, user_name --}}
-            <a href="/assets/user.php?id=">
+            <a href="{{route('users.show', auth()->user()->id)}}">
                 <div class="navbar__profile__row">
                     <div class="navbar__profile__image">
-                        <img src="" alt="profile">
+                        <img src="{{auth()->user()->photo_path}}" alt="profile_photo">
                     </div>
                     <div class="navbar__profile__title">
-                        <p>name</p>
+                        <p>{{auth()->user()->full_name}}</p>
                     </div>
                 </div>
             </a>

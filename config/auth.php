@@ -108,4 +108,9 @@ return [
 
     'password_timeout' => 10800,
 
+    //Email confirmation link timeout
+    'verification' => [
+        'expire' => 43200, //30 days
+    ],
+
 ];

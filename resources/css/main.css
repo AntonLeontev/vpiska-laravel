@@ -2243,6 +2243,10 @@ input[type=date] {
 	background-repeat: no-repeat;
 }
 
+.edit__city__input {
+	position: relative;
+}
+
 .edit__surname__input>input,
 .edit__city__input>input,
 .edit__date__input>input {

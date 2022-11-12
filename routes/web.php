@@ -18,6 +18,10 @@ Route::get('/users/events', [UserController::class, 'userEvents'])
     ->middleware('auth')
     ->name('users.events');
 
+Route::post('/users/edit/{user}', [UserController::class, 'update'])
+    ->middleware('auth')
+    ->name('users.update');
+
 Route::post('users/{user}/change_city', [UserController::class, 'changeCity'])
     ->middleware('auth')
     ->name('users.change_city');

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('city_name')->nullable();
             $table->string('email')->unique('email');
             $table->dateTime('email_verified_at')->nullable();
+            $table->date('birth_date')->nullable();
             $table->string('password');
             $table->integer('balance')->default(0);
             $table->string('photo_path');

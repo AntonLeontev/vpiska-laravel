@@ -30,7 +30,7 @@ class RegistrationFormRequest extends FormRequest
             'sex' => ['required', 'string', 'in:male,female'],
             'email' => ['required', 'string', 'email:dns', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::defaults()],
-            'scales' => ['required', 'in:on']
+            'scales' => ['required', 'accepted']
         ];
     }
 }

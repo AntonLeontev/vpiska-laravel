@@ -12,16 +12,13 @@
                         <p>Редактирование профиля</p>
                     </div>
                     <div class="edit__profile">
-                        <form action="" method="post">
-                            <input type="hidden" name="id" value="{{ $user->id }}">
-                            <div class="edit__name__input"><input type="text" placeholder="Ваше имя" name="first_name"
-                                    value="{{ $user->first_name }}" required></div>
-                            <div class="edit__surname__input"><input type="text" placeholder="Ваша фамилия" name="last_name"
-                                    value="{{ $user->last_name }}" required></div>
-                            <div class="edit__city__input"><input type="text" placeholder="Ваш город" name="city"
-                                    value="{{ $user->city_name }}"></div>
-                            <div class="edit__date__input"><input type="date" placeholder="Ваша дата рождения" name="date"
-                                    value=""></div>
+                        <form action="{{route('users.update', $user->id)}}" method="post">
+                            @csrf
+                            <div class="edit__name__input"><input type="text" placeholder="Ваше имя" name="first_name" value="{{ $user->first_name }}" required></div>
+                            <div class="edit__surname__input"><input type="text" placeholder="Ваша фамилия" name="last_name" value="{{ $user->last_name }}"></div>
+                            <input type="hidden" name="city_fias_id" value="{{$user->city_fias_id}}">
+                            <div class="edit__city__input"><input class="select_city_input" type="text" placeholder="Ваш город" name="city_name" value="{{ $user->city_name }}"></div>
+                            <div class="edit__date__input"><input type="date" placeholder="Ваша дата рождения" name="birth_date" value="{{$user->birth_date}}"></div>
                             <div class="edit__submit__button"><button type="submit">Подтвердить</button></div>
                         </form>
                     </div>
@@ -34,7 +31,6 @@
                 <div class="cabinet__row">
                     <div class="cabinet__title">
                         @auth
-
                             @if (auth()->user()->id === $user->id)
                                 <div class="cabinet__title__settings">
                                     <a href="#edit_profile">
@@ -68,13 +64,13 @@
                                         <p><b>{{ $user->full_name }}</b></p>
                                     </div>
                                     <div class="user__birthday">
-                                        <p><b>Дата рождения:</b> </p>
+                                        <p><b>Дата рождения:</b> {{$user->birth_date}}</p>
                                     </div>
                                     <div class="user__sex">
-                                        <p><b>Пол:</b>{{ $user->sex }}</p>
+                                        <p><b>Пол:</b> {{ $user->sex }}</p>
                                     </div>
                                     <div class="user__sex">
-                                        <p><b>Город:</b>{{ $user->city_name }}</p>
+                                        <p><b>Город:</b> {{ $user->city_name }}</p>
                                     </div>
 
                                     <div class="user__sex">
@@ -190,7 +186,7 @@
                     @auth
                         @if (auth()->user()->id === $user->id)
                             <div class="user__rating__mobile">
-                                <a href="/assets/logout.php">
+                                <a href="{{route('logout')}}">
                                     <div class="user__exit__mobile">
                                         <button>
                                             <p>Выйти из профиля</p>

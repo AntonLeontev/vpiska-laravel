@@ -26,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'city_name',
         'email',
         'email_verified_at',
+        'birth_date',
         'password',
         'balance',
         'photo_path',
@@ -40,10 +41,6 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $attributes = [
         'photo_path' => ''
     ];
-
-    protected function defaultPhoto()
-    {
-    }
 
     protected static function boot(): void
     {

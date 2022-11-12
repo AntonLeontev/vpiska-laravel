@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -19,12 +18,14 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $sex = fake()->randomElement(['male', 'female']);
+
         return [
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
-            'sex' => Arr::random(['male', 'female']),
-            'city_code' => rand(1, 5),
-            'city_name' => fake()->city(),
+            'first_name' => fake()->firstName($sex),
+            'last_name' => fake()->lastName($sex),
+            'sex' => $sex,
+            'city_fias_id' => '0c5b2444-70a0-4932-980c-b4dc0d3f02b5', //Moscow
+            'city_name' => 'Москва',
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => $this->faker->dateTime(),
             'password' => Hash::make('12345678'),

@@ -37,6 +37,8 @@ class AuthenticatedSessionController extends Controller
         }
 
         $request->session()->regenerate();
+        $request->session()->put('city_name', Auth::user()->city_name);
+        $request->session()->put('city_fias_id', Auth::user()->city_fias_id);
 
         return Response::json(['status' => 'ok', 'redirect' => 'reload']);
     }

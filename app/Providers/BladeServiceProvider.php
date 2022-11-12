@@ -30,7 +30,7 @@ class BladeServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::if('isCreator', function (Event $event) {
-            if (isNull(auth()->user())) {
+            if (is_null(auth()->user())) {
                 return false;
             }
 
@@ -48,7 +48,7 @@ class BladeServiceProvider extends ServiceProvider
         });
 
         Blade::if('isOrdered', function (Event $event) {
-            if (isNull(auth()->user())) {
+            if (is_null(auth()->user())) {
                 return false;
             }
 
@@ -65,7 +65,7 @@ class BladeServiceProvider extends ServiceProvider
         });
 
         Blade::if('isPaid', function (Event $event) {
-            if (isNull(auth()->user())) {
+            if (is_null(auth()->user())) {
                 return false;
             }
 

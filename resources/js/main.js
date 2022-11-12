@@ -1,5 +1,6 @@
 import $ from "jquery";
 import Swal from "sweetalert2";
+import "suggestions-jquery";
 
 function create_activity_1() {
     if (
@@ -272,97 +273,97 @@ $(document).ready(function () {
     });
 
     /*-------------- City selection ---------------*/
-    $("#select_cit").submit(function (e) {
-        e.preventDefault();
-        let form = $(this);
-        let actionUrl = form.attr("action");
-        $.ajax({
-            type: "POST",
-            url: actionUrl,
-            data: form.serialize(),
-            success: function (data) {
-                if (data == "Не существует") {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Ошибка...",
-                        text: "Данного города не существует!",
-                    });
-                } else {
-                    window.location.href =
-                        "https://vpiska.online/assets/find.php";
-                }
-            },
-        });
-    });
+    // $("#select_cit").submit(function (e) {
+    //     e.preventDefault();
+    //     let form = $(this);
+    //     let actionUrl = form.attr("action");
+    //     $.ajax({
+    //         type: "POST",
+    //         url: actionUrl,
+    //         data: form.serialize(),
+    //         success: function (data) {
+    //             if (data == "Не существует") {
+    //                 Swal.fire({
+    //                     icon: "error",
+    //                     title: "Ошибка...",
+    //                     text: "Данного города не существует!",
+    //                 });
+    //             } else {
+    //                 window.location.href =
+    //                     "https://vpiska.online/assets/find.php";
+    //             }
+    //         },
+    //     });
+    // });
 
-    function sel_cit(data_modal_head) {
-        $("#select_city_modal").val(data_modal_head);
-        $("#modal_select_city").hide();
-    }
+    // function sel_cit(data_modal_head) {
+    //     $("#select_city_modal").val(data_modal_head);
+    //     $("#modal_select_city").hide();
+    // }
 
-    function select_city_modal_header() {
-        $("#modal_select_city").show();
-        let select_city_modal_2 = $("#select_city_modal").val();
-        $.ajax({
-            type: "POST",
-            url: "../assets/query/select_city.php",
-            cache: false,
-            data: {
-                select_city: select_city_modal_2,
-            },
-            success: function (result_city1) {
-                $("#modal_select_city").empty();
-                $("#modal_select_city").append(result_city1);
-            },
-        });
-    }
+    // function select_city_modal_header() {
+    //     $("#modal_select_city").show();
+    //     let select_city_modal_2 = $("#select_city_modal").val();
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "../assets/query/select_city.php",
+    //         cache: false,
+    //         data: {
+    //             select_city: select_city_modal_2,
+    //         },
+    //         success: function (result_city1) {
+    //             $("#modal_select_city").empty();
+    //             $("#modal_select_city").append(result_city1);
+    //         },
+    //     });
+    // }
 
     /*------------- mobile city selection --------------*/
 
-    $("#select_cit_mob").submit(function (e) {
-        e.preventDefault();
-        let form = $(this);
-        let actionUrl = form.attr("action");
-        $.ajax({
-            type: "POST",
-            url: actionUrl,
-            data: form.serialize(),
-            success: function (data) {
-                if (data == "Не существует") {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Ошибка...",
-                        text: "Данного города не существует!",
-                    });
-                } else {
-                    window.location.href =
-                        "https://vpiska.online/assets/find.php";
-                }
-            },
-        });
-    });
+    // $("#select_cit_mob").submit(function (e) {
+    //     e.preventDefault();
+    //     let form = $(this);
+    //     let actionUrl = form.attr("action");
+    //     $.ajax({
+    //         type: "POST",
+    //         url: actionUrl,
+    //         data: form.serialize(),
+    //         success: function (data) {
+    //             if (data == "Не существует") {
+    //                 Swal.fire({
+    //                     icon: "error",
+    //                     title: "Ошибка...",
+    //                     text: "Данного города не существует!",
+    //                 });
+    //             } else {
+    //                 window.location.href =
+    //                     "https://vpiska.online/assets/find.php";
+    //             }
+    //         },
+    //     });
+    // });
 
-    function sel_cit_mob(dataaas) {
-        $("#select_city_modal_mobile").val(dataaas);
-        $("#modal_select_city__mobile").hide();
-    }
+    // function sel_cit_mob(dataaas) {
+    //     $("#select_city_modal_mobile").val(dataaas);
+    //     $("#modal_select_city__mobile").hide();
+    // }
 
-    function select_city_modal_mobil() {
-        $("#modal_select_city__mobile").show();
-        let selected_city_mobilee = $("#select_city_modal_mobile").val();
-        $.ajax({
-            type: "POST",
-            url: "../assets/query/select_city_mob.php",
-            cache: false,
-            data: {
-                select_city: selected_city_mobilee,
-            },
-            success: function (find_city_mobile) {
-                $("#modal_select_city__mobile").empty();
-                $("#modal_select_city__mobile").append(find_city_mobile);
-            },
-        });
-    }
+    // function select_city_modal_mobil() {
+    //     $("#modal_select_city__mobile").show();
+    //     let selected_city_mobilee = $("#select_city_modal_mobile").val();
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "../assets/query/select_city_mob.php",
+    //         cache: false,
+    //         data: {
+    //             select_city: selected_city_mobilee,
+    //         },
+    //         success: function (find_city_mobile) {
+    //             $("#modal_select_city__mobile").empty();
+    //             $("#modal_select_city__mobile").append(find_city_mobile);
+    //         },
+    //     });
+    // }
 
     /*------------- form submit handler --------------*/
     $("form").submit((event) => {
@@ -372,7 +373,7 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             url: actionUrl,
-            data: form.serialize(),
+            data: form.serialize() + "&srcUri=" + location.pathname,
             success: function (data) {
                 if (data.status === "ok") {
                     redirect(data.redirect);
@@ -387,8 +388,14 @@ $(document).ready(function () {
                 }
             },
             error: (data) => {
+                let message = data.responseJSON.message;
+                if (message) {
+                    fireError(message);
+                    return;
+                }
+
                 let errors = data.responseJSON.errors;
-                let message = "";
+                message = "";
                 for (let text in errors) {
                     message += errors[text].join(`\n`) + `\n`;
                 }
@@ -397,15 +404,19 @@ $(document).ready(function () {
                     message = "Попробуйте перезагрузить страницу";
                 }
 
-                Swal.fire({
-                    titleText: "Ошибка",
-                    text: message,
-                    icon: "error",
-                });
+                fireError(message);
                 console.log(data);
             },
         });
     });
+
+    function fireError(message) {
+        Swal.fire({
+            titleText: "Ошибка",
+            text: message,
+            icon: "error",
+        });
+    }
 
     function redirect(url) {
         if (url === "reload") {
@@ -447,4 +458,29 @@ $(document).ready(function () {
             }
         });
     }
+
+    /*-------------------- address tooltips --------------------*/
+    let fiasIdInput = $("[name='city_fias_id']");
+    let cityInput = $(".select_city_input");
+
+    cityInput.on("input", () => {
+        fiasIdInput.val("");
+    });
+
+    function formatSelected(suggestion) {
+        return suggestion.data.city;
+    }
+
+    $(".select_city_input").suggestions({
+        type: "ADDRESS",
+        token: "6258e1bec720b3a4c277c137fd96e32c57e2f39d",
+        minChars: 3,
+        hint: false,
+        bounds: "city",
+        count: 8,
+        onSelect: (suggestion) => {
+            fiasIdInput.val(suggestion.data.city_fias_id);
+        },
+        formatSelected: formatSelected,
+    });
 });

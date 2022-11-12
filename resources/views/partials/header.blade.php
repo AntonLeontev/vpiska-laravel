@@ -3,11 +3,19 @@
     <div class="select__row">
         <div class="select__input">
             {{-- //TODO form action --}}
-            <form action="../assets/query/update_city.php" method="POST" id="select_cit" class="select_city_form">
-                <input type="text" disabled value="" name="city_fias_id" id="city_fias_id">
+            <form 
+            @auth
+                action="{{route('users.change_city', auth()->user()->id)}}"
+            @endauth 
+            @guest
+                action="{{route('select_city')}}"
+            @endguest
+            method="POST" id="select_cit" class="select_city_form">
+            @csrf
+                <input type="hidden" value="{{session('city_fias_id')}}" name="city_fias_id" id="city_fias_id">
                 <div class="input__select">
-                    <input autocomplete="off" list="modal_select_city" name="modal_select_city" type="text"
-                        id="select_city_input" class="select_city_input" placeholder="Выберите город"
+                    <input autocomplete="off" list="modal_select_city" name="city_name" type="text"
+                        id="select_city_input" value="{{session('city_name')}}" class="select_city_input" placeholder="Выберите город"
                         required>
                 </div>
                 <div class="edit__submit__button">
@@ -63,13 +71,6 @@
             </div>
             <div id="content-2">
                 <div class="authorization__row">
-                    <?php
-                    $nums = ['один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'];
-                    $num1 = rand(1, 9);
-                    $num2 = rand(1, 9);
-                    $qtype = $num1 . $num2;
-                    $qq = $nums[$num1 - 1] . ' + ' . $nums[$num2 - 1];
-                    ?>
                     <form action="/register" method="post" id="register" class="form_auth">
                         @csrf
                         <div class="registr__form">
@@ -97,9 +98,6 @@
                             </div>
                             <div class="registr__testq">
 
-                                {{-- <input type="text" placeholder="<?php echo $qq; ?>" name="qq"
-                                    title="ответ укажите цифрой !" required>
-                                <input type="hidden" name="qtype" value="<?php echo $qtype; ?>"> --}}
                             </div>
                         </div>
                         <div class="registr_confirm">
@@ -160,12 +158,7 @@
                 <div class="location__img"><img src="{{ Vite::image('icons/loc.svg') }}" alt="location"></div>
                 <div class="location__title">
                     <a href="#select_city">
-                        @auth
-                            <h4>Город</h4>
-                        @endauth
-                        @guest
-                            <h4>Выберите город</h4>
-                        @endguest
+                        <h4>{{session('city_name') ?? 'Выберите город'}}</h4>
                     </a>
                 </div>
 

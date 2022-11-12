@@ -664,10 +664,10 @@ ul>a {
 }
 
 
-/* .weed__important,
+.weed__important,
 .weed__all {
-	overflow-y: scroll;
-} */
+	overflow-y: auto;
+}
 
 .weed__important,
 .weed__all {
@@ -2195,6 +2195,10 @@ input#rules:checked+label::before {
 	margin: 36px 0px 0px 0px;
 }
 
+.input__select {
+	position: relative;
+}
+
 .input__select>input {
 	border: 1px solid;
 	max-width: 310px;
@@ -2219,7 +2223,7 @@ input#select_city_modal::placeholder {
 	color: #fff;
 }
 
-input[name="modal_select_city"]::-webkit-calendar-picker-indicator {
+input[name="city_name"]::-webkit-calendar-picker-indicator {
 	opacity: 0;
 }
 
@@ -2628,7 +2632,8 @@ input[type=date] {
 ul#modal_select_city,
 ul#city_create,
 ul#modal_select_city__mobile,
-ul#city_create_mob {
+ul#city_create_mob,
+.suggestions-suggestions {
 	width: 100%;
 	height: auto;
 	max-height: 200px;
@@ -2639,7 +2644,7 @@ ul#city_create_mob {
 	border-radius: 7px;
 	box-sizing: border-box;
 	position: absolute;
-	top: 55px;
+	top: 40px;
 }
 
 .location__input ul#city_create {
@@ -2650,7 +2655,8 @@ ul#city_create_mob {
 ul#modal_select_city li,
 ul#city_create li,
 ul#modal_select_city__mobile li,
-ul#city_create_mob li {
+ul#city_create_mob li,
+.suggestions-suggestion {
 	margin: 16px 0;
 	font-family: "JostStandart";
 	font-style: normal;
@@ -2664,7 +2670,9 @@ ul#city_create_mob li {
 ul#modal_select_city li:hover,
 ul#city_create li:hover,
 ul#modal_select_city__mobile li:hover,
-ul#city_create_mob li:hover {
+ul#city_create_mob li:hover,
+.suggestions-suggestion:hover,
+.suggestions-selected {
 	text-decoration: underline;
 }
 

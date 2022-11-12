@@ -33,8 +33,7 @@ class BaseRefreshCommand extends Command
             return Command::FAILURE;
         }
 
-        Storage::deleteDirectory('images/avatars');
-        Storage::deleteDirectory('images/photos');
+        Storage::deleteDirectory('images/user_photos');
 
         $this->call('migrate:fresh', ['--seed' => true]);
 

@@ -17,9 +17,11 @@
     },
     "dependencies": {
         "cleave.js": "^1.6.0",
+        "dotenv": "^16.0.3",
         "jquery": "^3.6.1",
         "moment": "^2.29.4",
         "slick-carousel": "^1.8.1",
+        "suggestions-jquery": "^22.6.0",
         "sweetalert2": "^11.6.0"
     }
 }

@@ -2,22 +2,18 @@
         <h3>ВЫБЕРИТЕ ВАШ ГОРОД</h3>
         <div class="select__row">
             <div class="select__input">
-                <form action="../assets/query/update_city_mob.php" method="POST" id="select_cit_mob">
+                <x-common.form action="../assets/query/update_city_mob.php" method="POST" id="select_cit_mob">
+                    <input type="hidden" value="" name="city_fias_id" id="city_fias_id">
                     <div class="input__select">
-                        <input autocomplete="off" list="modal_select_city__mobile"
-                            name="modal_select_city_mob" type="text" id="select_city_modal_mobile"
-                            oninput="select_city_modal_mobil()" placeholder="Выберите город" required>
+                        <input autocomplete="off"
+                            name="modal_select_city" type="text" id="select_city_modal_mobile"
+                            placeholder="Выберите город" required>
                         </div>
-                    {{-- //TODO user_id --}}
-                    <input type="hidden" value="" name="u_id">
     
-                    <ul id="modal_select_city__mobile">
-    
-                    </ul>
                     <div class="edit__submit__button">
                         <button type="submit">Подтвердить</button>
                     </div>
-                </form>
+                </x-common.form>
             </div>
         </div>
 </x-common.modal>
@@ -30,14 +26,14 @@
                     <img src="{{ Vite::image('icons/loc.svg') }}" alt="city">
                 </div>
                 <div class="navbar__city__title">
-                    <p>Город</p>
+                    <p>{{auth()->user()->city_name ?? 'Город'}}</p>
                 </div>
             </div>
         </a>
     </div>
     @auth
         <div class="navbar__balance">
-            <a href="/assets/balance.php">
+            <a href="{{route('balance')}}">
                 <div class="navbar__balance__row">
                     <div class="navbar__balance__image">
                         <img src="{{ Vite::image('icons/wallet.svg') }}" alt="balance">
@@ -65,10 +61,10 @@
 
     @auth
         <div class="navbar__feed">
-            <a href="/assets/weed.php">
+            <a href="{{route('users.events')}}">
                 <div class="navbar__feed__row">
                     <div class="navbar__feed__image">
-                        <img src="{{ Vite::image('icons/weed.png') }}" alt="feed">
+                        <img src="{{ Vite::image('icons/bell.png') }}" alt="feed">
                     </div>
                     <div class="navbar__feed__title">
                         <p id="weed_mob">-1</p>

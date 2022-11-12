@@ -54,13 +54,7 @@ class UserController extends Controller
 
     public function changeCity(ChangeCityRequest $request, User $user)
     {
-        if (is_null($user->city_fias_id)) {
-            $user->updateOrFail($request->except('_token'));
-        }
-        $request->session()->put('city_fias_id', $request->input('city_fias_id'));
-        $request->session()->put('city_name', $request->input('city_name'));
-
-        return Response::json(['status' => 'ok', 'redirect' => $request->input('srcUri')]);
+        
     }
 
     public function edit($id)

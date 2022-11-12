@@ -3,13 +3,7 @@
     <div class="select__row">
         <div class="select__input">
             {{-- //TODO form action --}}
-            <form 
-            @auth
-                action="{{route('users.change_city', auth()->user()->id)}}"
-            @endauth 
-            @guest
-                action="{{route('select_city')}}"
-            @endguest
+            <form action="{{route('change_city')}}"
             method="POST" id="select_cit" class="select_city_form">
             @csrf
                 <input type="hidden" value="{{session('city_fias_id')}}" name="city_fias_id" id="city_fias_id">
@@ -18,6 +12,10 @@
                         id="select_city_input" value="{{session('city_name')}}" class="select_city_input" placeholder="Выберите город"
                         required>
                 </div>
+                @auth
+                    <input type="checkbox" id="make_default" name="make_default">
+                    <label class="checkbox" for="make_default">Сделать городом по-умолчанию</label>
+                @endauth
                 <div class="edit__submit__button">
                     <button type="submit">Подтвердить</button>
                 </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChangeCityController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\UserController;
@@ -7,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomepageController::class)->name('home');
 
-Route::post('/select_city', [])->name('select_city');
+Route::post('/change_city', ChangeCityController::class)->name('change_city');
 
 Route::get('/users/balance', [UserController::class, 'balance'])
     ->middleware('auth')

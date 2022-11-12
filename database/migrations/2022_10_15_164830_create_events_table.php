@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dateTime('starts_at');
             $table->dateTime('ends_at');
             $table->unsignedInteger('price');
-            $table->integer('city');
+            $table->string('city_fias_id');
             $table->string('city_name');
             $table->string('street');
             $table->string('building');

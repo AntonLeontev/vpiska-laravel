@@ -373,7 +373,7 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             url: actionUrl,
-            data: form.serialize() + "&srcUri=" + location.pathname,
+            data: form.serialize(),
             success: function (data) {
                 if (data.status === "ok") {
                     redirect(data.redirect);

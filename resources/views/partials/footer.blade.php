@@ -2,7 +2,7 @@
         <h3>ВЫБЕРИТЕ ВАШ ГОРОД</h3>
         <div class="select__row">
             <div class="select__input">
-                <x-common.form action="../assets/query/update_city_mob.php" method="POST" id="select_cit_mob">
+                <form action="{{route('change_city')}}" method="POST" id="select_cit_mob">
                     <input type="hidden" value="" name="city_fias_id" id="city_fias_id">
                     <div class="input__select">
                         <input autocomplete="off"
@@ -13,7 +13,7 @@
                     <div class="edit__submit__button">
                         <button type="submit">Подтвердить</button>
                     </div>
-                </x-common.form>
+                </form>
             </div>
         </div>
 </x-common.modal>

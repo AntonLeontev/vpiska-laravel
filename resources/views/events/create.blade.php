@@ -40,7 +40,9 @@
                             <fieldset @unlessuserActivated(auth()->user()) disabled @enduserActivated
                                 @hasTooManyEvents(auth()->user()) disabled @endhasTooManyEvents>
                                 <div class="activity__location">
-
+                                    
+                                    @csrf
+                                    <input type="hidden" name="creator_id" value="{{auth()->user()->id}}">
                                     <div class="info__time">
                                         <div class="time__title">
                                             <p>Дата и время меропрития</p>
@@ -48,11 +50,11 @@
                                         <div class="time__input">
                                             <div class="input__date">
                                                 <input type="date" id="create_date" name="create_date"
-                                                    placeholder="31/12/2022" required>
+                                                    placeholder="10.12.2022" required>
                                             </div>
                                             <div class="input__time">
-                                                <input type="text" id="create_time" class="create_time"
-                                                    name="create_time" placeholder="00:00 - 18:00" required>
+                                                <input type="text" id="create_time-mobile" class="create_time"
+                                                    name="create_time" placeholder="19:00 - 22:00" required>
                                             </div>
                                         </div>
                                     </div>
@@ -69,22 +71,21 @@
                                     </div>
                                     <div class="location__input">
                                         <div class="input__city">
+                                            <input type="hidden" name="city_fias_id">
                                             <input autocomplete="off" list="city_create_mob" type="text"
-                                                id="create_city_mob" name="city_create_mob" placeholder="Город"
-                                                oninput="create_city_aj_mob()" required>
+                                                id="create_city_mob" name="city_name" placeholder="Город"
+                                                class="select_city_input-mob" required>
                                         </div>
-                                        <ul id="city_create_mob">
-                                        </ul>
-                                        {{-- //TODO City tips --}}
                                         <div class="input__street">
-                                            <input type="text" autocomplete="off" id="create_street" name="create_street"
-                                                placeholder="Улица" required>
+                                            <input type="hidden" name="street_fias_id">
+                                            <input type="hidden" name="street_type">
+                                            <input type="text" autocomplete="off" id="create_street" name="street"
+                                                placeholder="Улица" class="select_street_input-mob" required>
                                         </div>
                                         <div class="input__home">
-                                            <input type="text" autocomplete="off" id="create_home" name="create_home"
-                                                placeholder="Дом" required>
+                                            <input type="hidden" name="building_fias_id">
+                                            <input type="text" autocomplete="off" class="select_building_input-mob" id="create_home" name="building" placeholder="Дом" required>
                                         </div>
-
                                     </div>
 
 
@@ -106,6 +107,7 @@
                                             </div>
                                             <div class="input__price">
                                                 <span>Цена за вход с каждого участника</span>
+                                                <input type="hidden" name="fee" value="{{config('vpiska.fees.default', 70)}}">
                                                 <input type="number" id="create_price" name="create_price" min="0"
                                                     max="14999" placeholder="Цена" required>
                                                 <span>При входе на мероприятие, Участники сообщают Создателю цифровой код,
@@ -162,7 +164,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-row">
-                                                    <input id="js-file" type="file" name="file[]"
+                                                    <input id="js-file" type="file" name="image[]"
                                                         class="memememememe" multiple accept=".jpg,.jpeg,.png">
                                                 </div>
                                             </label>
@@ -234,8 +236,8 @@
                                     </div>
                                     <div class="number__input">
                                         <div class="input__phone">
-                                            <input type="text" name="create_phone" class="create_phone"
-                                                id="create_phone" placeholder="+7 (___) ___-__-__" required>
+                                            <input type="text" name="user_phone" class="create_phone"
+                                                id="phone_mobile" placeholder="+7 (___) ___-__-__" required>
                                         </div>
                                     </div>
                                     <div class="submit__button">
@@ -266,47 +268,33 @@
 
 
                         <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data"
-                            id="" autocomplete="disabled">
-                            <fieldset @unlessuserActivated(auth()->user()) disabled @enduserActivated
-                                @hasTooManyEvents(auth()->user()) disabled @endhasTooManyEvents>
+                            autocomplete="disabled">
+                            <fieldset 
+                                @unlessuserActivated(auth()->user()) disabled @enduserActivated
+                                @hasTooManyEvents(auth()->user()) disabled @endhasTooManyEvents
+                            >
+                            @csrf
+                            <input type="hidden" name="creator_id" value="{{auth()->user()->id}}">
                                 <div class="activity__location">
                                     <div class="location__title">
                                         <p>Адрес мероприятия</p>
                                     </div>
                                     <div class="location__input">
-                                        <div class="input__city"><input autocomplete="off" list="city_create"
-                                                type="text" id="create_city" name="create_city" placeholder="Город"
-                                                oninput="create_city_aj()" required></div>
-                                        <ul id="city_create">
-                                        </ul>
-                                        {{-- <script>
-                                            function create_city_aj() {
-                                                $('#city_create').show();
-                                                let create_city = $("#create_city").val();
-                                                $.ajax({
-                                                    type: "POST",
-                                                    url: "query/select_city_create.php",
-                                                    cache: false,
-                                                    data: {
-                                                        select_city: create_city
-                                                    },
-                                                    success: function(result_city) {
-                                                        $("#city_create").empty();
-                                                        $("#city_create").append(result_city);
-                                                    }
-                                                });
-                                            }
-
-                                            function sel_cit_cre(data_cre) {
-                                                $('#create_city').val(data_cre);
-                                                $('#city_create').hide();
-                                            }
-                                        </script> --}}
-                                        <div class="input__street"><input type="text" autocomplete="off"
-                                                id="create_street" name="create_street" placeholder="Улица" required>
+                                        <input type="hidden" name="city_fias_id">
+                                        <div class="input__city">
+                                            <input class="select_city_input-desc" autocomplete="off" list="city_create"
+                                            type="text" id="select_city_input" name="city_name" placeholder="Город"
+                                            required>
                                         </div>
-                                        <div class="input__home"><input type="text" autocomplete="off"
-                                                id="create_home" name="create_home" placeholder="Дом" required></div>
+                                        <input type="hidden" name="street_fias_id">
+                                        <input type="hidden" name="street_type">
+                                        <div class="input__street">
+                                            <input class="select_street_input-desc" type="text" autocomplete="off" id="select_street_input" name="street" placeholder="Улица" required>
+                                        </div>
+                                        <input type="hidden" name="building_fias_id">
+                                        <div class="input__home">
+                                            <input class="select_building_input-desc" type="text" autocomplete="off"
+                                                id="select_building_input" name="building" placeholder="Дом" required></div>
                                         <div class="button_next" onclick="create_activity_1()">
                                             <p>Далее</p>
                                         </div>
@@ -318,11 +306,12 @@
                                             <p>Кол-во человек и цена мероприятия</p>
                                         </div>
                                         <div class="users__input">
+                                            <input type="hidden" name="fee" value="{{config('vpiska.fees.default', 70)}}">
                                             <div class="input__number"><input type="number" id="create_number"
-                                                    name="create_number" min="1" max="30"
+                                                    name="max_members" min="2" max="30"
                                                     placeholder="Кол-во человек" required></div>
                                             <div class="input__price"><input type="number" id="create_price"
-                                                    name="create_price" min="0" max="14999" placeholder="Цена"
+                                                    name="price" min="0" max="14999" placeholder="Цена"
                                                     required></div>
                                         </div>
                                     </div>
@@ -332,10 +321,10 @@
                                         </div>
                                         <div class="time__input">
                                             <div class="input__date"><input type="date" autocomplete="off"
-                                                    id="create_date" name="create_date" placeholder="дд/мм/гггг"
+                                                    id="create_date" name="date" placeholder="дд/мм/гггг"
                                                     required></div>
                                             <div class="input__time"><input type="text" class="create_time"
-                                                    id="create_time" name="create_time" placeholder="00:00 - 18:00"
+                                                    id="create_time-desktop" name="time" placeholder="19:00 - 23:00"
                                                     required></div>
                                         </div>
                                     </div>
@@ -414,17 +403,12 @@
                                                     $(target).parent().remove();
                                                 }
                                             </script>
-                                            <style>
-                                                .img__list {
-                                                    display: unset !important;
-                                                }
-                                            </style>
                                             <div class="img__list" id="js-file-list2"></div>
                                         </div>
 
                                         <div class="description__text">
                                             <div class="description__textarea">
-                                                <textarea name="create_description" id="create_description" placeholder="Описание мероприятия"></textarea>
+                                                <textarea name="description" id="create_description" placeholder="Описание мероприятия"></textarea>
                                             </div>
                                         </div>
 
@@ -449,8 +433,10 @@
                                         </div>
                                     </div>
                                     <div class="number__input">
-                                        <div class="input__phone"><input type="text" name="create_phone"
-                                                class="create_phone" placeholder="+7 (___) ___-__-__" required></div>
+                                        <div class="input__phone">
+                                            <input type="text" name="user_phone" class="create_phone" 
+                                            placeholder="+7 (___) ___-__-__" 
+                                            id="phone_desktop" required></div>
                                     </div>
                                     <div class="submit__button">
                                         <div class="create__submit__button">

@@ -1103,6 +1103,7 @@ input::-webkit-inner-spin-button {
 .location__input .input__street,
 .location__input .input__home,
 .activity__number .submit__button {
+	position: relative;
 	flex: 1;
 	margin: 0 0 0 24px;
 }
@@ -2649,6 +2650,7 @@ ul#city_create_mob,
 	box-sizing: border-box;
 	position: absolute;
 	top: 40px;
+	z-index: 9999;
 }
 
 .location__input ul#city_create {

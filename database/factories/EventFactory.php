@@ -23,13 +23,16 @@ class EventFactory extends Factory
             'starts_at' => now()->addDays(1)->addHours(rand(1, 5))->addMinutes(rand(1, 30)),
             'ends_at' => now()->addDays(2)->addHours(rand(1, 5))->addMinutes(rand(1, 30)),
             'price' => rand(100, 2000),
+            'fee' => rand(1, 100),
             'city_fias_id' => '0c5b2444-70a0-4932-980c-b4dc0d3f02b5', //Moscow,
             'city_name' => 'Москва',
+            'street_fias_id' => 'null',
             'street' => fake()->streetName(),
+            'building_fias_id' => 'null',
             'building' => fake()->buildingNumber(),
             'phone' => fake()->phoneNumber(),
             'description' => $this->faker->text(500),
-            'max_members' => rand(2, 5),
+            'max_members' => rand(2, 10),
         ];
     }
 }

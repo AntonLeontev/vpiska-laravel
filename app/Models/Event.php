@@ -16,9 +16,13 @@ class Event extends Model
         'starts_at',
         'ends_at',
         'price',
-        'city',
+        'fee',
+        'city_fias_id',
+        'street_fias_id',
+        'building_fias_id',
         'city_name',
         'street',
+        'street_type',
         'building',
         'phone',
         'description',
@@ -29,6 +33,17 @@ class Event extends Model
 
     protected function price(): Attribute
     {
+        return $this->moneyAttribute();
+    }
+
+    protected function fee(): Attribute
+    {
+        return $this->moneyAttribute();
+    }
+
+    protected function moneyAttribute(): Attribute
+    {
+        //TODO to separate class
         return Attribute::make(
             get: fn ($value) => ($value / 100),
             set: fn ($value) => ($value * 100)
@@ -45,6 +60,11 @@ class Event extends Model
     {
         $carbon =  Carbon::parse($this->starts_at);
         return $carbon->translatedFormat('H:i');
+    }
+
+    public function getFullStreetAttribute()
+    {
+        return "{$this->street_type} {$this->street_name}";
     }
 
     public function currentUserOrder(): Order|bool

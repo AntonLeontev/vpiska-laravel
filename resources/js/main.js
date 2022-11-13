@@ -10,7 +10,7 @@ function create_activity_1() {
         Swal.fire({
             icon: "error",
             title: "Ошибка...",
-            text: "Заполните все поля !",
+            text: "Заполните все поля!",
         });
     } else {
         document.getElementsByClassName("activity__location")[0].style.display =
@@ -388,10 +388,13 @@ $(document).ready(function () {
                 }
             },
             error: (data) => {
-                let message = data.responseJSON.message;
-                if (message) {
-                    fireError(message);
-                    return;
+                let message;
+                if (data.responseJSON.errors === undefined) {
+                    message = data.responseJSON.message;
+                    if (message) {
+                        fireError(message);
+                        return;
+                    }
                 }
 
                 let errors = data.responseJSON.errors;
@@ -458,29 +461,4 @@ $(document).ready(function () {
             }
         });
     }
-
-    /*-------------------- address tooltips --------------------*/
-    let fiasIdInput = $("[name='city_fias_id']");
-    let cityInput = $(".select_city_input");
-
-    cityInput.on("input", () => {
-        fiasIdInput.val("");
-    });
-
-    function formatSelected(suggestion) {
-        return suggestion.data.city;
-    }
-
-    $(".select_city_input").suggestions({
-        type: "ADDRESS",
-        token: "6258e1bec720b3a4c277c137fd96e32c57e2f39d",
-        minChars: 3,
-        hint: false,
-        bounds: "city",
-        count: 8,
-        onSelect: (suggestion) => {
-            fiasIdInput.val(suggestion.data.city_fias_id);
-        },
-        formatSelected: formatSelected,
-    });
 });

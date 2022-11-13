@@ -4,6 +4,8 @@ use App\Http\Controllers\ChangeCityController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\Event\PhoneFormatMiddleware;
+use App\Http\Middleware\Event\TimeHandleMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomepageController::class)->name('home');
@@ -49,6 +51,8 @@ Route::get('/events/create', [EventController::class, 'create'])
 
 Route::post('/events/create', [EventController::class, 'store'])
     ->middleware('auth')
+->middleware(PhoneFormatMiddleware::class)
+    ->middleware(TimeHandleMiddleware::class)
     ->name('events.store');
 
 Route::get('/events/{event}', [EventController::class, 'show'])

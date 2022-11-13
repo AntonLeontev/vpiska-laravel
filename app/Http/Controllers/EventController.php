@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use App\Http\Requests\EventRequest;
 use App\Mail\EmailConfirmationMail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Response;
 
 class EventController extends Controller
 {
@@ -34,9 +36,17 @@ class EventController extends Controller
         return view('events.create');
     }
 
-    public function store(Request $request)
+    public function store(EventRequest $request)
     {
-        //
+        $eventId = Event::create($request->except([
+            '_token',
+            'user_phone',
+            'time',
+            'date',
+            'scales'
+        ]))->id;
+
+        return Response::json(['status' => 'ok', 'redirect' => route('events.show', $eventId)]);
     }
 
     public function show(Event $event)

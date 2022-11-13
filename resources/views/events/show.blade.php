@@ -106,9 +106,7 @@
                         <x-common.alert>Вы организатор этого мероприятия</x-common.alert>
 
                         @php
-                            if ($event->orders->count() > 0) {
-                                $hasOrders = true;
-                            }
+                            $hasOrders = $event->orders->count() > 0;
                         @endphp
                         <div class="creator_controls">
                             <a @class([

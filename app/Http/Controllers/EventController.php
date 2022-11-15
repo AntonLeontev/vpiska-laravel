@@ -70,6 +70,7 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         $event->deleteOrFail();
+        // TODO Event and Notification
         return Response::json(['status' => 'ok', 'redirect' => route('home')]);
     }
 }

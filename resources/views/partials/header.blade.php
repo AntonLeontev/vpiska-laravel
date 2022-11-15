@@ -8,8 +8,7 @@
                 <input type="hidden" value="{{session('city_fias_id')}}" name="city_fias_id" id="city_fias_id">
                 <div class="input__select">
                     <input autocomplete="off" list="modal_select_city" name="city_name" type="text"
-                        id="select_city_input" value="{{session('city_name')}}" class="select_city_input" placeholder="Выберите город"
-                        required>
+                        id="select_city_input" value="{{session('city_name')}}" class="select_city_input" placeholder="Выберите город" required>
                 </div>
                 @auth
                     <input type="checkbox" id="make_default" name="make_default">

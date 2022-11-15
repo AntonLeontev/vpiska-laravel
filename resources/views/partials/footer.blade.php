@@ -2,14 +2,20 @@
         <h3>ВЫБЕРИТЕ ВАШ ГОРОД</h3>
         <div class="select__row">
             <div class="select__input">
-                <form action="{{route('change_city')}}" method="POST" id="select_cit_mob">
-                    <input type="hidden" value="" name="city_fias_id" id="city_fias_id">
+                <form  class="select_city_form" action="{{route('change_city')}}" method="POST" id="select_cit_mob">
+                    @csrf
+                    <input type="hidden" value="{{session('city_fias_id')}}" name="city_fias_id" id="city_fias_id">
                     <div class="input__select">
-                        <input autocomplete="off"
-                            name="modal_select_city" type="text" id="select_city_modal_mobile"
-                            placeholder="Выберите город" required>
-                        </div>
-    
+                        <input autocomplete="off" class="select_city_input"
+                            name="city_name" type="text" id="select_city_modal_mobile"
+                            placeholder="Выберите город" value="{{session('city_name')}}" required>
+                    </div>
+                    @auth
+                    <label class="checkbox" for="make_default">
+                            <input type="checkbox" id="make_default" name="make_default">
+                            Сделать городом по-умолчанию
+                        </label>
+                    @endauth
                     <div class="edit__submit__button">
                         <button type="submit">Подтвердить</button>
                     </div>

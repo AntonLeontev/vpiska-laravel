@@ -223,11 +223,9 @@ $(document).ready(function () {
     });
 
     /*------------------- Кнопки управления мероприятием -------------------*/
-
-    $(".creator_controls__edit").click((event) => {});
-
-    $(".creator_controls__cancel").click((event) => {
-        const target = event.target.closest(".creator_controls__cancel");
+    $("#form__event-cancel").on("submit", function (event) {
+        event.preventDefault();
+        let form = event.target.closest("form");
         Swal.fire({
             title: "Действительно хотите удалить мероприятие?",
             showDenyButton: true,
@@ -235,143 +233,28 @@ $(document).ready(function () {
             denyButtonText: "Нет",
         }).then((result) => {
             if (result.isConfirmed) {
-                cancelActivity(target);
+                form.removeAttribute("confirmable");
+                formSubmitHandler(event);
             }
         });
-
-        function cancelActivity(target) {
-            $.ajax({
-                url: "/assets/query/cancel_activity.php",
-                method: "POST",
-                dataType: "json",
-                data: {
-                    user_id: target.dataset.user_id,
-                    activity_id: target.dataset.activity_id,
-                },
-                success: (data) => {
-                    if (data.state === "ok") {
-                        Swal.fire({
-                            icon: "success",
-                            title: "Успешно",
-                            text: data.message,
-                        });
-                        setTimeout(() => {
-                            window.location = "/";
-                        }, 2000);
-                    }
-
-                    if (data.state === "error") {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Ошибка",
-                            text: data.message,
-                        });
-                    }
-                },
-            });
-        }
     });
 
-    /*-------------- City selection ---------------*/
-    // $("#select_cit").submit(function (e) {
-    //     e.preventDefault();
-    //     let form = $(this);
-    //     let actionUrl = form.attr("action");
-    //     $.ajax({
-    //         type: "POST",
-    //         url: actionUrl,
-    //         data: form.serialize(),
-    //         success: function (data) {
-    //             if (data == "Не существует") {
-    //                 Swal.fire({
-    //                     icon: "error",
-    //                     title: "Ошибка...",
-    //                     text: "Данного города не существует!",
-    //                 });
-    //             } else {
-    //                 window.location.href =
-    //                     "https://vpiska.online/assets/find.php";
-    //             }
-    //         },
-    //     });
-    // });
-
-    // function sel_cit(data_modal_head) {
-    //     $("#select_city_modal").val(data_modal_head);
-    //     $("#modal_select_city").hide();
-    // }
-
-    // function select_city_modal_header() {
-    //     $("#modal_select_city").show();
-    //     let select_city_modal_2 = $("#select_city_modal").val();
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "../assets/query/select_city.php",
-    //         cache: false,
-    //         data: {
-    //             select_city: select_city_modal_2,
-    //         },
-    //         success: function (result_city1) {
-    //             $("#modal_select_city").empty();
-    //             $("#modal_select_city").append(result_city1);
-    //         },
-    //     });
-    // }
-
-    /*------------- mobile city selection --------------*/
-
-    // $("#select_cit_mob").submit(function (e) {
-    //     e.preventDefault();
-    //     let form = $(this);
-    //     let actionUrl = form.attr("action");
-    //     $.ajax({
-    //         type: "POST",
-    //         url: actionUrl,
-    //         data: form.serialize(),
-    //         success: function (data) {
-    //             if (data == "Не существует") {
-    //                 Swal.fire({
-    //                     icon: "error",
-    //                     title: "Ошибка...",
-    //                     text: "Данного города не существует!",
-    //                 });
-    //             } else {
-    //                 window.location.href =
-    //                     "https://vpiska.online/assets/find.php";
-    //             }
-    //         },
-    //     });
-    // });
-
-    // function sel_cit_mob(dataaas) {
-    //     $("#select_city_modal_mobile").val(dataaas);
-    //     $("#modal_select_city__mobile").hide();
-    // }
-
-    // function select_city_modal_mobil() {
-    //     $("#modal_select_city__mobile").show();
-    //     let selected_city_mobilee = $("#select_city_modal_mobile").val();
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "../assets/query/select_city_mob.php",
-    //         cache: false,
-    //         data: {
-    //             select_city: selected_city_mobilee,
-    //         },
-    //         success: function (find_city_mobile) {
-    //             $("#modal_select_city__mobile").empty();
-    //             $("#modal_select_city__mobile").append(find_city_mobile);
-    //         },
-    //     });
-    // }
-
     /*------------- form submit handler --------------*/
-    $("form").submit((event) => {
+    $("form").on("submit", formSubmitHandler);
+
+    function formSubmitHandler(event) {
         event.preventDefault();
-        let form = $(event.target);
+        let form = event.target;
+
+        if (form.hasAttribute("confirmable")) {
+            return;
+        }
+
+        form = $(form);
         let actionUrl = form.attr("action");
+        let method = form.attr("method");
         $.ajax({
-            type: "POST",
+            type: method,
             url: actionUrl,
             data: form.serialize(),
             success: function (data) {
@@ -411,7 +294,7 @@ $(document).ready(function () {
                 console.log(data);
             },
         });
-    });
+    }
 
     function fireError(message) {
         Swal.fire({

@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\Response;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Event $event, Request $request)
     {   
         $events = $event->all();
@@ -54,14 +49,27 @@ class EventController extends Controller
         return view('events.show', compact('event'));
     }
 
-
-    public function update(Request $request, $id)
+    public function edit(Event $event)
     {
-        //
+        return view('events.edit', compact('event'));
     }
 
-    public function destroy($id)
+    public function update(EventRequest $request, Event $event)
     {
-        //
+        $event->updateOrFail($request->except([
+            '_token',
+            'user_phone',
+            'time',
+            'date',
+            'scales'
+        ]));
+
+        return Response::json(['status' => 'ok', 'redirect' => route('events.show', $event->id)]);
+    }
+
+    public function destroy(Event $event)
+    {
+        $event->deleteOrFail();
+        return Response::json(['status' => 'ok', 'redirect' => route('home')]);
     }
 }

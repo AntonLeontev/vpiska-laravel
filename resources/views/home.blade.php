@@ -24,7 +24,6 @@
                             Создатели мероприятий размещают объявление о событии и устанавливают цену за вход, оплата передается организатору через нашу платформу при помощи безопасной сделки
                         </x-slot:description>
                     </x-home.primary-button>
-                    {{-- //TODO select city --}}
                     <x-home.primary-button>
                         <x-slot:route>
                             {{ route('events.index') }}

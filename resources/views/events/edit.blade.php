@@ -1,21 +1,11 @@
 @extends('layouts.app')
 
 @section('title')
-    Создание мероприятия
+    Редактирование мероприятия
 @endsection
 
 @section('content')
     <div class="content">
-
-        @unlessuserActivated(auth()->user())
-            <x-common.alert>Ваш аккаунт не активирован. Вы не можете создать мероприятие</x-common.alert>
-        @enduserActivated
-
-        @hasTooManyEvents(auth()->user())
-            <x-common.alert>У вас уже есть активное мероприятие. Вы не можете создать новое</x-common.alert>
-        @endhasTooManyEvents
-
-
 
 
         <div class="activity">
@@ -23,10 +13,10 @@
                 <div class="activity__row">
                     <div class="activity__title">
                         <div class="title__info">
-                            <p><b>Создание</b></p>
+                            <p><b>Редактирование</b></p>
                         </div>
                         <div class="title__info__mobile">
-                            <p><b>Создание</b></p>
+                            <p><b>Редактирование</b></p>
                         </div>
                         <div class="title__close">
                             <p><a href="/"><img src="{{ Vite::image('icons/close.svg') }}" alt="close"></a></p>
@@ -35,26 +25,25 @@
 
                     <div class="activity__form activity__form--mobile">
 
-                        <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data"
+                        <form action="{{ route('events.update', $event->id) }}" method="POST" enctype="multipart/form-data"
                             id="" autocomplete="disabled">
-                            <fieldset @unlessuserActivated(auth()->user()) disabled @enduserActivated
-                                @hasTooManyEvents(auth()->user()) disabled @endhasTooManyEvents>
+                            <fieldset>
                                 <div class="activity__location">
-                                    
                                     @csrf
-                                    <input type="hidden" name="creator_id" value="{{auth()->user()->id}}">
+                                    <input type="hidden" name="creator_id" value="{{$event->creator_id}}">
                                     <div class="info__time">
                                         <div class="time__title">
                                             <p>Дата и время меропрития</p>
                                         </div>
                                         <div class="time__input">
                                             <div class="input__date">
-                                                <input type="date" id="create_date" name="create_date"
-                                                    placeholder="10.12.2022" required>
+                                                <input type="date" id="create_date" name="date"
+                                                    placeholder="10.12.2022" value="{{$event->full_start_date}}" required>
                                             </div>
                                             <div class="input__time">
                                                 <input type="text" id="create_time-mobile" class="create_time"
-                                                    name="create_time" placeholder="19:00 - 22:00" required>
+                                                    name="time" placeholder="19:00 - 22:00"
+                                                    value="{{$event->startTime}}" required>
                                             </div>
                                         </div>
                                     </div>
@@ -71,20 +60,23 @@
                                     </div>
                                     <div class="location__input">
                                         <div class="input__city">
-                                            <input type="hidden" name="city_fias_id">
+                                            <input type="hidden" name="city_fias_id" 
+                                            value="{{$event->city_fias_id}}">
                                             <input autocomplete="off" list="city_create_mob" type="text"
                                                 id="create_city_mob" name="city_name" placeholder="Город"
-                                                class="select_city_input-mob" required>
+                                                class="select_city_input-mob" value="{{$event->city_name}}" required>
                                         </div>
                                         <div class="input__street">
-                                            <input type="hidden" name="street_fias_id">
-                                            <input type="hidden" name="street_type">
+                                            <input type="hidden" name="street_fias_id" value="{{$event->street_fias_id}}">
+                                            <input type="hidden" name="street_type" value="{{$event->street_type}}">
                                             <input type="text" autocomplete="off" id="create_street" name="street"
-                                                placeholder="Улица" class="select_street_input-mob" required>
+                                                placeholder="Улица" class="select_street_input-mob"
+                                                value="{{$event->street}}" required>
                                         </div>
                                         <div class="input__home">
-                                            <input type="hidden" name="building_fias_id">
-                                            <input type="text" autocomplete="off" class="select_building_input-mob" id="create_home" name="building" placeholder="Дом" required>
+                                            <input type="hidden" name="building_fias_id" 
+                                            value="{{$event->building_fias_id}}">
+                                            <input type="text" autocomplete="off" class="select_building_input-mob" id="create_home" name="building" placeholder="Дом" required value="{{$event->building}}">
                                         </div>
                                     </div>
 
@@ -102,14 +94,14 @@
                                         </div>
                                         <div class="users__input">
                                             <div class="input__number">
-                                                <input type="number" id="create_number" name="create_number" min="1"
-                                                    max="30" placeholder="Кол-во человек" required>
+                                                <input type="number" id="create_number" name="max_members" min="1" max="30" placeholder="Кол-во человек"
+                                                value="{{$event->max_members}}" required>
                                             </div>
                                             <div class="input__price">
                                                 <span>Цена за вход с каждого участника</span>
-                                                <input type="hidden" name="fee" value="{{config('vpiska.fees.default', 70)}}">
-                                                <input type="number" id="create_price" name="create_price" min="0"
-                                                    max="14999" placeholder="Цена" required>
+                                                <input type="hidden" name="fee" value="{{$event->fee}}">
+                                                <input type="number" id="create_price" name="price" min="0"
+                                                    max="14999" placeholder="Цена"  value="{{$event->price}}" required>
                                                 <span>При входе на мероприятие, Участники сообщают Создателю цифровой код,
                                                     который можно активировать на странице <a
                                                         href="{{ route('balance') }}">баланса</a> и
@@ -141,7 +133,7 @@
                                         </div>
                                         <div class="description__text">
                                             <div class="description__textarea">
-                                                <textarea name="description" id="create_description" placeholder="Описание мероприятия"></textarea>
+                                                <textarea name="description" id="create_description" placeholder="Описание мероприятия">{{$event->description}}</textarea>
                                             </div>
                                         </div>
                                         <div class="description__additional">
@@ -149,11 +141,6 @@
                                         </div>
                                     </div>
                                     <div class="description__button">
-                                        {{-- <style>
-                                            .description__gallery {
-                                                display: unset;
-                                            }
-                                        </style> --}}
                                         <div class="description__gallery">
                                             <label for="js-file">
                                                 <div class="description__add">
@@ -237,7 +224,8 @@
                                     <div class="number__input">
                                         <div class="input__phone">
                                             <input type="text" name="user_phone" class="create_phone"
-                                                id="phone_mobile" placeholder="+7 (___) ___-__-__" required>
+                                                id="phone_mobile" placeholder="+7 (___) ___-__-__"
+                                                value="{{$event->phone}}" required>
                                         </div>
                                     </div>
                                     <div class="submit__button">
@@ -267,34 +255,34 @@
                     <div class="activity__form activity__form--desktop">
 
 
-                        <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data"
+                        <form action="{{ route('events.update', $event->id) }}" method="POST" enctype="multipart/form-data"
                             autocomplete="disabled">
-                            <fieldset 
-                                @unlessuserActivated(auth()->user()) disabled @enduserActivated
-                                @hasTooManyEvents(auth()->user()) disabled @endhasTooManyEvents
-                            >
+                            <fieldset>
                             @csrf
-                            <input type="hidden" name="creator_id" value="{{auth()->user()->id}}">
+                            <input type="hidden" name="creator_id" value="{{$event->creator_id}}">
                                 <div class="activity__location">
                                     <div class="location__title">
                                         <p>Адрес мероприятия</p>
                                     </div>
                                     <div class="location__input">
-                                        <input type="hidden" name="city_fias_id">
+                                        <input type="hidden" name="city_fias_id"  value="{{$event->city_fias_id}}">
                                         <div class="input__city">
-                                            <input class="select_city_input-desc" autocomplete="off" list="city_create"
+                                            <input class="select_city_input-desc" autocomplete="off" list="city_create"  value="{{$event->city_name}}"
                                             type="text" id="select_city_input" name="city_name" placeholder="Город"
                                             required>
                                         </div>
-                                        <input type="hidden" name="street_fias_id">
-                                        <input type="hidden" name="street_type">
+                                        <input type="hidden" name="street_fias_id" value="{{$event->street_fias_id}}">
+                                        <input type="hidden" name="street_type" value="{{$event->street_type}}">
                                         <div class="input__street">
-                                            <input class="select_street_input-desc" type="text" autocomplete="off" id="select_street_input" name="street" placeholder="Улица" required>
+                                            <input class="select_street_input-desc" type="text" autocomplete="off" id="select_street_input" name="street" placeholder="Улица"
+                                            value="{{$event->street}}" required>
                                         </div>
-                                        <input type="hidden" name="building_fias_id">
+                                        <input type="hidden" name="building_fias_id" 
+                                        value="{{$event->building_fias_id}}">
                                         <div class="input__home">
-                                            <input class="select_building_input-desc" type="text" autocomplete="off"
-                                                id="select_building_input" name="building" placeholder="Дом" required></div>
+                                            <input class="select_building_input-desc" type="text" autocomplete="off" value="{{$event->building}}"
+                                            id="select_building_input" name="building" placeholder="Дом" required>
+                                        </div>
                                         <div class="button_next" onclick="create_activity_1()">
                                             <p>Далее</p>
                                         </div>
@@ -306,13 +294,16 @@
                                             <p>Кол-во человек и цена мероприятия</p>
                                         </div>
                                         <div class="users__input">
-                                            <input type="hidden" name="fee" value="{{config('vpiska.fees.default', 70)}}">
-                                            <div class="input__number"><input type="number" id="create_number"
-                                                    name="max_members" min="2" max="30"
-                                                    placeholder="Кол-во человек" required></div>
-                                            <div class="input__price"><input type="number" id="create_price"
+                                            <input type="hidden" name="fee" value="{{$event->fee}}">
+                                            <div class="input__number">
+                                                <input type="number" id="create_number" name="max_members" min="2" max="30" value="{{$event->max_members}}"
+                                                    placeholder="Кол-во человек" required>
+                                            </div>
+                                            <div class="input__price">
+                                                <input type="number" id="create_price"
                                                     name="price" min="0" max="14999" placeholder="Цена"
-                                                    required></div>
+                                                    value="{{$event->price}}" required>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="info__time">
@@ -320,12 +311,14 @@
                                             <p>Дата и время меропрития</p>
                                         </div>
                                         <div class="time__input">
-                                            <div class="input__date"><input type="date" autocomplete="off"
+                                            <div class="input__date">
+                                                <input type="date" autocomplete="off"
                                                     id="create_date" name="date" placeholder="дд/мм/гггг"
-                                                    required></div>
-                                            <div class="input__time"><input type="text" class="create_time"
-                                                    id="create_time-desktop" name="time" placeholder="19:00 - 23:00"
-                                                    required></div>
+                                                    value="{{$event->full_start_date}}" required>
+                                            </div>
+                                            <div class="input__time">
+                                                <input type="text" class="create_time" id="create_time-desktop" name="time" placeholder="19:00 - 23:00"
+                                                value="{{$event->start_time}} - {{$event->end_time}}" required></div>
                                         </div>
                                     </div>
                                     <div class="button_next" onclick="create_activity_2()">
@@ -408,7 +401,7 @@
 
                                         <div class="description__text">
                                             <div class="description__textarea">
-                                                <textarea name="description" id="create_description" placeholder="Описание мероприятия"></textarea>
+                                                <textarea name="description" id="create_description" placeholder="Описание мероприятия">{{$event->description}}</textarea>
                                             </div>
                                         </div>
 
@@ -435,8 +428,9 @@
                                     <div class="number__input">
                                         <div class="input__phone">
                                             <input type="text" name="user_phone" class="create_phone" 
-                                            placeholder="+7 (___) ___-__-__" 
-                                            id="phone_desktop" required></div>
+                                            placeholder="+7 (___) ___-__-__" id="phone_desktop"
+                                            value="{{$event->phone}}" required>
+                                        </div>
                                     </div>
                                     <div class="submit__button">
                                         <div class="create__submit__button">
@@ -464,7 +458,7 @@
             </div>
         </div>
     </div>
-    <script>
+    {{-- <script>
         $('input[type=date]').focusout(function() {
 
 
@@ -505,5 +499,5 @@
             }
 
         })
-    </script>
+    </script> --}}
 @endsection

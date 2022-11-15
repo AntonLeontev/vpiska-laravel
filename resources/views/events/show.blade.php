@@ -9,8 +9,7 @@
                 @auth
                     <x-common.modal id="modal_order">
                         <h4>Оплата вписки</h4>
-                        {{-- //TODO Fees --}}
-                        <h4>Стоимость - {{ $event->price }} р + Комиссия -  р</h4>
+                        <h4>Стоимость - {{ $event->price }} р + Комиссия - {{$event->fee}} р</h4>
 
                         {{-- //TODO route --}}
                         <form action="" method="POST">
@@ -21,11 +20,10 @@
                             <div class="submit__checkbox">
                                 <label class="checkbox" for="rules">
                                     <input type="checkbox" id="rules" name="scales" required checked>
-                                    {{-- //TODO routes --}}
-                                    Согласен с <a href="https://vpiska.online/privacy-policy.php">политикой
+                                    Согласен с <a href="{{route('policy')}}">политикой
                                         конфидециальности</a>, а так же <a
-                                        href="https://vpiska.online/processing_of_personal_data.php">обработку</a> и <a
-                                        href="https://vpiska.online/dissemination_of_personal_data.php">распространение</a>
+                                        href="{{route('processing')}}">обработку</a> и <a
+                                        href="{{route('dissemination')}}">распространение</a>
                                     персональных данных.
                                 </label>
                             </div>
@@ -116,8 +114,14 @@
                                 href="{{ route('events.edit', $event->id) }}"
                                 @endif
                                 >Редактировать</a>
-                            <button class="creator_controls__cancel" data-user_id="{{ auth()->user()->id }}"
-                                data-event_id="{{ $event->id }}">Отменить мероприятие</button>
+                                <form action="{{route('events.delete', $event->id)}}" method="delete" id="form__event-cancel" confirmable="confirmable">
+                                    @csrf
+                                    <input type="hidden" name="event_id" value="{{ $event->id }}">
+                                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                    <button class="creator_controls__cancel">
+                                        Отменить
+                                    </button>
+                                </form>
                         </div>
                     @endisCreator
 
@@ -230,7 +234,7 @@
                         </div>
                         <div class="title__2">
                             {{-- //TODO Filter accepted orders --}}
-                            <p>{{ $event->orders->count() ?? 0 }}/{{ $event->max_members }}</p>
+                            <p>{{ $event->orders->where('status', 1)->count() ?? 0 }}/{{ $event->max_members }}</p>
                         </div>
                     </div>
                     <div class="application__main" id="application__main">
@@ -296,7 +300,7 @@
                         @endisCreator
 
 
-                        @foreach ($event->orders as $order)
+                        @foreach ($event->orders->where('status', 1) as $order)
                             <a href="{{route('users.show', $order->customer->id)}}">
                                 <div class="application__card">
                                     <div class="application__photo"><img src="{{$order->customer->photo_path}}" alt="user"></div>

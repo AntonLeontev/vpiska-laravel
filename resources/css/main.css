@@ -2073,6 +2073,7 @@ input#rules:checked+label::before {
 	font-size: 24px;
 	color: #FFFFFF;
 	cursor: pointer;
+	padding: 0 15px;
 }
 
 

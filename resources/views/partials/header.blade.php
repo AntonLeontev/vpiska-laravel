@@ -2,7 +2,6 @@
     <h3 class="close__title">Выберите ваш город</h3>
     <div class="select__row">
         <div class="select__input">
-            {{-- //TODO form action --}}
             <form action="{{route('change_city')}}"
             method="POST" id="select_cit" class="select_city_form">
             @csrf
@@ -200,7 +199,6 @@
                             <div class="profile__name">
                                 <p>{{ auth()->user()->first_name }}</p>
                             </div>
-                            {{-- //TODO add user photo link --}}
                             <div class="profile__img"><img src="{{ auth()->user()->photo_path }}" alt="profile_photo">
                             </div>
                         </div>

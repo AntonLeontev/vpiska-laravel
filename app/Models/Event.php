@@ -56,9 +56,21 @@ class Event extends Model
         return $carbon->translatedFormat('d F');
     }
 
+    public function getFullStartDateAttribute()
+    {
+        $carbon =  Carbon::parse($this->starts_at);
+        return $carbon->translatedFormat('d.m.Y');
+    }
+
     public function getStartTimeAttribute()
     {
         $carbon =  Carbon::parse($this->starts_at);
+        return $carbon->translatedFormat('H:i');
+    }
+
+    public function getEndTimeAttribute()
+    {
+        $carbon =  Carbon::parse($this->ends_at);
         return $carbon->translatedFormat('H:i');
     }
 

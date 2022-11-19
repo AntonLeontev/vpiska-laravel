@@ -395,7 +395,8 @@ $(document).ready(function () {
         div.className = "gallery__card";
         div.innerHTML = `<img src="/storage/${imageData.path}" alt="profile photo">`;
         div.innerHTML += `<button 
-        class="btn__image-delete" data-action="${imageData.deletePath}" data-token="${imageData.token}">
+        class="btn__image-delete" data-action="${imageData.deletePath}" data-token="${imageData.token}"
+        data-user_id="${imageData.userId}">
         <img src="http://127.0.0.1:5173/resources/images/icons/delete.svg" alt="delete">
         </button>`;
         return div;

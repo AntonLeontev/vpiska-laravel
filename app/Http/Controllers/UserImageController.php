@@ -21,7 +21,8 @@ class UserImageController extends Controller
             $id = $userImage->create(['user_id' => $request->input('user_id'), 'path' => "$path"])->id;
             $deletePath = route('userImage.destroy', $id);
             $token = csrf_token();
-            $images[] = compact('deletePath', 'path', 'token');
+            $userId = $request->input('user_id');
+            $images[] = compact('deletePath', 'path', 'token', 'userId');
         }
 
         return Response::json(['status' => 'ok', 'images' => $images]);

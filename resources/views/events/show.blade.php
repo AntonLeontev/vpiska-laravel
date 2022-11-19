@@ -224,7 +224,13 @@
                         <div class="chat__title">
                             <p>Общий чат</p>
                         </div>
-                        <div class="chat__main">
+                        <div class="chat__main" 
+                        data-user_id="{{ auth()->user()->id }}" 
+                        data-user_name="{{auth()->user()->full_name}}"
+                        data-user_avatar="{{ auth()->user()->photo_path }}"
+                        data-user_link="{{ route('users.show', auth()->user()->id) }}"
+                        data-chat_id="{{$event->id}}"
+                        >
                             <div id="chatbro">
                                 <button id="chatbroOpenChat">Войти в общий чат</button>
 
@@ -363,18 +369,4 @@
             <button id="share-button">Позвать друзей</button>
         </div>
     </div>
-    <script>
-        
-    </script>
-    @auth
-        <script>
-            let user_id = {{ auth()->user()->id }};
-            let user_name = {{ auth()->user()->full_name }};
-            let user_avatar = {{ auth()->user()->photo_path }};
-            let user_link = {{ route('users.show', auth()->user()->id) }};
-            let chat_id = {{ $event->id }};
-        </script>
-        <script id="chatBroEmbedCode" src="{{Vite::asset('resources/js/chatBroLoader.js')}}"></script>
-    @endauth
-
 @endsection

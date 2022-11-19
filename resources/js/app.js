@@ -8,3 +8,4 @@ import.meta.glob(["../images/**", "../fonts/**"]);
 import "./main";
 import "./addressTips/Event";
 import "./addressTips/cityTips";
+import "./chatBroLoader";

@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\ChangeCityController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomepageController;
-use App\Http\Controllers\UserController;
-use App\Http\Middleware\Event\PhoneFormatMiddleware;
+use App\Http\Controllers\UserImageController;
+use App\Http\Controllers\ChangeCityController;
 use App\Http\Middleware\Event\TimeHandleMiddleware;
-use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\Event\PhoneFormatMiddleware;
 
 Route::get('/', HomepageController::class)->name('home');
 
@@ -16,14 +17,18 @@ Route::get('/users/balance', [UserController::class, 'balance'])
     ->middleware('auth')
 ->name('balance');
 Route::get('/users/events', [UserController::class, 'userEvents'])
-    ->middleware('auth')
-    ->name('users.events');
+->middleware('auth')
+->name('users.events');
 Route::post('/users/edit/{user}', [UserController::class, 'update'])
-    ->middleware('auth')
-    ->name('users.update');
+->middleware('auth')
+->name('users.update');
 Route::get('/users/{user}', [UserController::class, 'show'])
-    ->name('users.show');
+->name('users.show');
 
+
+Route::post('/users/photo/add', [UserImageController::class, 'store'])->name('userImage.store');
+Route::delete('/users/photo/delete/{userImage}', [UserImageController::class, 'destroy'])
+    ->name('userImage.destroy');
 
 
 Route::get('/events', [EventController::class, 'index'])

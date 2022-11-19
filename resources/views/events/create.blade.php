@@ -149,11 +149,6 @@
                                         </div>
                                     </div>
                                     <div class="description__button">
-                                        {{-- <style>
-                                            .description__gallery {
-                                                display: unset;
-                                            }
-                                        </style> --}}
                                         <div class="description__gallery">
                                             <label for="js-file">
                                                 <div class="description__add">
@@ -163,10 +158,11 @@
                                                         <p><b>Добавить фото</b></p>
                                                     </div>
                                                 </div>
-                                                <div class="form-row">
+                                                {{-- //TODO Upload images --}}
+                                                <x-common.form class="form-row">
                                                     <input id="js-file" type="file" name="image[]"
-                                                        class="memememememe" multiple accept=".jpg,.jpeg,.png">
-                                                </div>
+                                                        class="hidden" multiple accept=".jpg,.jpeg,.png">
+                                                </x-common.form>
                                             </label>
                                             <script>
                                                 $("#js-file-vvvoff").change(function() {
@@ -345,8 +341,9 @@
                                         <div class="description__gallery">
                                             <label for="js-file">
                                                 <div class="description__add">
-                                                    <div class="add__image"><img src="{{ Vite::image('icons/plus.svg') }}"
-                                                            alt="add"></div>
+                                                    <div class="add__image">
+                                                        <img src="{{ Vite::image('icons/plus.svg') }}" alt="add">
+                                                    </div>
                                                     <div class="add__text">
                                                         <p><b>Добавить фото</b></p>
                                                     </div>
@@ -355,7 +352,7 @@
                                                 </div>
                                             </label>
                                             <script>
-                                                $("#js-file").change(function() {
+                                                $("#js-file----").change(function() {
                                                     if (window.FormData === undefined) {
                                                         alert("В вашем браузере загрузка файлов не поддерживается");
                                                     } else {

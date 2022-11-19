@@ -240,24 +240,22 @@ $(document).ready(function () {
     });
 
     /*------------- form submit handler --------------*/
-    $("form").on("submit", formSubmitHandler);
+    $(document).on("submit", "form", formSubmitHandler);
 
     function formSubmitHandler(event) {
         event.preventDefault();
-        let form = event.target;
 
-        if (form.hasAttribute("confirmable")) {
+        if (this.hasAttribute("confirmable")) {
             return;
         }
 
-        form = $(form);
-        let actionUrl = form.attr("action");
-        let method = form.attr("method");
         $.ajax({
-            type: method,
-            url: actionUrl,
-            data: form.serialize(),
-            success: function (data) {
+            type: $(this).attr("method"),
+            url: $(this).attr("action"),
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: (data) => {
                 if (data.status === "ok") {
                     redirect(data.redirect);
                     return;
@@ -269,30 +267,9 @@ $(document).ready(function () {
                     });
                     return;
                 }
-            },
-            error: (data) => {
-                let message;
-                if (data.responseJSON.errors === undefined) {
-                    message = data.responseJSON.message;
-                    if (message) {
-                        fireError(message);
-                        return;
-                    }
-                }
-
-                let errors = data.responseJSON.errors;
-                message = "";
-                for (let text in errors) {
-                    message += errors[text].join(`\n`) + `\n`;
-                }
-
-                if (!message) {
-                    message = "Попробуйте перезагрузить страницу";
-                }
-
-                fireError(message);
                 console.log(data);
             },
+            error: handleError,
         });
     }
 
@@ -313,6 +290,28 @@ $(document).ready(function () {
         if (url === "") return;
 
         location.replace(url);
+    }
+
+    function handleError(data) {
+        if (data.responseJSON.errors === undefined) {
+            if (data.responseJSON.message) {
+                fireError(data.responseJSON.message);
+                return;
+            }
+        }
+
+        let errors = data.responseJSON.errors;
+        let message = "";
+        for (let text in errors) {
+            message += errors[text].join(`\n`) + `\n`;
+        }
+
+        if (!message) {
+            message = "Попробуйте перезагрузить страницу";
+        }
+
+        fireError(message);
+        console.log(data);
     }
 
     /*--------------- Share Button -----------------*/
@@ -344,4 +343,80 @@ $(document).ready(function () {
             }
         });
     }
+
+    /*--------------photo upload----------------*/
+    $(".input_file").on("change", function (event) {
+        let form = event.target.closest("form");
+        let fileUpload = $(form).find("input[type=file]");
+
+        if (parseInt(fileUpload.get(0).files.length) > 5) {
+            Swal.fire({
+                text: "Максимальное число загружаемых файлов не более 5-ти",
+                icon: "warning",
+            });
+            return;
+        }
+
+        // form.requestSubmit();
+
+        $.ajax({
+            type: $(form).attr("method"),
+            url: $(form).attr("action"),
+            data: new FormData(form),
+            processData: false,
+            contentType: false,
+            success: (data) => {
+                if (data.status !== "ok") {
+                    Swal.fire({
+                        text: "Ошибка загрузки",
+                        icon: "error",
+                    });
+                    return;
+                }
+
+                let empty = form
+                    .closest(".gallery__main")
+                    .querySelector(".gallery__add_empty");
+                if (empty) empty.remove();
+
+                console.log(data);
+                data.images.forEach((image) => {
+                    document
+                        .querySelector(".gallery__main")
+                        .append(createCard(image));
+                });
+            },
+            error: handleError,
+        });
+    });
+
+    function createCard(imageData) {
+        let div = document.createElement("div");
+        div.className = "gallery__card";
+        div.innerHTML = `<img src="/storage/${imageData.path}" alt="profile photo">`;
+        div.innerHTML += `<button 
+        class="btn__image-delete" data-action="${imageData.deletePath}" data-token="${imageData.token}">
+        <img src="http://127.0.0.1:5173/resources/images/icons/delete.svg" alt="delete">
+        </button>`;
+        return div;
+    }
+
+    /*--------------photo delete----------------*/
+    $(document).on("click", ".btn__image-delete", function (event) {
+        let btn = this.closest(".btn__image-delete");
+        $.ajax({
+            url: btn.dataset.action,
+            method: "DELETE",
+            data: {
+                _token: btn.dataset.token,
+                userId: btn.dataset.user_id,
+            },
+            success: (data) => {
+                if (data.status === "ok") {
+                    this.closest(".gallery__card").remove();
+                }
+            },
+            error: handleError,
+        });
+    });
 });

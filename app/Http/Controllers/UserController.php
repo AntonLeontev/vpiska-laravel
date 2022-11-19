@@ -7,9 +7,9 @@ use App\Models\User;
 use App\Enums\OrderStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\ChangeCityRequest;
 use App\Http\Requests\EditUserRequest;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UserController extends Controller
 {
@@ -53,19 +53,9 @@ class UserController extends Controller
         return view('users.show', compact('user'));
     }
 
-    public function edit($id)
-    {
-        //
-    }
-
     public function update(EditUserRequest $request, User $user)
     {
         $user->updateOrFail($request->except('_token'));
         return Response::json(['status' => 'ok', 'redirect' => url()->previous('/')]);
-    }
-
-    public function destroy($id)
-    {
-        //
     }
 }

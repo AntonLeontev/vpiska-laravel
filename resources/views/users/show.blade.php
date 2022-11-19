@@ -118,70 +118,43 @@
                             <p>Ваша галерея</p>
                         </div>
                         <div class="gallery__main">
-
-                            <div class="gallery__add">
-                                <div class="gallery__add__text">
-                                    <p><b>Фотографии отсутсвуют</b></p>
+                            @if ($user->images->count() <= 0)
+                                <div class="gallery__add gallery__add_empty">
+                                    <div class="gallery__add__text">
+                                        <p><b>Фотографии отсутсвуют</b></p>
+                                    </div>
                                 </div>
-                            </div>
+                            @else
+                                @foreach ($user->images as $image)
+                                    <div class="gallery__card">
+                                        <img src="/storage/{{$image->path}}" alt="profile photo">
+                                        @auth
+                                            @if (auth()->user()->id === $user->id)
+                                                <button class="btn__image-delete" data-action="{{route('userImage.destroy', $image->id)}}" data-token="{{csrf_token()}}" data-user_id="{{$user->id}}">
+                                                    <img src="{{ Vite::image('icons/delete.svg') }}" alt="delete">
+                                                </button>
+                                            @endif
+                                        @endauth
+                                    </div>
+                                @endforeach
+                            @endif
 
                             @auth
                                 @if (auth()->user()->id === $user->id)
-                                    <div class="gallery__card">
-                                        <img src="/uploads/tmp/" alt="profile photo">
-                                        <a href="../assets/query/delete_photo.php?id=&page=">
-                                            <img src="{{ Vite::image('icons/delete.svg') }}" alt="delete">
-                                        </a>
-                                    </div>
                                     <label for="js-file">
                                         <div class="gallery__add">
-                                            <div class="add__image"><img src="{{ Vite::image('icons/create.png') }}"
-                                                    alt="add"></div>
+                                            <div class="add__image">
+                                                <img src="{{ Vite::image('icons/create.png') }}" alt="add">
+                                            </div>
                                             <div class="gallery__add__text">
                                                 <p><b>Добавить фото</b></p>
                                             </div>
                                         </div>
-                                        <div class="form-row">
-                                            <input id="js-file" type="file" name="file[]" class="memememememe" multiple
-                                                accept=".jpg,.jpeg">
-                                        </div>
+                                        <x-common.form class="form-row" action="{{route('userImage.store')}}" method="POST" enctype="multipart/form-data">
+                                            <input id="js-file" type="file" class="input_file hidden" name="images[]" multiple>
+                                            <input type="hidden" id="js-user_id" name="user_id" value="{{$user->id}}">
+                                        </x-common.form>
                                     </label>
-                                    <script>
-                                        // TODO Photo upload
-                                        $("#js-file").change(function() {
-                                            if (window.FormData === undefined) {
-                                                alert("В вашем браузере загрузка файлов не поддерживается");
-                                            } else {
-                                                let $fileUpload = $("input[type=file]");
-                                                if (parseInt($fileUpload.get(0).files.length) > 5) {
-                                                    alert("Максимальное число загружаемых файлов за раз не более 5-ти");
-                                                } else {
-                                                    let formData = new FormData();
-                                                    $.each($("#js-file")[0].files, function(key, input) {
-                                                        let iduser = "{{ $user->id }}";
-                                                        formData.append("file[]", input);
-                                                        formData.append("userId", iduser);
-                                                    });
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        url: "/profile_upload.php",
-                                                        cache: false,
-                                                        contentType: false,
-                                                        processData: false,
-                                                        data: formData,
-                                                        dataType: "json",
-                                                        success: function(msg) {
-                                                            location.reload();
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        });
-
-                                        function remove_img(target) {
-                                            $(target).parent().remove();
-                                        }
-                                    </script>
                                 @endif
                             @endauth
 

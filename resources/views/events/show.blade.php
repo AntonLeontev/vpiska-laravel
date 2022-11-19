@@ -196,18 +196,24 @@
                         </div>
                         <div class="main__photos">
                             <div class="slider-photos">
-                                @if ($event->photos->count() === 0)
+                                @if ($event->images->count() === 0)
                                     <ul>
                                         <li><img src="{{Vite::image('plugs/event/2.jpg')}}" alt="Фото мероприятия"></li>
                                     </ul>
                                 @else
-                                    <ul class="carousel">
-                                        @foreach ($event->photos as $photo)
-                                            <li><img src="{{ $photo->path }}" alt="Фото мероприятия"></li>
+                                    <div class="carousel">
+                                        @foreach ($event->images as $photo)
+                                            <img src="/storage/{{ $photo->path }}" alt="Фото мероприятия">
                                         @endforeach
-                                    </ul>
+                                    </div>
                                     <div class="carousel-controls">
-                                        <span class="carousel-count">1/{{ $event->photos->count() }}</span>
+                                        <button type="button" class="slick-prev">
+                                            <img src="{{Vite::image('icons/prev.svg')}}" alt="prev">
+                                        </button>
+                                        <span class="carousel-count">1/{{ $event->images->count() }}</span>
+                                        <button type="button" class="slick-next">
+                                            <img src="{{Vite::image('icons/next.svg')}}" alt="next">
+                                        </button>
                                     </div>
                                 @endif
 

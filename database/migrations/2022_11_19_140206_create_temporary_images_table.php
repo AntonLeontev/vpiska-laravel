@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,9 +14,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('event_photos', function (Blueprint $table) {
+        Schema::create('temporary_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->referenced('events')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('path');
             $table->timestamps();
         });
@@ -29,7 +30,7 @@ return new class extends Migration
     public function down()
     {
         if (!app()->isProduction()) {
-            Schema::dropIfExists('event_photos');
+            Schema::dropIfExists('temporary_images');
         }
     }
 };

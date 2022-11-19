@@ -6,7 +6,7 @@ $(document).ready(function () {
     /*-------------------- address tooltips --------------------*/
     let city = $(".select_city_input-desc");
     let form = city.closest("form");
-    let cityFiasId = $(form).children("[name='city_fias_id']");
+    let cityFiasId = $(form).find("[name='city_fias_id']");
     let streetFiasId = $("[name='street_fias_id']");
     let streetType = $("[name='street_type']");
     let street = $(".select_street_input-desc");

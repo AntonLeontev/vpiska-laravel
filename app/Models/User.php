@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Support\Arr;
+use App\Models\TemporaryImage;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\VerifyEmailNotification;
@@ -12,7 +14,6 @@ use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\File;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -116,5 +117,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function images()
     {
         return $this->hasMany(UserImage::class);
+    }
+
+    public function tempImages()
+    {
+        return $this->hasMany(TemporaryImage::class);
     }
 }

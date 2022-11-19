@@ -6,9 +6,13 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Http\Requests\EventRequest;
 use App\Mail\EmailConfirmationMail;
+use App\Models\EventImage;
+use App\Models\TemporaryImage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -38,8 +42,20 @@ class EventController extends Controller
             'user_phone',
             'time',
             'date',
-            'scales'
+            'scales',
+            'images'
         ]))->id;
+
+        if (!empty($request->images)) {
+            foreach ($request->images as $path) {
+                if (!Storage::exists($path)) {
+                    continue;
+                }
+
+                EventImage::create(['path' => $path, 'event_id' => $eventId]);
+                DB::table('temporary_images')->where('path', $path)->delete();
+            }
+        }
 
         return Response::json(['status' => 'ok', 'redirect' => route('events.show', $eventId)]);
     }

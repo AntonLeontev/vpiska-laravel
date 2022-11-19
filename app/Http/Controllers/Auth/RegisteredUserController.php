@@ -41,7 +41,7 @@ class RegisteredUserController extends Controller
             'password' => bcrypt($request->password),            
         ]);
 
-        event(new Registered($user));
+        // event(new Registered($user));
 
         Auth::login($user);
         return Response::json(['status' => 'ok', 'redirect' => route('home')]);      

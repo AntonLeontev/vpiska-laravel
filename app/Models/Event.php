@@ -29,7 +29,7 @@ class Event extends Model
         'max_members',
     ];
 
-    protected $with = ['creator', 'orders', 'photos'];
+    protected $with = ['creator', 'orders', 'images'];
 
     protected function price(): Attribute
     {
@@ -93,9 +93,9 @@ class Event extends Model
         });
     }
 
-    public function photos()
+    public function images()
     {
-        return $this->hasMany(EventPhoto::class);
+        return $this->hasMany(EventImage::class);
     }
 
     public function orders()

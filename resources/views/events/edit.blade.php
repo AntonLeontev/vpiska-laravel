@@ -150,55 +150,11 @@
                                                         <p><b>Добавить фото</b></p>
                                                     </div>
                                                 </div>
-                                                <div class="form-row">
-                                                    <input id="js-file" type="file" name="image[]"
-                                                        class="memememememe" multiple accept=".jpg,.jpeg,.png">
-                                                </div>
+                                                {{-- <div class="form-row">
+                                                    <input id="js-file" type="file" name="images[]"
+                                                        class="hidden" multiple>
+                                                </div> --}}
                                             </label>
-                                            <script>
-                                                $("#js-file-vvvoff").change(function() {
-                                                    if (window.FormData === undefined) {
-                                                        alert("В вашем браузере загрузка файлов не поддерживается");
-                                                    } else {
-                                                        let $fileUpload = $("input[type=file]");
-                                                        if (parseInt($fileUpload.get(0).files.length) > 5) {
-                                                            alert("Максимальное число загружаемых файлов за раз не более 5-ти");
-                                                        } else {
-                                                            let formData = new FormData();
-                                                            $.each($("#js-file")[0].files, function(key, input) {
-                                                                formData.append("file[]", input);
-                                                            });
-                                                            $.ajax({
-                                                                type: "POST",
-                                                                url: "/upload_image.php",
-                                                                cache: false,
-                                                                contentType: false,
-                                                                processData: false,
-                                                                data: formData,
-                                                                dataType: "json",
-                                                                beforeSend: function() {
-                                                                    $('#loader').addClass('loader');
-                                                                },
-                                                                success: function(msg) {
-                                                                    $('#loader').removeClass('nnn');
-                                                                    msg.forEach(function(row) {
-                                                                        if (row.error == "") {
-                                                                            $("#js-file-list").append(row.data);
-                                                                        } else {
-                                                                            alert(row.error);
-                                                                        }
-                                                                    });
-                                                                    $("#js-file").val("");
-                                                                }
-                                                            });
-                                                        }
-                                                    }
-                                                });
-
-                                                function remove_img(target) {
-                                                    $(target).parent().remove();
-                                                }
-                                            </script>
 
                                             <div class="img__list" id="js-file-list"></div>
                                         </div>
@@ -247,6 +203,10 @@
                                 </div>
                             </fieldset>
                         </form>
+                        <x-common.form class="form-row" action="{{route('eventImage.store')}}" method="POST" enctype="multipart/form-data">
+                            <input id="js-file" type="file" class="input_file_event hidden" name="images[]" multiple>
+                            <input type="hidden" name="event_id" value="{{$event->id}}">
+                        </x-common.form>
 
                     </div>
 
@@ -255,10 +215,7 @@
                     <div class="activity__form activity__form--desktop">
 
 
-                        <form action="{{ route('events.update', $event->id) }}" method="POST" enctype="multipart/form-data"
-                            autocomplete="disabled">
-                            <fieldset>
-                            @csrf
+                        <x-common.form action="{{ route('events.update', $event->id) }}" method="POST" enctype="multipart/form-data" autocomplete="disabled">
                             <input type="hidden" name="creator_id" value="{{$event->creator_id}}">
                                 <div class="activity__location">
                                     <div class="location__title">
@@ -347,56 +304,7 @@
                                                 <div class="form-row">
                                                 </div>
                                             </label>
-                                            <script>
-                                                $("#js-file").change(function() {
-                                                    if (window.FormData === undefined) {
-                                                        alert("В вашем браузере загрузка файлов не поддерживается");
-                                                    } else {
-                                                        let $fileUpload = $("input[type=file]");
-                                                        if (parseInt($fileUpload.get(0).files.length) > 5) {
-                                                            alert("Максимальное число загружаемых файлов за раз не более 5-ти");
-                                                        } else {
-                                                            let formData = new FormData();
-                                                            $.each($("#js-file")[0].files, function(key, input) {
-                                                                formData.append("file[]", input);
-                                                            });
-                                                            $.ajax({
-                                                                type: "POST",
-                                                                url: "/upload_image.php",
-                                                                cache: false,
-                                                                contentType: false,
-                                                                processData: false,
-                                                                data: formData,
-                                                                dataType: "json",
-                                                                beforeSend: function() {
-                                                                    $('#loader').addClass('loader');
-                                                                },
-                                                                success: function(msg) {
-                                                                    console.log(msg);
-                                                                    $('#loader').removeClass('nnn');
-                                                                    msg.forEach(function(row) {
-                                                                        console.log('+');
-                                                                        console.log(row);
-                                                                        if (row.error == "") {
-                                                                            $("#js-file-list2").append(row.data);
-                                                                            $("#js-file-list").append(row.data);
-                                                                        } else {
-                                                                            alert(row.error);
-                                                                        }
-                                                                    });
-                                                                    $("#js-file").val("");
-                                                                }
-                                                            });
-
-                                                        }
-                                                    }
-                                                });
-
-                                                function remove_img(target) {
-                                                    $(target).parent().remove();
-                                                }
-                                            </script>
-                                            <div class="img__list" id="js-file-list2"></div>
+                                            
                                         </div>
 
                                         <div class="description__text">
@@ -409,6 +317,18 @@
                                     <div class="button_next" onclick="create_activity_3()">
                                         <p>Далее</p>
                                     </div>
+                                </div>
+                                <div class="img__list gallery__main" id="js-file-list2">
+                                    @if ($event->images->count() > 0)
+                                    @foreach ($event->images as $image)
+                                        <div class="gallery__card">
+                                            <img src="/storage/{{$image->path}}" alt="event photo">
+                                                <div class="btn__image-delete" data-action="{{route('eventImage.destroy', $image->id)}}" data-token="{{csrf_token()}}" data-user_id="{{$event->creator_id}}">
+                                                    <img src="{{ Vite::image('icons/delete.svg') }}" alt="delete">
+                                                </div>
+                                        </div>
+                                    @endforeach
+                                @endif
                                 </div>
 
                                 <div class="loader__none" id="loader">
@@ -450,54 +370,11 @@
                                             персональных данных.</label>
                                     </div>
                                 </div>
-                            </fieldset>
-                        </form>
+                        </x-common.form>
 
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {{-- <script>
-        $('input[type=date]').focusout(function() {
-
-
-
-            //alert('ok');
-            var dateB = moment();
-            var dateC = moment($(this).val());
-
-            // console.log(dateC.year());
-            if (dateC.year() < moment().year()) {
-                // return ;
-            }
-
-            var df = dateC.diff(dateB, 'days');
-
-            console.log('Разница в ', dateC.diff(dateB, 'days'), 'дней');
-
-            if (df < 0) {
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ошибка...',
-                    text: 'Дата должна быть миниум сегодняшней',
-                })
-                $(this).val(moment().format('YYYY MM DD'));
-            }
-
-            if (df > 3) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ошибка...',
-                    text: 'Дата должна быть не более чем на 3 дня больше сегодняшней',
-                })
-                $(this).val(moment().format('YYYY MM DD'));
-
-
-
-            }
-
-        })
-    </script> --}}
 @endsection

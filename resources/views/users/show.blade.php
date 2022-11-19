@@ -151,7 +151,7 @@
                                             </div>
                                         </div>
                                         <x-common.form class="form-row" action="{{route('userImage.store')}}" method="POST" enctype="multipart/form-data">
-                                            <input id="js-file" type="file" class="input_file hidden" name="images[]" multiple>
+                                            <input id="js-file" type="file" class="input_file_user hidden" name="images[]" multiple>
                                             <input type="hidden" id="js-user_id" name="user_id" value="{{$user->id}}">
                                         </x-common.form>
                                     </label>

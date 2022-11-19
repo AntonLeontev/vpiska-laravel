@@ -34,6 +34,7 @@ class BaseRefreshCommand extends Command
         }
 
         Storage::deleteDirectory('images/user_photos');
+        Storage::deleteDirectory('images/event_photos');
 
         $this->call('migrate:fresh', ['--seed' => true]);
 

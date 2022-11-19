@@ -1549,6 +1549,7 @@ input#rules:checked+label::before {
 	padding: 0;
 	justify-content: start;
 	overflow-y: hidden;
+	column-gap: 5px;
 }
 
 .gallery__card,
@@ -2302,7 +2303,8 @@ input[type=date] {
 }
 
 .img__item a,
-.gallery__card button {
+.gallery__card button,
+.gallery__card .btn__image-delete {
 	background: rgba(0, 0, 0, 0.3);
 	width: 62px;
 	height: 62px;

@@ -32,7 +32,7 @@
                     <img src="{{ Vite::image('icons/loc.svg') }}" alt="city">
                 </div>
                 <div class="navbar__city__title">
-                    <p>{{auth()->user()->city_name ?? 'Город'}}</p>
+                    <p>{{session('city_name') ?? 'Город'}}</p>
                 </div>
             </div>
         </a>

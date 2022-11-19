@@ -6,6 +6,8 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\UserImageController;
 use App\Http\Controllers\ChangeCityController;
+use App\Http\Controllers\EventImageController;
+use App\Http\Controllers\TemporaryImageController;
 use App\Http\Middleware\Event\TimeHandleMiddleware;
 use App\Http\Middleware\Event\PhoneFormatMiddleware;
 
@@ -29,6 +31,15 @@ Route::get('/users/{user}', [UserController::class, 'show'])
 Route::post('/users/photo/add', [UserImageController::class, 'store'])->name('userImage.store');
 Route::delete('/users/photo/delete/{userImage}', [UserImageController::class, 'destroy'])
     ->name('userImage.destroy');
+
+Route::post('/events/photo/add', [EventImageController::class, 'store'])->name('eventImage.store');
+Route::delete('/events/photo/delete/{eventImage}', [EventImageController::class, 'destroy'])
+    ->name('eventImage.destroy');
+
+
+Route::post('/events/photo/temp/preload', [TemporaryImageController::class, 'store'])->name('temporaryImage.store');
+Route::delete('/events/photo/temp/delete/{temporaryImage}', [TemporaryImageController::class, 'destroy'])
+    ->name('temporaryImage.destroy');
 
 
 Route::get('/events', [EventController::class, 'index'])

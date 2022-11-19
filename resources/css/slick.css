@@ -117,3 +117,22 @@
 .slick-arrow.slick-hidden {
     display: none;
 }
+
+.slick-prev,
+.slick-next {
+	background: transparent;
+	cursor: pointer;
+}
+
+/* Слайд */ 
+.slick-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.slick-slide img{
+    object-fit: contain;
+    max-height: 300px;
+    border-radius: 7px;
+} 
+

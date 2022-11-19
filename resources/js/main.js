@@ -126,11 +126,8 @@ $(document).ready(function () {
     if ($(".carousel").length) {
         $(".carousel").slick({
             infinite: true,
-            appendArrows: ".carousel-controls",
-            prevArrow:
-                '<button type="button" class="slick-prev"><img src="/images/icons/prev.svg" alt="prev"></button>',
-            nextArrow:
-                '<button type="button" class="slick-next"><img src="/images/icons/next.svg" alt="next"></button>',
+            prevArrow: $(".slick-prev"),
+            nextArrow: $(".slick-next"),
         });
 
         $(".carousel").on(
@@ -244,17 +241,15 @@ $(document).ready(function () {
 
     function formSubmitHandler(event) {
         event.preventDefault();
-
-        if (this.hasAttribute("confirmable")) {
+        let form = event.target.closest("form");
+        if (form.hasAttribute("confirmable")) {
             return;
         }
 
         $.ajax({
-            type: $(this).attr("method"),
-            url: $(this).attr("action"),
-            data: new FormData(this),
-            processData: false,
-            contentType: false,
+            type: $(form).attr("method"),
+            url: $(form).attr("action"),
+            data: $(form).serialize(),
             success: (data) => {
                 if (data.status === "ok") {
                     redirect(data.redirect);
@@ -296,6 +291,7 @@ $(document).ready(function () {
         if (data.responseJSON.errors === undefined) {
             if (data.responseJSON.message) {
                 fireError(data.responseJSON.message);
+                console.log(data);
                 return;
             }
         }
@@ -344,8 +340,8 @@ $(document).ready(function () {
         });
     }
 
-    /*--------------photo upload----------------*/
-    $(".input_file").on("change", function (event) {
+    /*--------------user photo upload----------------*/
+    $(".input_file_user").on("change", function (event) {
         let form = event.target.closest("form");
         let fileUpload = $(form).find("input[type=file]");
 
@@ -356,8 +352,6 @@ $(document).ready(function () {
             });
             return;
         }
-
-        // form.requestSubmit();
 
         $.ajax({
             type: $(form).attr("method"),
@@ -379,7 +373,6 @@ $(document).ready(function () {
                     .querySelector(".gallery__add_empty");
                 if (empty) empty.remove();
 
-                console.log(data);
                 data.images.forEach((image) => {
                     document
                         .querySelector(".gallery__main")
@@ -394,13 +387,102 @@ $(document).ready(function () {
         let div = document.createElement("div");
         div.className = "gallery__card";
         div.innerHTML = `<img src="/storage/${imageData.path}" alt="profile photo">`;
-        div.innerHTML += `<button 
+        div.innerHTML += `<div 
         class="btn__image-delete" data-action="${imageData.deletePath}" data-token="${imageData.token}"
         data-user_id="${imageData.userId}">
         <img src="http://127.0.0.1:5173/resources/images/icons/delete.svg" alt="delete">
-        </button>`;
+        </div>`;
         return div;
     }
+
+    function createInput(imageData) {
+        let input = document.createElement("input");
+        input.setAttribute("type", "hidden");
+        input.setAttribute("value", imageData.path);
+        input.setAttribute("name", "images[]");
+        return input;
+    }
+
+    /*--------------temp photo upload----------------*/
+    $(".input_file_temp").on("change", function (event) {
+        let form = event.target.closest("form");
+        let fileUpload = $(form).find("input[type=file]");
+
+        if (parseInt(fileUpload.get(0).files.length) > 5) {
+            Swal.fire({
+                text: "Максимальное число загружаемых файлов не более 5-ти",
+                icon: "warning",
+            });
+            return;
+        }
+
+        $.ajax({
+            type: $(form).attr("method"),
+            url: $(form).attr("action"),
+            data: new FormData(form),
+            processData: false,
+            contentType: false,
+            success: (data) => {
+                if (data.status !== "ok") {
+                    Swal.fire({
+                        text: "Ошибка загрузки",
+                        icon: "error",
+                    });
+                    return;
+                }
+
+                data.images.forEach((image) => {
+                    document
+                        .querySelector(".gallery__main")
+                        .append(createCard(image));
+
+                    document
+                        .querySelector(".form_event-create")
+                        .append(createInput(image));
+                });
+                console.log(data);
+            },
+            error: handleError,
+        });
+    });
+
+    /*--------------event photo upload----------------*/
+    $(".input_file_event").on("change", function (event) {
+        let form = event.target.closest("form");
+        let fileUpload = $(form).find("input[type=file]");
+
+        if (parseInt(fileUpload.get(0).files.length) > 5) {
+            Swal.fire({
+                text: "Максимальное число загружаемых файлов не более 5-ти",
+                icon: "warning",
+            });
+            return;
+        }
+
+        $.ajax({
+            type: $(form).attr("method"),
+            url: $(form).attr("action"),
+            data: new FormData(form),
+            processData: false,
+            contentType: false,
+            success: (data) => {
+                if (data.status !== "ok") {
+                    Swal.fire({
+                        text: "Ошибка загрузки",
+                        icon: "error",
+                    });
+                    return;
+                }
+
+                data.images.forEach((image) => {
+                    document
+                        .querySelector(".gallery__main")
+                        .append(createCard(image));
+                });
+            },
+            error: handleError,
+        });
+    });
 
     /*--------------photo delete----------------*/
     $(document).on("click", ".btn__image-delete", function (event) {

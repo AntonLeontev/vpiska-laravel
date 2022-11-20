@@ -30,18 +30,16 @@
                                             <div class="weed-item__name">
                                                 Имя: <a
                                                     href="{{ route('users.show', $event->creator_id) }}">{{ $event->creator->full_name }}</a>
-                                                <!-- Вывод имени и ссылка на профиль -->
                                             </div>
                                             <div class="weed-item__price">
                                                 Цена: {{ $event->price }}
-                                                <!-- Вывод цены мероприятия -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="weed-item__right">
                                     <div class="weed-item__date">
-                                        {{ $event->starts_at }}
+                                        {{ $event->start_date }} {{ $event->start_time }}
                                     </div>
                                     <div class="weed-item__actions">
                                         <a href="{{ route('events.show', $event->id) }}"
@@ -93,11 +91,11 @@
                                 <h4>ЗАЯВКА</h4>
                                 <div class="user__modal">
                                     <div class="user__modal__photo">
-                                        <img src="" alt="prifile img">
+                                        <img src="{{$order->customer->photo_path}}" alt="profile img">
                                     </div>
                                     <div class="user__modal__info">
                                         <div class="user__modal__name">
-                                            Name
+                                            {{$order->customer->full_name}}
                                         </div>
                                         <div class="user__modal__rating">
                                             <div class="rating-mini">
@@ -126,11 +124,9 @@
                                         <div class="weed-item__info">
                                             <div class="weed-item__name">
                                                 Имя: <a href="{{route('users.show', $order->customer->id)}}">{{$order->customer->full_name}}</a>
-                                                <!-- Вывод имени и ссылки на профиль -->
                                             </div>
                                             <div class="weed-item__price">
-                                                Цена: price p
-                                                <!-- Вывод цены на мероприятие -->
+                                                Цена: {{$order->event->price}} p
                                             </div>
                                         </div>
 
@@ -146,8 +142,7 @@
                                 </div>
                                 <div class="weed-item__right">
                                     <div class="weed-item__date">
-                                        14.02.2022 12:41
-                                        <!-- Дата -->
+                                        {{$order->event->start_date}} {{$order->event->start_time}}
                                     </div>
                                 </div>
                             </div>
@@ -161,36 +156,35 @@
                                     <div class="weed-item__icon">
                                         <img src="
                                         @if($order->status === 0)
-                                            {{Vite::image('icons/done-wed.svg')}}
+                                        {{Vite::image('icons/inner-wed.svg')}}
                                         @elseif($order->status === 1)
-                                            {{Vite::image('icons/cancel-wed.svg')}}
+                                        {{Vite::image('icons/done-wed.svg')}}
                                         @elseif($order->status === 2)
-                                            {{Vite::image('icons/inner-wed.svg')}}
+                                        {{Vite::image('icons/cancel-wed.svg')}}
                                         @endif
                                         " alt="Иконка заказа">
                                     </div>
                                     <div class="weed-item__column">
                                         <div class="weed-item__status">
-                                            Статус заявки
+                                            {{$order->status_name}}
                                         </div>
                                         <div class="weed-item__info">
                                             <div class="weed-item__name">
                                                 Имя: <a href="{{route('users.show', $order->customer->id)}}">{{$order->customer->full_name}}</a>
                                             </div>
                                             <div class="weed-item__price">
-                                                Цена: 
+                                                Цена: {{$order->event->price}} р
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="weed-item__right">
                                     <div class="weed-item__date">
-                                        date
+                                        {{$order->event->start_date}} {{$order->event->start_time}}
                                     </div>
                                     <div class="weed-item__actions">
-                                        status
-                                        <a href="#<?php //print($result_activity)
-                                        ?>" class="weed-item__action weed-item__action--grey">Подробнее</a>
+                                        {{-- //TODO Modal and links --}}
+                                        <a href="#{{$order->event->id}}" class="weed-item__action weed-item__action--grey">Подробнее</a>
                                     </div>
                                 </div>
                             </div>

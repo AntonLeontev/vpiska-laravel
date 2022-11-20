@@ -29,7 +29,7 @@ class Event extends Model
         'max_members',
     ];
 
-    protected $with = ['creator', 'orders', 'images'];
+    protected $with = ['creator', 'images'];
 
     protected function price(): Attribute
     {

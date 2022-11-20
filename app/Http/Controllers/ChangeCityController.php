@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use App\Http\Requests\ChangeCityRequest;
 use Illuminate\Support\Facades\Response;
 

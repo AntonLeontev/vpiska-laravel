@@ -6,8 +6,11 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Enums\OrderStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EditUserRequest;
+use App\Models\Event;
+use App\Models\Order;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -25,12 +28,16 @@ class UserController extends Controller
 
     public function userEvents()
     {
-        $userEvents = Auth::user()->events->filter(function ($event) {
-            if ($event['ends_at'] > Carbon::create('now')) {
-                return true;
-            }
-            return false;
-        });
+        $userEvents = Event::where('creator_id', Auth::user()->id)
+            ->where('ends_at', '>', Carbon::create('now'))
+            ->with('orders')
+            ->get();
+        // $userEvents = Auth::user()->events->filter(function ($event) {
+        //     if ($event['ends_at'] > Carbon::create('now')) {
+        //         return true;
+        //     }
+        //     return false;
+        // });
 
         $incomingOrders = [];
         foreach ($userEvents as $event) {

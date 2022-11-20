@@ -11,12 +11,9 @@
                         <h4>Оплата вписки</h4>
                         <h4>Стоимость - {{ $event->price }} р + Комиссия - {{$event->fee}} р</h4>
 
-                        {{-- //TODO route --}}
-                        <form action="" method="POST">
-                            <input type="hidden" name="price" value="{{ $event->price }}">
-                            <input type="hidden" name="status" value="0">
-                            <input type="hidden" name="activity" value="{{ $event->id }}">
-                            <input type="hidden" name="creator_id" value="{{ $event->creator->id }}">
+                        <x-common.form action="{{route('orders.store')}}" method="POST">
+                            <input type="hidden" name="event_id" value="{{ $event->id }}">
+                            <input type="hidden" name="customer_id" value="{{ auth()->user()->id }}">
                             <div class="submit__checkbox">
                                 <label class="checkbox" for="rules">
                                     <input type="checkbox" id="rules" name="scales" required checked>
@@ -36,7 +33,7 @@
                             @endif
                             <br>
                             <button type="submit" class="mobile__order btn">Вписаться</button>
-                        </form>
+                        </x-common.form>
                     </x-common.modal>
                 @endauth
             </div>
@@ -221,21 +218,23 @@
                         </div>
                     </div>
                     <div class="main__chat">
-                        <div class="chat__title">
-                            <p>Общий чат</p>
-                        </div>
-                        <div class="chat__main" 
-                        data-user_id="{{ auth()->user()->id }}" 
-                        data-user_name="{{auth()->user()->full_name}}"
-                        data-user_avatar="{{ auth()->user()->photo_path }}"
-                        data-user_link="{{ route('users.show', auth()->user()->id) }}"
-                        data-chat_id="{{$event->id}}"
-                        >
-                            <div id="chatbro">
-                                <button id="chatbroOpenChat">Войти в общий чат</button>
-
+                        @auth
+                            <div class="chat__title">
+                                <p>Общий чат</p>
                             </div>
-                        </div>
+                            <div class="chat__main" 
+                            data-user_id="{{ auth()->user()->id }}" 
+                            data-user_name="{{auth()->user()->full_name}}"
+                            data-user_avatar="{{ auth()->user()->photo_path }}"
+                            data-user_link="{{ route('users.show', auth()->user()->id) }}"
+                            data-chat_id="{{$event->id}}"
+                            >
+                                <div id="chatbro">
+                                    <button id="chatbroOpenChat">Войти в общий чат</button>
+
+                                </div>
+                            </div>
+                        @endauth
                     </div>
                 </div>
 

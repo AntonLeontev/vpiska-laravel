@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -79,17 +80,14 @@ class Event extends Model
         return "{$this->street_type} {$this->street_name}";
     }
 
-    public function currentUserOrder(): Order|bool
+    public function currentUserOrder(): Order
     {
-        if (auth()->user()) {
-            return false;
+        if (!auth()->user()) {
+            throw new Exception("Поиск заказов у неавторизованного пользователя", 1);            
         }
 
-        return $this->orders->first(function ($value, $key) {
-            if ($value->customer_id === auth()->user()->id) {
-                return true;
-            }
-            return false;
+        return $this->orders->first(function ($value) {
+            return $value->customer_id === auth()->user()->id;
         });
     }
 

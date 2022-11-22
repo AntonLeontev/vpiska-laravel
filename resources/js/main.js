@@ -170,54 +170,54 @@ $(document).ready(function () {
     //     })
     //     .mask("+79999999999");
 
-    /*----------------- Кнопки отмены заказа -----------------*/
-    $(".cancel_order_button").click(function (event) {
-        event.preventDefault();
-        const target = event.target.closest(".cancel_order_button");
+    // /*----------------- Кнопки отмены заказа -----------------*/
+    // $(".cancel_order_button").click(function (event) {
+    //     event.preventDefault();
+    //     const target = event.target.closest(".cancel_order_button");
 
-        Swal.fire({
-            title: "Действительно хотите отменить заявку? Комиссия не возвращаается",
-            showDenyButton: true,
-            confirmButtonText: "Да",
-            denyButtonText: "Нет",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                cancelOrder(target);
-            }
-        });
+    //     Swal.fire({
+    //         title: "Действительно хотите отменить заявку? Комиссия не возвращаается",
+    //         showDenyButton: true,
+    //         confirmButtonText: "Да",
+    //         denyButtonText: "Нет",
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             cancelOrder(target);
+    //         }
+    //     });
 
-        function cancelOrder(target) {
-            $.ajax({
-                url: "/assets/query/cancel_order.php",
-                method: "POST",
-                dataType: "json",
-                data: {
-                    user_id: target.dataset.user_id,
-                    event_id: target.dataset.event_id,
-                },
-                success: (data) => {
-                    if (data.state === "ok") {
-                        $(".cancel_order_button").remove();
-                        $(".message_for_user").remove();
+    //     function cancelOrder(target) {
+    //         $.ajax({
+    //             url: "/assets/query/cancel_order.php",
+    //             method: "POST",
+    //             dataType: "json",
+    //             data: {
+    //                 user_id: target.dataset.user_id,
+    //                 event_id: target.dataset.event_id,
+    //             },
+    //             success: (data) => {
+    //                 if (data.state === "ok") {
+    //                     $(".cancel_order_button").remove();
+    //                     $(".message_for_user").remove();
 
-                        Swal.fire({
-                            icon: "success",
-                            title: "Успешно",
-                            text: data.message,
-                        });
-                    }
+    //                     Swal.fire({
+    //                         icon: "success",
+    //                         title: "Успешно",
+    //                         text: data.message,
+    //                     });
+    //                 }
 
-                    if (data.state === "error") {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Ошибка",
-                            text: data.message,
-                        });
-                    }
-                },
-            });
-        }
-    });
+    //                 if (data.state === "error") {
+    //                     Swal.fire({
+    //                         icon: "error",
+    //                         title: "Ошибка",
+    //                         text: data.message,
+    //                     });
+    //                 }
+    //             },
+    //         });
+    //     }
+    // });
 
     /*------------------- Кнопки управления мероприятием -------------------*/
     $("#form__event-cancel").on("submit", function (event) {

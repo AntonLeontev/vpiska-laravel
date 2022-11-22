@@ -18,8 +18,8 @@ use JavaScript;
 class EventController extends Controller
 {
     public function index(Event $event, Request $request)
-    {   
-        $events = $event->all();
+    {
+        $events = $event->with('orders')->get();
 
         //TODO Filtration
         if ($request->session()->has('city_fias_id')) {

@@ -148,8 +148,11 @@
                 {{-- Мобильные кнопки оплаты или отмены --}}
                 @unlessisPaid($event)
                     <a @guest
-                        href="#register_2" @endguest @auth
-                        href="#modal_order" @endauth>
+                        href="#register_2" 
+                        @endguest 
+                        @auth
+                        href="#modal_order" 
+                        @endauth>
                         <div class="button__pay">
                             <div class="pay__image">
                                 <img src="{{ Vite::image('icons/create.png') }}" alt="pay">
@@ -244,7 +247,6 @@
                             <p>Уже вписались</p>
                         </div>
                         <div class="title__2">
-                            {{-- //TODO Filter accepted orders --}}
                             <p>{{ $event->orders->where('status', 1)->count() ?? 0 }}/{{ $event->max_members }}</p>
                         </div>
                     </div>
@@ -253,24 +255,24 @@
                         @unlessisCreator ($event)
                             @unlessisFilled ($event)
                                 @isPaid ($event)
-                                    <a href="#">
+                                    <a href="#cancel-order">
                                         <div class="application__card__pay">
                                             <div class="add__image">
                                                 <img src="{{Vite::image('icons/create.png')}}" alt="add">
                                             </div>
                                             <div class="add__text">
                                                 <p><b>
-                                                    @if ($event->currentUserOrder->status === 0)
+                                                    @if ($event->currentUserOrder()->status === 0)
                                                         На рассмотрении
-                                                    @elseif ($event->currentUserOrder->status === 1)
+                                                    @elseif ($event->currentUserOrder()->status === 1)
                                                         Одобрена
-                                                    @elseif ($event->currentUserOrder->status === 2)
+                                                    @elseif ($event->currentUserOrder()->status === 2)
                                                         Отклонена
                                                     @endif
                                                 </b></p>
                                             </div>
-                                            @if ($event->currentUserOrder->status < 2)
-                                                <div class="add__text cancel_order_button" data-user_id="{{auth()->user()->id}}" data-activity_id="{{$event->id}}">Отменить</div>
+                                            @if ($event->currentUserOrder()->status < 2)
+                                                <div class="add__text cancel_order_button">Отменить</div>
                                             @endif
                                         </div>
                                     </a>
@@ -362,10 +364,25 @@
                                 <h4>Заявку отклонили</h4>
                             @endif
                         </x-common.modal> --}}
-                    @endauth
-                </div>
 
-            <button id="share-button">Позвать друзей</button>
-        </div>
-    </div>
+                        @endauth
+                    </div>
+                    
+                    <button id="share-button">Позвать друзей</button>
+                </div>
+            </div>
+            @auth
+                @isPaid($event)
+                <x-common.modal id='cancel-order'>
+                    <h3 class="close__title">Отмена заказа</h3>
+                    <p>Оплата мероприятия в размере {{$event->price}} р будет возвращена на счет. Комиссия в размере {{$event->fee}} р не возвращается</p>
+                    <x-common.form method="delete" action="{{route('orders.delete', $event->currentUserOrder()->id)}}">
+                        <input type="hidden" name="customer_id" value="{{$event->currentUserOrder()->customer_id}}">
+                        <x-common.submit-button>
+                            Отменить заказ
+                        </x-common.submit-button>
+                    </x-common.form>
+                </x-common.modal>
+                @endisPaid
+            @endauth
 @endsection

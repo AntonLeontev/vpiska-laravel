@@ -2,13 +2,14 @@
 
 namespace App\Providers;
 
-use App\Models\Event;
-use App\Models\User;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Event;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\ServiceProvider;
 
 use function PHPUnit\Framework\isNull;
+use Illuminate\Support\ServiceProvider;
 
 class BladeServiceProvider extends ServiceProvider
 {
@@ -59,9 +60,7 @@ class BladeServiceProvider extends ServiceProvider
                 return false;
             })->count();
 
-            if ($authenticatedUserOrders > 0) {
-                return true;
-            }
+            return $authenticatedUserOrders > 0;
         });
 
         Blade::if('isPaid', function (Event $event) {
@@ -69,17 +68,25 @@ class BladeServiceProvider extends ServiceProvider
                 return false;
             }
 
+            $order = $event->orders->first(function ($order) {
+                return $order->customer_id === Auth::user()->id;
+            });
+
+            if (empty($order)) {
+                return false;
+            }
+
+            if ($order->payment_id === 'balance') {
+                return true;
+            }
             //TODO isPaid
             return false;
         });
 
         Blade::if('hasTooManyEvents', function (User $user) {
-            if (Event::where('ends_at', '>', Carbon::create('now'))->where('creator_id', $user->id)->count()) {
-                // if ($user->events->where('ends_at', '>', Carbon::create('now'))->count()) {
-                return true;
-            }
-
-            return false;
+            return Event::where('ends_at', '>', now())
+                ->where('creator_id', $user->id)
+                ->count() > 0;
         });
 
         Blade::if('userActivated', function (User $user) {

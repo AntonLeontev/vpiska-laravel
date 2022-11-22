@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderCanceled;
 use App\Models\Order;
 use App\Events\OrderCreated;
 use App\Http\Requests\OrderCreateRequest;
+use App\Http\Requests\OrderDeleteRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -17,7 +19,10 @@ class OrderController extends Controller
         return Response::json(['status' => 'ok', 'redirect' => url()->previous('/')]);
     }
 
-    public function destroy(Order $order)
+    public function destroy(Order $order, OrderDeleteRequest $request)
     {
+        OrderCanceled::dispatch($order);
+        $order->deleteOrFail();
+        return Response::json(['status' => 'ok', 'redirect' => url()->previous('/')]);
     }
 }

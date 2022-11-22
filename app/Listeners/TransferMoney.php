@@ -10,12 +10,21 @@ use App\Models\BalanceTransfer;
 
 class TransferMoney
 {
-	public function handleOrderCreated(OrderCreated $event)
+	public function subscribe($events)
 	{
-		if ($event->order->payment_id === 'balance') {
-			$customer = User::find($event->order->customer_id);
-			$price    = $event->order->event->price;
-			$fee      = $event->order->event->fee;
+		return [
+			EventCanceled::class => 'handleEventCanceled',
+			OrderCreated::class => 'handleOrderCreated',
+			OrderCanceled::class => 'handleOrderCanceled',
+		];
+	}
+
+	public function handleOrderCreated(OrderCreated $orderCreated)
+	{
+		if ($orderCreated->order->payment_id === 'balance') {
+			$customer = User::find($orderCreated->order->customer_id);
+			$price    = $orderCreated->order->event->price;
+			$fee      = $orderCreated->order->event->fee;
 
 			$customer->update(['balance' => $customer->balance - $price - $fee]);
 
@@ -24,7 +33,7 @@ class TransferMoney
 				'type'        => 'payment',
 				'sum'         => $price,
 				'description' => "Оплата заказа",
-				'order_id'    => $event->order->id,
+				'order_id'    => $orderCreated->order->id,
 			]);
 
 			BalanceTransfer::create([
@@ -32,27 +41,29 @@ class TransferMoney
 				'type'        => 'payment',
 				'sum'         => $fee,
 				'description' => "Оплата комиссии",
-				'order_id'    => $event->order->id,
+				'order_id'    => $orderCreated->order->id,
 			]);
 		}
 	}
 
-	public function handleOrderCanceled(OrderCanceled $event)
+	public function handleOrderCanceled(OrderCanceled $canceledOrderEvent)
 	{
-		//TODO write method
+		$customer = User::find($canceledOrderEvent->order->customer_id);
+		$price    = $canceledOrderEvent->order->event->price;
+
+		$customer->update(['balance' => $customer->balance + $price]);
+
+		BalanceTransfer::create([
+			'user_id'     => $customer->id,
+			'type'        => 'refund',
+			'sum'         => $price,
+			'description' => "Возврат средств за заказ",
+			'order_id'    => $canceledOrderEvent->order->id,
+		]);
 	}
 
 	public function handleEventCanceled(EventCanceled $event)
 	{
 		//TODO write method
-	}
-
-	public function subscribe($events)
-	{
-		return [
-			EventCanceled::class => 'handleEventCanceled',
-			OrderCreated::class => 'handleOrderCreated',
-			OrderCanceled::class => 'handleOrderCanceled',
-		];
 	}
 }

@@ -32,12 +32,6 @@ class UserController extends Controller
             ->where('ends_at', '>', Carbon::create('now'))
             ->with('orders')
             ->get();
-        // $userEvents = Auth::user()->events->filter(function ($event) {
-        //     if ($event['ends_at'] > Carbon::create('now')) {
-        //         return true;
-        //     }
-        //     return false;
-        // });
 
         $incomingOrders = [];
         foreach ($userEvents as $event) {
@@ -48,8 +42,12 @@ class UserController extends Controller
             });
         }
 
-        $outgoingOrders = Auth::user()->orders->filter(function ($order) {
-            return true;
+        $outgoingOrders = Auth::user()->orders
+        ->filter(function ($order) {
+            return $order->event->starts_at > now()->format('Y-m-d H:i:s');
+        })
+        ->sort(function ($a, $b) {
+            $b->event->starts_at <=> $a->event->starts_at;
         });
 
         return view('users.events', compact('userEvents', 'incomingOrders', 'outgoingOrders'));

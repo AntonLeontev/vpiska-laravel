@@ -119,11 +119,13 @@
                         </div>
                         <div class="gallery__main">
                             @if ($user->images->count() <= 0)
+                            @unless (auth()->user()->id === $user->id)
                                 <div class="gallery__add gallery__add_empty">
                                     <div class="gallery__add__text">
                                         <p><b>Фотографии отсутсвуют</b></p>
                                     </div>
                                 </div>
+                            @endunless
                             @else
                                 @foreach ($user->images as $image)
                                     <div class="gallery__card">

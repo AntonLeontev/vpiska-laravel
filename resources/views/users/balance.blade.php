@@ -50,6 +50,7 @@
                             </form>
                         </div>
                         <div class="withdrawal__code activate-code">
+                            {{-- //TODO code activation --}}
                             <form action="#">
                                 <h4 class="form-title">Активация кода</h4>
                                 <div class="activate-code__row">
@@ -60,31 +61,6 @@
                                     <div class="activate-code__btn">
                                         <button id="activate_code" class="btn btn--purple">Активировать</button>
                                     </div>
-                                    <script>
-                                        $(document).ready(function() {
-                                            $("#activate_code").click(function(event) {
-                                                event.preventDefault();
-                                                let code = $('#with_code').val();
-                                                let use_id = $('#with_user').val();
-                                                $.ajax({
-                                                    url: "../assets/query/activate_code.php",
-                                                    method: 'POST',
-                                                    data: {
-                                                        code: code,
-                                                        use_id: use_id
-                                                    },
-                                                    success: function(data) {
-                                                        console.log(data);
-                                                        if (parseInt(data) == 1) {
-                                                            location.reload();
-                                                        } else {
-                                                            alert(data);
-                                                        }
-                                                    },
-                                                });
-                                            });
-                                        });
-                                    </script>
                                 </div>
                             </form>
                         </div>
@@ -93,32 +69,26 @@
                         </div>
                         <div class="withdrawal__history">
                             <h4 class="form-title">
-                                История выводов
+                                История операций
                             </h4>
                             <table class="table-history" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>Время</th>
+                                        <th>Дата</th>
+                                        <th>Тип</th>
                                         <th>Сумма</th>
-                                        <th>Статус</th>
+                                        <th>Описание</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <p>
-                                                date
-                                            </p>
-                                        </td>
-                                        <td>
-                                            <p>
-                                                sum p
-                                            </p>
-                                        </td>
-                                        <td>
-                                            <p>Status</p>
-                                        </td>
-                                    </tr>
+                                    @foreach (auth()->user()->balanceTransfers->sortByDesc('created_at') as $transfer)
+                                        <tr>
+                                            <td>{{$transfer->date}}</td>
+                                            <td>{{$transfer->type}}</td>
+                                            <td>{{$transfer->sum}} р</td>
+                                            <td>{{$transfer->description}}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

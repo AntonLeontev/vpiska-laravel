@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::factory(5)->create();
+        Event::factory(20)->create();
+        Order::factory(50)->create();
+        Feedback::factory(10)->create();
         User::factory()->createOne([
             'first_name' => 'Антон',
             'last_name' => fake()->lastName('male'),
@@ -35,7 +38,6 @@ class DatabaseSeeder extends Seeder
             'balance' => rand(1, 5000),
             'remember_token' => Str::random(10),
         ]);
-        Event::factory(20)->create();
         Event::factory()->createOne([
             'creator_id' => 6,
             'starts_at' => now()->addDays(1)->addHours(rand(1, 5))->addMinutes(rand(1, 30)),
@@ -52,8 +54,6 @@ class DatabaseSeeder extends Seeder
             'description' => fake()->text(500),
             'max_members' => rand(2, 10),
         ]);
-        Order::factory(50)->create();
-        Feedback::factory(10)->create();
         BalanceTransfer::factory(50)->create();
     }
 }

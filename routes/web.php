@@ -3,15 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Middleware\PaymentIdMiddleware;
 use App\Http\Controllers\UserImageController;
 use App\Http\Controllers\ChangeCityController;
 use App\Http\Controllers\EventImageController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TemporaryImageController;
 use App\Http\Middleware\Event\TimeHandleMiddleware;
 use App\Http\Middleware\Event\PhoneFormatMiddleware;
-use App\Http\Middleware\PaymentIdMiddleware;
 
 Route::get('/', HomepageController::class)->name('home');
 
@@ -75,6 +75,10 @@ Route::middleware('auth')->group(function () {
         ->name('orders.store');
     Route::delete('/orders/delete/{order}', [OrderController::class, 'destroy'])
         ->name('orders.delete');
+    Route::post('/orders/accept/{order}', [OrderController::class, 'accept'])
+    ->name('orders.accept');
+    Route::post('/orders/decline/{order}', [OrderController::class, 'decline'])
+    ->name('orders.decline');
 });
 
 /*------------------Static---------------------*/

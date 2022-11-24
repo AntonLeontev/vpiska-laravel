@@ -30,7 +30,7 @@ class Order extends Model
         parent::boot();
 
         static::creating(function ($order) {
-            $order->code = Str::of(Hash::make(rand(0, 50000)))->limit(5, '');
+            $order->code = (string) rand(100000, 999999);
         });
     }
 

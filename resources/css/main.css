@@ -103,7 +103,7 @@ body {
 }
 
 .bold {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 600;
 }
@@ -141,7 +141,7 @@ body {
 	padding: 10px;
 	border-radius: 7px;
 	box-shadow: -4px 26px 38px -4px rgba(131, 0, 176, 0.42);
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 600;
 	font-size: 24px;
@@ -303,7 +303,7 @@ body {
 }
 
 .header__location h4 {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 24px;
@@ -353,7 +353,7 @@ body {
 
 .balance__status>p,
 .message__status>p {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 24px;
@@ -370,7 +370,7 @@ body {
 }
 
 .profile__name>p {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 600;
 	font-size: 24px;
@@ -454,7 +454,7 @@ body {
 
 .footer__list a,
 .footer__list p {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -483,7 +483,7 @@ ul>a {
 }
 
 .apps__title {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 600;
 	font-size: 24px;
@@ -543,7 +543,7 @@ ul>a {
 }
 
 .auth__remember a {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -615,7 +615,7 @@ ul>a {
 	height: 59px;
 	background: #8200AF;
 	border-radius: 7px;
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 500;
 	font-size: 24px;
@@ -644,7 +644,7 @@ ul>a {
 }
 
 .weed__title {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 36px;
@@ -748,7 +748,7 @@ ul>a {
 .weed-item__info,
 .weed-item__action,
 .weed-item__date {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -761,6 +761,12 @@ ul>a {
 
 .weed-item__action {
 	margin: 0 0 0 12px;
+	background: transparent;
+}
+
+.weed-item__action:hover {
+	border: none;
+	text-decoration: underline;
 }
 
 .weed-item__action--grey {
@@ -889,7 +895,7 @@ ul>a {
 
 .create__description,
 .find__description {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -933,7 +939,7 @@ ul>a {
 
 .create__title__text>p,
 .find__title__text>p {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 300;
 	font-size: 48px;
@@ -959,7 +965,7 @@ textarea {
 	border: 1px solid rgba(0, 0, 0, 0);
 	transition: 0.3s ease-in;
 	box-sizing: border-box;
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 600;
 	font-size: 18px;
@@ -968,7 +974,7 @@ textarea {
 
 input::placeholder,
 textarea::placeholder {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	color: #ACACAC;
@@ -1025,7 +1031,7 @@ input::-webkit-inner-spin-button {
 .description__main__title>p,
 .number__main__title>p,
 .info__title {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 24px;
@@ -1038,7 +1044,7 @@ input::-webkit-inner-spin-button {
 
 .description__additional>p,
 .number__additional>p {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 14px;
@@ -1151,7 +1157,7 @@ input::-webkit-inner-spin-button {
 }
 
 .add__text>p>b {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 600;
 	font-size: 18px;
@@ -1208,7 +1214,7 @@ input#rules:checked+label::before {
 
 .submit__checkbox label,
 .submit__checkbox a {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 14px;
@@ -1433,7 +1439,7 @@ input#rules:checked+label::before {
 
 .reviews__title p,
 .gallery__title p {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 24px;
@@ -1502,7 +1508,7 @@ input#rules:checked+label::before {
 .user__birthday,
 .user__sex {
 	margin: 16px 0px 0px 0px;
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -1527,7 +1533,7 @@ input#rules:checked+label::before {
 }
 
 .user__exit>button p {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -1642,7 +1648,7 @@ input#rules:checked+label::before {
 }
 
 .card__name>p {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 600;
 	font-size: 24px;
@@ -1651,7 +1657,7 @@ input#rules:checked+label::before {
 
 .card__date>p {
 	margin: 4px 0 18px 0;
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -1659,7 +1665,7 @@ input#rules:checked+label::before {
 }
 
 .card__text>p {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 600;
 	font-size: 24px;
@@ -1733,7 +1739,7 @@ input#rules:checked+label::before {
 }
 
 .cabinet__title__text {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 600;
 	font-size: 24px;
@@ -1824,7 +1830,7 @@ input#rules:checked+label::before {
 
 .application__main {
 	display: flex;
-	overflow-x: scroll;
+	overflow-x: auto;
 	padding: 0 0 24px 0;
 }
 
@@ -1855,7 +1861,7 @@ input#rules:checked+label::before {
 .application__title,
 .inforamtion__title>p {
 	margin: 0px 0px 24px 0px;
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 24px;
@@ -1915,7 +1921,7 @@ input#rules:checked+label::before {
 }
 
 .description__main p {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 24px;
@@ -1929,7 +1935,7 @@ input#rules:checked+label::before {
 .information__address__full p,
 .user__title__description p,
 .user__title__description {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: normal;
 	font-size: 24px;
@@ -1981,7 +1987,7 @@ input#rules:checked+label::before {
 
 .application__name p,
 .application__edit p {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 600;
 	font-size: 18px;
@@ -2052,7 +2058,7 @@ input#rules:checked+label::before {
 	height: 59px;
 	background: #8200AF;
 	border-radius: 7px;
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 500;
 	font-size: 24px;
@@ -2071,7 +2077,7 @@ input#rules:checked+label::before {
 	height: 59px;
 	background: #9d001f;
 	border-radius: 7px;
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 500;
 	font-size: 24px;
@@ -2178,7 +2184,7 @@ input#rules:checked+label::before {
 }
 
 .close__title {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 600;
 	font-size: 24px;
@@ -2215,14 +2221,14 @@ input#select_city_modal {
 	height: 42px;
 	border: 2px solid #FFFFFF;
 	border-radius: 7px;
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-size: 18px;
 	color: #fff;
 }
 
 input#select_city_modal::placeholder {
-	font-family: "JostStandart";
+	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
 	font-weight: 600;
 	font-size: 18px;
@@ -3533,7 +3539,7 @@ input[type="number"]:focus {
 		right: 0;
 	}
 	.gallery__main {
-		overflow-x: scroll;
+		overflow-x: auto;
 		padding: 0 0 14px 0;
 	}
 	.gallery__card,

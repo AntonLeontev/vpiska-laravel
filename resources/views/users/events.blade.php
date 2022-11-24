@@ -132,10 +132,14 @@
 
                                         <div class="weed-item__info">
                                             <div class="weed-item__name">
-                                                <a href="" class="weed-item__action">Принять</a>
+                                                <x-common.form action="{{route('orders.accept', $order->id)}}" method="post">
+                                                    <input type="submit" class="weed-item__action" value="Принять">
+                                                </x-common.form>
                                             </div>
                                             <div class="weed-item__price">
-                                                <a href="" class="weed-item__action">Отказать</a>
+                                                <x-common.form action="{{route('orders.decline', $order->id)}}" method="post">
+                                                    <input type="submit" class="weed-item__action" value="Отказать">
+                                                </x-common.form>
                                             </div>
                                         </div>
                                     </div>

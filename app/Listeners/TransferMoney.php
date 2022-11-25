@@ -8,7 +8,7 @@ use App\Events\EventCanceled;
 use App\Events\OrderAccepted;
 use App\Events\OrderCanceled;
 use App\Events\OrderDeclined;
-use App\Models\BalanceTransfer;
+use App\Models\Transactions;
 
 class TransferMoney
 {
@@ -35,7 +35,7 @@ class TransferMoney
 
 		$customer->updateOrFail(['balance' => $customer->balance - $price - $fee]);
 
-		BalanceTransfer::create([
+		Transactions::create([
 			'user_id'     => $customer->id,
 			'type'        => 'payment',
 			'sum'         => $price,
@@ -43,7 +43,7 @@ class TransferMoney
 			'order_id'    => $orderCreated->order->id,
 		]);
 
-		BalanceTransfer::create([
+		Transactions::create([
 			'user_id'     => $customer->id,
 			'type'        => 'payment',
 			'sum'         => $fee,
@@ -59,11 +59,11 @@ class TransferMoney
 
 		$customer->update(['balance' => $customer->balance + $price]);
 
-		BalanceTransfer::create([
+		Transactions::create([
 			'user_id'     => $customer->id,
 			'type'        => 'refund',
 			'sum'         => $price,
-			'description' => "Возврат средств за заказ",
+			'description' => "Возврат оплаты заказа",
 			'order_id'    => $canceledOrderEvent->order->id,
 		]);
 	}
@@ -86,7 +86,7 @@ class TransferMoney
 
 		$customer->updateOrFail(['balance' => $customer->balance + $price + $fee]);
 
-		BalanceTransfer::create([
+		Transactions::create([
 			'user_id'     => $customer->id,
 			'type'        => 'refund',
 			'sum'         => $price,
@@ -94,7 +94,7 @@ class TransferMoney
 			'order_id'    => $orderDeclinedEvent->order->id,
 		]);
 
-		BalanceTransfer::create([
+		Transactions::create([
 			'user_id'     => $customer->id,
 			'type'        => 'refund',
 			'sum'         => $fee,

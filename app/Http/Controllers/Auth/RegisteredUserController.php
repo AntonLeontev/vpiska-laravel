@@ -38,12 +38,12 @@ class RegisteredUserController extends Controller
         $user = User::create(['first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,'sex' => $request->sex,
-            'password' => bcrypt($request->password),            
+            'password' => bcrypt($request->password),
         ]);
 
-        // event(new Registered($user));
+         event(new Registered($user));
 
         Auth::login($user);
-        return Response::json(['status' => 'ok', 'redirect' => route('home')]);      
+        return Response::json(['status' => 'ok', 'redirect' => route('home')]);
     }
 }

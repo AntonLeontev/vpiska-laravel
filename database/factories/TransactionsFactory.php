@@ -8,15 +8,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BalanceTransfer>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Transactions>
  */
-class BalanceTransferFactory extends Factory
+class TransactionsFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition()
     {
         $type = Arr::random(['refund', 'payment', 'withdrawal', 'refill']);
@@ -26,7 +21,7 @@ class BalanceTransferFactory extends Factory
             'user_id' => User::inRandomOrder()->first(),
             'order_id' => $order_id,
             'type' => $type,
-            'sum' => rand(0, 2000),
+            'sum' => random_int(0, 2000),
             'description' => fake()->text(20),
         ];
     }

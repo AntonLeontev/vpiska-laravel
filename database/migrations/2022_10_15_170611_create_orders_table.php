@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->referenced('users')->cascadeOnDelete();
             $table->string('payment_id');
             $table->integer('status')->default(0);
-            $table->string('code', 5);
+            $table->string('code', 6);
             $table->timestamps();
         });
     }

@@ -106,7 +106,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function balanceTransfers()
     {
-        return $this->hasMany(BalanceTransfer::class);
+        return $this->hasMany(Transactions::class);
     }
 
     public function feedbacks()

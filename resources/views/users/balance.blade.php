@@ -72,21 +72,19 @@
                                 История операций
                             </h4>
                             <table class="table-history" cellspacing="0">
-                                <thead>
+                                {{-- <thead>
                                     <tr>
                                         <th>Дата</th>
-                                        <th>Тип</th>
                                         <th>Сумма</th>
                                         <th>Описание</th>
                                     </tr>
-                                </thead>
+                                </thead> --}}
                                 <tbody>
                                     @foreach (auth()->user()->balanceTransfers->sortByDesc('created_at') as $transfer)
                                         <tr>
                                             <td>{{$transfer->date}}</td>
-                                            <td>{{$transfer->type}}</td>
-                                            <td>{{$transfer->sum}} р</td>
                                             <td>{{$transfer->description}}</td>
+                                            <td>{{$transfer->signedSum}} р</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

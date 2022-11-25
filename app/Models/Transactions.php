@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class BalanceTransfer extends Model
+class Transactions extends Model
 {
     use HasFactory;
 
@@ -19,9 +19,25 @@ class BalanceTransfer extends Model
         'description',
     ];
 
-    public function getDateAttribute()
+    public function getDateAttribute(): string
     {
-        return Carbon::parse($this->created_at)->format('d-m-Y H:i');
+        return Carbon::parse($this->created_at)->translatedFormat('d M y');
+    }
+
+    public function getSignedSumAttribute(): string
+    {
+        $positiveTypes = ['refund', 'refill'];
+        $negativeTypes = ['payment', 'withdrawal'];
+
+        if (in_array($this->type, $positiveTypes)) {
+            return '+' . (string) $this->sum;
+        }
+
+        if (in_array($this->type, $negativeTypes)) {
+            return '-' . (string) $this->sum;
+        }
+
+        return (string) $this->sum;
     }
 
     protected function sum(): Attribute

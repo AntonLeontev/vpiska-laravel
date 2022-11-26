@@ -6,15 +6,10 @@ use App\Events\EventCanceled;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Http\Requests\EventRequest;
-use App\Mail\EmailConfirmationMail;
 use App\Models\EventImage;
-use App\Models\TemporaryImage;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
-use JavaScript;
 
 class EventController extends Controller
 {

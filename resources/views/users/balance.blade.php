@@ -51,18 +51,16 @@
                         </div>
                         <div class="withdrawal__code activate-code">
                             {{-- //TODO code activation --}}
-                            <form action="#">
+                            <x-common.form action="{{route()}}" method="POST">
                                 <h4 class="form-title">Активация кода</h4>
                                 <div class="activate-code__row">
-
                                     <input name="with_code" id="with_code" type="text"
                                         class="form-control activate-code__input" placeholder="Введите код">
-                                    <input type="hidden" value="{{ auth()->user()->id }}" name="with_user" id="with_user">
                                     <div class="activate-code__btn">
                                         <button id="activate_code" class="btn btn--purple">Активировать</button>
                                     </div>
                                 </div>
-                            </form>
+                            </x-common.form>
                         </div>
                         <div class="activate-code__btn">
                             <a href="#with_mom"><button class="btn btn--purple">Вывод средств</button></a>

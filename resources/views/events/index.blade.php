@@ -10,12 +10,12 @@
                     <div class="find__title">
                         <h3>Поиск вписки</h3>
                     </div>
-
-                    {{-- //TODO Если вписок в городе нет. Проверка на город
+                    @if($events->isEmpty())
 						<div class="find__text">
-            <h3>В вашем городе, никто не собирает компанию <br> но вы можете сами её <a href="{{route('event.create')}}">создать</a></h3>
-          </div> --}}
-
+                            <h3>В вашем городе, никто не собирает компанию <br>
+                                но вы можете сами её <a href="{{route('events.create')}}">собрать</a></h3>
+                        </div>
+                    @endif
                     <div class="find__cards">
                         @foreach ($events as $event)
                             <a class="find__link" href="{{ route('events.show', $event->id) }}">
@@ -47,9 +47,7 @@
                                             <span></span>
                                         </div>
 
-                                        </p>
                                     </div>
-
                                     <div class="find-card__date">
                                         <p>
                                             <span>Начало:</span> {{ $event->starts_at }}

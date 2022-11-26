@@ -2,6 +2,12 @@
 
 @section('title', 'Вечеринка')
 
+@auth
+    @php
+        $currentUserOrder = $event->currentUserOrder()
+    @endphp
+@endauth
+
 @section('content')
     <div class="content">
         <div class="activity">
@@ -28,7 +34,7 @@
                                 <label class="pay_from_account">
                                     <input type="checkbox" class="pay_from_account_checkbox" name="pay_from_account"
                                         id="pay_from_account">
-                                    Оплатить со счета (на счету {{ auth()->user()->balance }} р)
+                                    Оплатить со счета (баланс {{ auth()->user()->balance }} р)
                                 </label>
                             @endif
                             <br>
@@ -79,10 +85,10 @@
                         </div>
                         <div class="information__address">
                             <div class="information__address__city">
-                                <p><b>Адрес:</b> г.{{ $event->city_name }},</p>
+                                <p><b>Адрес:</b> г {{ $event->city_name }},</p>
                             </div>
                             <div class="information__address__full">
-                                <p>ул. {{ $event->street }}, дом №{{ $event->building }}</p>
+                                <p>{{$event->street_type}} {{ $event->street }}, дом {{ $event->building }}</p>
                             </div>
                         </div>
                         <div class="description__main">
@@ -101,7 +107,7 @@
                         <x-common.alert>Вы организатор этого мероприятия</x-common.alert>
 
                         @php
-                            $hasOrders = $event->orders->count() > 0;
+                            $hasOrders = (bool) $event->orders->count() > 0;
                         @endphp
                         <div class="creator_controls">
                             <a @class([
@@ -126,11 +132,11 @@
                         <x-common.alert>
                             @isPaid($event)
                                 Вы подавали заявку на вписку. Заявка оплачена
-                                @if ($event->currentUserOrder()->status === 0)
+                                @if ($currentUserOrder->status === 0)
                                     и на одобрении организатора
-                                @elseif ($event->currentUserOrder()->status === 1)
+                                @elseif ($currentUserOrder->status === 1)
                                     и одобрена
-                                @elseif ($event->currentUserOrder()->status === 2)
+                                @elseif ($currentUserOrder->status === 2)
                                     и отклонена. Деньги вернулись на счет
                                 @endif
                             @else
@@ -143,6 +149,13 @@
                         @endif
                     @endisOrdered
 
+                    @if ($currentUserOrder->status == 1)
+                        <div>
+                            <h3 class="close__title">Заявка одобрена</h3>
+                            <p>Предъявите код организатору при входе на мероприятие</p>
+                            <p class="modal-code">Код: {{$currentUserOrder->code}}</p>
+                        </div>
+                    @endif
                 @endauth
 
                 {{-- Мобильные кнопки оплаты или отмены --}}
@@ -177,15 +190,14 @@
                         </div>
                     </a>
                 @else
-                    @if ($event->currentUserOrder()->status < 2)
-                        <div class="button__cancel cancel_order_button" data-user_id="{{ auth()->user()->id }}"
-                            data-event_id="{{ $event->id }}">
+                    @if ($currentUserOrder->status < 2)
+                        <a class="button__cancel cancel_order_button" href="#cancel-order">
                             <div class="pay__text">
                                 <p>
                                     ОТМЕНИТЬ
                                 </p>
                             </div>
-                        </div>
+                        </a>
                     @endif
                 @endisPaid
 
@@ -262,16 +274,16 @@
                                             </div>
                                             <div class="add__text">
                                                 <p><b>
-                                                    @if ($event->currentUserOrder()->status === 0)
+                                                    @if ($currentUserOrder->status === 0)
                                                         На рассмотрении
-                                                    @elseif ($event->currentUserOrder()->status === 1)
+                                                    @elseif ($currentUserOrder->status === 1)
                                                         Одобрена
-                                                    @elseif ($event->currentUserOrder()->status === 2)
+                                                    @elseif ($currentUserOrder->status === 2)
                                                         Отклонена
                                                     @endif
                                                 </b></p>
                                             </div>
-                                            @if ($event->currentUserOrder()->status < 2)
+                                            @if ($currentUserOrder->status < 2)
                                                 <div class="add__text cancel_order_button">Отменить</div>
                                             @endif
                                         </div>
@@ -334,7 +346,7 @@
                                             @auth
                                                 @if ($order->customer->id === auth()->user()->id)
                                                 <div class="add__text cancel_order_button" data-user_id="{{$order->customer->id}}" data-activity_id="{{$event->id}}">
-                                                    Отменить
+                                                    Это вы
                                                 </div>
                                                 @else
                                                     <div class="rating-mini">
@@ -352,38 +364,25 @@
                             </a>
                         @endforeach
                     </div>
-                    @auth
-                        {{-- <x-common.modal id="">
-                            @if ($event->currentUserOrder()->status == 0)
-                                <h4>Ожидает одобрения</h4>
-                            @elseif ($event->currentUserOrder()->status == 1)
-                                <h4>Заявка одобрена</h4>
-                                <h5>Информация...</h5>
-                                <h6>Код - </h6>
-                            @elseif ($event->currentUserOrder()->status == 2)
-                                <h4>Заявку отклонили</h4>
-                            @endif
-                        </x-common.modal> --}}
-
-                        @endauth
-                    </div>
-
-                    <button id="share-button">Позвать друзей</button>
                 </div>
+                <button id="share-button">Позвать друзей</button>
             </div>
-            @auth
-            @isPaid($event)
-            @if($event->currentUserOrder()->status < 2)
-                <x-common.modal id='cancel-order'>
+        </div>
+        @auth
+        @isPaid($event)
+        @if($currentUserOrder->status < 2)
+            <x-common.modal id='cancel-order'>
+                <div>
                     <h3 class="close__title">Отмена заказа</h3>
                     <p>Оплата мероприятия в размере {{$event->price}} р будет возвращена на счет. Комиссия в размере {{$event->fee}} р не возвращается</p>
-                    <x-common.form method="delete" action="{{route('orders.delete', $event->currentUserOrder()->id)}}">
+                    <x-common.form method="delete" action="{{route('orders.delete', $currentUserOrder->id)}}">
                         <x-common.submit-button>
                             Отменить заказ
                         </x-common.submit-button>
                     </x-common.form>
-                </x-common.modal>
-            @endif
-            @endisPaid
-            @endauth
+                </div>
+            </x-common.modal>
+        @endif
+        @endisPaid
+        @endauth
 @endsection

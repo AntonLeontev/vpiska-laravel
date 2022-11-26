@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Models\Order;
 use App\Models\User;
 use App\Events\OrderCreated;
 use App\Events\EventCanceled;
@@ -18,7 +19,6 @@ class TransferMoney
 			EventCanceled::class => 'handleEventCanceled',
 			OrderCreated::class  => 'handleOrderCreated',
 			OrderCanceled::class => 'handleOrderCanceled',
-			OrderAccepted::class => 'handleOrderAccepted',
 			OrderDeclined::class => 'handleOrderDeclined',
 		];
 	}
@@ -29,77 +29,107 @@ class TransferMoney
 			return;
 		}
 
-		$customer = User::find($orderCreated->order->customer_id);
-		$price    = $orderCreated->order->event->price;
-		$fee      = $orderCreated->order->event->fee;
+		$this->doTransaction($orderCreated->order, true, true);
 
-		$customer->updateOrFail(['balance' => $customer->balance - $price - $fee]);
-
-		Transactions::create([
-			'user_id'     => $customer->id,
-			'type'        => 'payment',
-			'sum'         => $price,
-			'description' => "Оплата заказа",
-			'order_id'    => $orderCreated->order->id,
-		]);
-
-		Transactions::create([
-			'user_id'     => $customer->id,
-			'type'        => 'payment',
-			'sum'         => $fee,
-			'description' => "Оплата комиссии",
-			'order_id'    => $orderCreated->order->id,
-		]);
+        $this->createPaymentPriceTransaction($orderCreated->order);
+        $this->createPaymentFeeTransaction($orderCreated->order);
 	}
 
 	public function handleOrderCanceled(OrderCanceled $canceledOrderEvent)
 	{
-		$customer = User::find($canceledOrderEvent->order->customer_id);
-		$price    = $canceledOrderEvent->order->event->price;
+        $this->doTransaction($canceledOrderEvent->order, false, false);
 
-		$customer->update(['balance' => $customer->balance + $price]);
-
-		Transactions::create([
-			'user_id'     => $customer->id,
-			'type'        => 'refund',
-			'sum'         => $price,
-			'description' => "Возврат оплаты заказа",
-			'order_id'    => $canceledOrderEvent->order->id,
-		]);
+        $this->createRefundPriceTransaction($canceledOrderEvent->order);
 	}
 
-	public function handleEventCanceled(EventCanceled $event)
+	public function handleEventCanceled(EventCanceled $eventCanceled)
 	{
-		//TODO write method
+		$orders = $eventCanceled->event->orders;
+        foreach ($orders as $order) {
+            $this->doTransaction($order, false, true);
+
+            $this->createRefundPriceTransaction($order);
+            $this->createRefundFeeTransaction($order);
+        }
 	}
 
-	public function handleOrderAccepted(OrderAccepted $event)
+    public function handleOrderDeclined(OrderDeclined $orderDeclinedEvent)
 	{
-		//
+		$this->doTransaction($orderDeclinedEvent->order, false, true);
+
+        $this->createRefundPriceTransaction($orderDeclinedEvent->order);
+        $this->createRefundFeeTransaction($orderDeclinedEvent->order);
 	}
 
-	public function handleOrderDeclined(OrderDeclined $orderDeclinedEvent)
-	{
-		$customer = User::find($orderDeclinedEvent->order->customer_id);
-		$price    = $orderDeclinedEvent->order->event->price;
-		$fee      = $orderDeclinedEvent->order->event->fee;
+    private function doTransaction(Order $order, bool $payment, bool $withFee): void
+    {
+        $customer = User::find($order->customer_id);
+        $price    = $order->event->price;
+        $fee      = 0;
 
-		$customer->updateOrFail(['balance' => $customer->balance + $price + $fee]);
+        if ($withFee) {
+            $fee = $order->event->fee;
+        }
 
-		Transactions::create([
-			'user_id'     => $customer->id,
-			'type'        => 'refund',
-			'sum'         => $price,
-			'description' => "Возврат оплаты заказа",
-			'order_id'    => $orderDeclinedEvent->order->id,
-		]);
+        if ($payment) {
+            $this->pay($customer, $price, $fee);
+            return;
+        }
 
-		Transactions::create([
-			'user_id'     => $customer->id,
-			'type'        => 'refund',
-			'sum'         => $fee,
-			'description' => "Возврат комиссии",
-			'order_id'    => $orderDeclinedEvent->order->id,
-		]);
-	}
+        $this->refund($customer, $price, $fee);
+    }
+
+    private function pay(User $customer, int $price, int $fee): void
+    {
+        $customer->updateOrFail(['balance' => $customer->balance - $price - $fee]);
+    }
+
+    private function refund(User $customer, int $price, int $fee): void
+    {
+        $customer->updateOrFail(['balance' => $customer->balance + $price + $fee]);
+    }
+
+    private function createRefundPriceTransaction(Order $order): void
+    {
+        Transactions::create([
+            'user_id'     => $order->customer_id,
+            'type'        => 'refund',
+            'sum'         => $order->event->price,
+            'description' => "Возврат оплаты заказа",
+            'order_id'    => $order->id,
+        ]);
+    }
+
+    private function createRefundFeeTransaction(Order $order): void
+    {
+        Transactions::create([
+            'user_id'     => $order->customer_id,
+            'type'        => 'refund',
+            'sum'         => $order->event->fee,
+            'description' => "Возврат комиссии",
+            'order_id'    => $order->id,
+        ]);
+    }
+
+    private function createPaymentPriceTransaction(Order $order): void
+    {
+        Transactions::create([
+            'user_id'     => $order->customer_id,
+            'type'        => 'payment',
+            'sum'         => $order->event->price,
+            'description' => "Оплата заказа",
+            'order_id'    => $order->id,
+        ]);
+    }
+
+    private function createPaymentFeeTransaction(Order $order): void
+    {
+        Transactions::create([
+            'user_id'     => $order->customer_id,
+            'type'        => 'payment',
+            'sum'         => $order->event->fee,
+            'description' => "Оплата комиссии",
+            'order_id'    => $order->id,
+        ]);
+    }
 }

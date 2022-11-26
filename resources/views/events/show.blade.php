@@ -88,11 +88,22 @@
                                 <p><b>Адрес:</b> г {{ $event->city_name }},</p>
                             </div>
                             <div class="information__address__full">
-                                <p>{{$event->street_type}} {{ $event->street }}, дом {{ $event->building }}</p>
+                                <p>{{$event->full_street }}, дом {{ $event->building }}</p>
                             </div>
                         </div>
                         <div class="description__main">
                             <p>{{ $event->description }}</p>
+                        </div>
+                        <div>
+                            @auth
+                                @if (in_array($currentUserOrder->status, [1, 3]))
+                                    <div class="user__title__main">
+                                        <p>Телефон: {{$event->formated_phone}}</p>
+                                        <p class="modal-code">Код: {{$currentUserOrder->code}}</p>
+                                        <p>Предъявите код организатору при входе на мероприятие</p>
+                                    </div>
+                                @endif
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -148,14 +159,6 @@
                         <x-common.alert>Свободных мест на мероприятие нет</x-common.alert>
                         @endif
                     @endisOrdered
-
-                    @if ($currentUserOrder->status == 1)
-                        <div>
-                            <h3 class="close__title">Заявка одобрена</h3>
-                            <p>Предъявите код организатору при входе на мероприятие</p>
-                            <p class="modal-code">Код: {{$currentUserOrder->code}}</p>
-                        </div>
-                    @endif
                 @endauth
 
                 {{-- Мобильные кнопки оплаты или отмены --}}
@@ -190,7 +193,7 @@
                         </div>
                     </a>
                 @else
-                    @if ($currentUserOrder->status < 2)
+                    @if ($currentUserOrder->status != 2)
                         <a class="button__cancel cancel_order_button" href="#cancel-order">
                             <div class="pay__text">
                                 <p>
@@ -259,7 +262,8 @@
                             <p>Уже вписались</p>
                         </div>
                         <div class="title__2">
-                            <p>{{ $event->orders->where('status', 1)->count() ?? 0 }}/{{ $event->max_members }}</p>
+                            <p>
+                                {{ $event->orders->whereIn('status', [1, 3])->count() ?? 0 }}/{{ $event->max_members }}</p>
                         </div>
                     </div>
                     <div class="application__main" id="application__main">
@@ -280,6 +284,8 @@
                                                         Одобрена
                                                     @elseif ($currentUserOrder->status === 2)
                                                         Отклонена
+                                                    @elseif ($currentUserOrder->status === 3)
+                                                        Одобрена
                                                     @endif
                                                 </b></p>
                                             </div>
@@ -345,7 +351,7 @@
                                             @endguest
                                             @auth
                                                 @if ($order->customer->id === auth()->user()->id)
-                                                <div class="add__text cancel_order_button" data-user_id="{{$order->customer->id}}" data-activity_id="{{$event->id}}">
+                                                <div class="add__text cancel_order_button">
                                                     Это вы
                                                 </div>
                                                 @else
@@ -365,6 +371,55 @@
                         @endforeach
                     </div>
                 </div>
+                <div class="activity__application">
+                            <div class="application__title">
+                                <div class="title__1">
+                                    <p>Уже на месте</p>
+                                </div>
+                            </div>
+                            <div class="application__main" id="application__main">
+
+                                    @foreach ($event->orders->where('status', 3) as $order)
+                                        <a href="{{route('users.show', $order->customer->id)}}">
+                                            <div class="application__card">
+                                                <div class="application__photo"><img src="{{$order->customer->photo_path}}" alt="user"></div>
+                                                <div class="application__name">
+                                                    <p>{{$order->customer->full_name}}</p>
+                                                </div>
+                                                <div class="application__edit">
+                                                    <p>
+                                                    @guest
+                                                        <div class="rating-mini">
+                                                            <span class="active"></span>
+                                                            <span></span>
+                                                            <span></span>
+                                                            <span></span>
+                                                            <span></span>
+                                                        </div>
+                                                    @endguest
+                                                    @auth
+                                                        @if ($order->customer->id === auth()->user()->id)
+                                                            <div class="add__text cancel_order_button">
+                                                                Это вы
+                                                            </div>
+                                                        @else
+                                                            <div class="rating-mini">
+                                                                <span class="active"></span>
+                                                                <span></span>
+                                                                <span></span>
+                                                                <span></span>
+                                                                <span></span>
+                                                            </div>
+                                                            @endif
+                                                            @endauth
+                                                            </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                            </div>
+                        </div>
+
                 <button id="share-button">Позвать друзей</button>
             </div>
         </div>

@@ -77,13 +77,18 @@ class Event extends Model
 
     public function getFullStreetAttribute()
     {
-        return "{$this->street_type} {$this->street_name}";
+        return "{$this->street_type} {$this->street}";
+    }
+
+    public function getFormatedPhoneAttribute(): string
+    {
+        return sprintf('+%s(%s%s%s)%s%s%s-%s%s-%s%s', ...str_split($this->phone));
     }
 
     public function currentUserOrder(): Order
     {
         if (!auth()->user()) {
-            throw new Exception("Поиск заказов у неавторизованного пользователя", 1);            
+            throw new Exception("Поиск заказов у неавторизованного пользователя", 1);
         }
 
         return $this->orders->first(function ($value) {

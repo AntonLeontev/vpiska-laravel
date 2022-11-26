@@ -62,14 +62,15 @@
 
                                     <div class="find-card__address find-card__address--none">
                                         <p>
-                                            <span>Адрес:</span> г.{{ $event->city_name }}, ул.{{ $event->street }}, дом
-                                            {{ $event->building }}
+                                            <span>Адрес:</span> г {{ $event->city_name }}, {{ $event->full_street }},
+                                            дом {{ $event->building }}
                                         </p>
                                     </div>
                                     <div class="find-card__busy">
                                         <p>
-                                            <span>Занято мест:</span>
-                                            {{ $event->orders->where('status', 1)->count() ?? 0 }}/{{ $event->max_members }}
+                                            <span>Свободно мест:</span>
+                                            {{ $event->max_members - ($event->orders->whereIn('status', [1, 3])->count() ?? 0) }}
+                                            из {{$event->max_members}}
                                         </p>
                                     </div>
 

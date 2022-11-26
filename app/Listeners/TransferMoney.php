@@ -2,6 +2,8 @@
 
 namespace App\Listeners;
 
+use App\Enums\TransactionType;
+use App\Events\OrderCompleted;
 use App\Models\Order;
 use App\Models\User;
 use App\Events\OrderCreated;
@@ -20,10 +22,11 @@ class TransferMoney
 			OrderCreated::class  => 'handleOrderCreated',
 			OrderCanceled::class => 'handleOrderCanceled',
 			OrderDeclined::class => 'handleOrderDeclined',
+            OrderCompleted::class => 'handleOrderCompleted',
 		];
 	}
 
-	public function handleOrderCreated(OrderCreated $orderCreated)
+	public function handleOrderCreated(OrderCreated $orderCreated): void
 	{
 		if ($orderCreated->order->payment_id !== 'balance') {
 			return;
@@ -35,14 +38,14 @@ class TransferMoney
         $this->createPaymentFeeTransaction($orderCreated->order);
 	}
 
-	public function handleOrderCanceled(OrderCanceled $canceledOrderEvent)
+	public function handleOrderCanceled(OrderCanceled $orderCanceled): void
 	{
-        $this->doTransaction($canceledOrderEvent->order, false, false);
+        $this->doTransaction($orderCanceled->order, false, false);
 
-        $this->createRefundPriceTransaction($canceledOrderEvent->order);
+        $this->createRefundPriceTransaction($orderCanceled->order);
 	}
 
-	public function handleEventCanceled(EventCanceled $eventCanceled)
+	public function handleEventCanceled(EventCanceled $eventCanceled): void
 	{
 		$orders = $eventCanceled->event->orders;
         foreach ($orders as $order) {
@@ -53,13 +56,29 @@ class TransferMoney
         }
 	}
 
-    public function handleOrderDeclined(OrderDeclined $orderDeclinedEvent)
+    public function handleOrderDeclined(OrderDeclined $orderDeclined): void
 	{
-		$this->doTransaction($orderDeclinedEvent->order, false, true);
+		$this->doTransaction($orderDeclined->order, false, true);
 
-        $this->createRefundPriceTransaction($orderDeclinedEvent->order);
-        $this->createRefundFeeTransaction($orderDeclinedEvent->order);
+        $this->createRefundPriceTransaction($orderDeclined->order);
+        $this->createRefundFeeTransaction($orderDeclined->order);
 	}
+
+    public function handleOrderCompleted(OrderCompleted $orderCompleted): void
+    {
+        $creator = User::find($orderCompleted->order->event->creator_id);
+        $price   = $orderCompleted->order->event->price;
+
+        $creator->updateOrFail(['balance' => $creator->balance + $price]);
+
+        Transactions::create([
+            'user_id'     => $creator->id,
+            'type'        => TransactionType::refill->name,
+            'sum'         => $price,
+            'description' => "Оплата за участие во вписке",
+            'order_id'    => $orderCompleted->order->id,
+        ]);
+    }
 
     private function doTransaction(Order $order, bool $payment, bool $withFee): void
     {
@@ -93,7 +112,7 @@ class TransferMoney
     {
         Transactions::create([
             'user_id'     => $order->customer_id,
-            'type'        => 'refund',
+            'type'        => TransactionType::refund->name,
             'sum'         => $order->event->price,
             'description' => "Возврат оплаты заказа",
             'order_id'    => $order->id,
@@ -104,7 +123,7 @@ class TransferMoney
     {
         Transactions::create([
             'user_id'     => $order->customer_id,
-            'type'        => 'refund',
+            'type'        => TransactionType::refund->name,
             'sum'         => $order->event->fee,
             'description' => "Возврат комиссии",
             'order_id'    => $order->id,
@@ -115,7 +134,7 @@ class TransferMoney
     {
         Transactions::create([
             'user_id'     => $order->customer_id,
-            'type'        => 'payment',
+            'type'        => TransactionType::payment->name,
             'sum'         => $order->event->price,
             'description' => "Оплата заказа",
             'order_id'    => $order->id,
@@ -126,7 +145,7 @@ class TransferMoney
     {
         Transactions::create([
             'user_id'     => $order->customer_id,
-            'type'        => 'payment',
+            'type'        => TransactionType::payment->name,
             'sum'         => $order->event->fee,
             'description' => "Оплата комиссии",
             'order_id'    => $order->id,

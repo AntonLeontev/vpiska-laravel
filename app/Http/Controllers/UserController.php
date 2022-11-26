@@ -29,7 +29,7 @@ class UserController extends Controller
     public function userEvents()
     {
         $userEvents = Event::where('creator_id', Auth::user()->id)
-            ->where('ends_at', '>', Carbon::create('now'))
+            ->where('ends_at', '>', now())
             ->with('orders')
             ->get();
 

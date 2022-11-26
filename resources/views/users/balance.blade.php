@@ -51,10 +51,10 @@
                         </div>
                         <div class="withdrawal__code activate-code">
                             {{-- //TODO code activation --}}
-                            <x-common.form action="{{route()}}" method="POST">
+                            <x-common.form action="{{route('activate_code')}}" method="POST">
                                 <h4 class="form-title">Активация кода</h4>
                                 <div class="activate-code__row">
-                                    <input name="with_code" id="with_code" type="text"
+                                    <input name="code" id="with_code" type="text"
                                         class="form-control activate-code__input" placeholder="Введите код">
                                     <div class="activate-code__btn">
                                         <button id="activate_code" class="btn btn--purple">Активировать</button>

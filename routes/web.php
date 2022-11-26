@@ -76,9 +76,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/orders/delete/{order}', [OrderController::class, 'destroy'])
         ->name('orders.delete');
     Route::post('/orders/accept/{order}', [OrderController::class, 'accept'])
-    ->name('orders.accept');
+        ->name('orders.accept');
     Route::post('/orders/decline/{order}', [OrderController::class, 'decline'])
-    ->name('orders.decline');
+        ->name('orders.decline');
+    Route::post('/activate_code', [OrderController::class, 'activateCode'])
+        ->name('activate_code');
 });
 
 /*------------------Static---------------------*/

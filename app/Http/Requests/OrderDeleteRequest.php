@@ -14,7 +14,8 @@ class OrderDeleteRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::user()->id === (int) $this->customer_id;
+        $order = $this->route('order');
+        return $order->customer_id === $this->user()->id;
     }
 
     /**

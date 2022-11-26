@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\EventCanceled;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Http\Requests\EventRequest;
@@ -86,8 +87,8 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
+        event(new EventCanceled($event));
         $event->deleteOrFail();
-        // TODO Event and Notification
         return Response::json(['status' => 'ok', 'redirect' => route('home')]);
     }
 }

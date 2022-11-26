@@ -148,10 +148,10 @@
                 {{-- Мобильные кнопки оплаты или отмены --}}
                 @unlessisPaid($event)
                     <a @guest
-                        href="#register_2" 
-                        @endguest 
+                        href="#register_2"
+                        @endguest
                         @auth
-                        href="#modal_order" 
+                        href="#modal_order"
                         @endauth>
                         <div class="button__pay">
                             <div class="pay__image">
@@ -188,7 +188,7 @@
                         </div>
                     @endif
                 @endisPaid
-            
+
                 <div class="activity__main">
                     <div class="main__gallery">
                         <div class="main__title">
@@ -225,8 +225,8 @@
                             <div class="chat__title">
                                 <p>Общий чат</p>
                             </div>
-                            <div class="chat__main" 
-                            data-user_id="{{ auth()->user()->id }}" 
+                            <div class="chat__main"
+                            data-user_id="{{ auth()->user()->id }}"
                             data-user_name="{{auth()->user()->full_name}}"
                             data-user_avatar="{{ auth()->user()->photo_path }}"
                             data-user_link="{{ route('users.show', auth()->user()->id) }}"
@@ -277,13 +277,13 @@
                                         </div>
                                     </a>
                                 @else
-                                    <a 
+                                    <a
                                     @guest
                                         href="#register_2"
-                                    @endguest  
+                                    @endguest
                                     @auth
                                         href="#modal_order"
-                                    @endauth 
+                                    @endauth
                                     >
                                         <div class="application__card__pay">
                                             <div class="add__image">
@@ -300,7 +300,7 @@
                                                         @else
                                                             Вписаться
                                                         @endisOrdered
-                                                    @endauth  
+                                                    @endauth
                                                 </b></p>
                                             </div>
                                             <div class="add__text">
@@ -367,22 +367,23 @@
 
                         @endauth
                     </div>
-                    
+
                     <button id="share-button">Позвать друзей</button>
                 </div>
             </div>
             @auth
-                @isPaid($event)
+            @isPaid($event)
+            @if($event->currentUserOrder()->status < 2)
                 <x-common.modal id='cancel-order'>
                     <h3 class="close__title">Отмена заказа</h3>
                     <p>Оплата мероприятия в размере {{$event->price}} р будет возвращена на счет. Комиссия в размере {{$event->fee}} р не возвращается</p>
                     <x-common.form method="delete" action="{{route('orders.delete', $event->currentUserOrder()->id)}}">
-                        <input type="hidden" name="customer_id" value="{{$event->currentUserOrder()->customer_id}}">
                         <x-common.submit-button>
                             Отменить заказ
                         </x-common.submit-button>
                     </x-common.form>
                 </x-common.modal>
-                @endisPaid
+            @endif
+            @endisPaid
             @endauth
 @endsection

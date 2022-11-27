@@ -44,43 +44,10 @@
                                     <div class="weed-item__actions">
                                         <a href="{{ route('events.show', $event->id) }}"
                                             class="weed-item__action weed-item__action--grey">Перейти</a>
-                                        <!-- Ссыылка нп мероприятие -->
                                     </div>
                                 </div>
                             </div>
                         @endforeach
-
-
-                        {{-- Reviews --}}
-                        {{-- <div class="weed-item">
-                            <div class="weed-item__left">
-                                <div class="weed-item__icon">
-                                    <img src="{{Vite::image('icons/profile.svg"')}} alt="Написать отзыв">
-                                </div>
-                                <div class="weed-item__column">
-                                    <div class="weed-item__status">
-                                        Оставьте отзыв
-                                    </div>
-                                    <div class="weed-item__info">
-                                        <div class="weed-item__name">
-                                            Имя: <a href=""> </a>
-                                            <!-- Вывод имени и ссылки на профиль -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="weed-item__right">
-                                <div class="weed-item__date">
-                                    14.02.2022 12:41
-                                </div>
-                                <div class="weed-item__actions">
-                                    <a href=""
-                                        class="weed-item__action weed-item__action--grey">Перейти</a>
-                                    <!-- Вывод имени и ссылки на профиль -->
-                                </div>
-                            </div>
-                        </div> --}}
-
 
                     </div>
 
@@ -192,22 +159,10 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach                                                
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Модальное окно -->
-    <x-common.modal id="">
-        <h3 class="close__title">Информация по вписке</h3>
-        <p>Правила использования!</p>
-        <p>...</p>
-        <br>
-        <p>Номер телефона - <?php //print($act_number)
-        ?></p> <!-- Номер телефона -->
-        <p>Мероприятие - <a href="">перейти</a></p> <!-- Ссылка не мероприятие -->
-        <p>Создатель мероприятия - <a href=""><?php// print($cre_name) ?> ?> ?></a></p>
-        <!-- Ссылка на пользователя -->
-    </x-common.modal>
 @endsection

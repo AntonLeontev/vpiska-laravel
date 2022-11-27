@@ -182,7 +182,7 @@
                     <div class="header__message">
                         <div class="message__row">
                             <div class="message__status">
-                                <p id="weed">notif</p>
+                                <p id="weed">0</p>
                             </div>
                             <div class="message__img">
                                 <img src="{{ Vite::image('icons/bell.png') }}" alt="message">

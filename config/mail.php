@@ -47,13 +47,6 @@ return [
                 'address' => env('MAIL_FROM_ADDRESS'),
                 'name' => env('MAIL_FROM_NAME')
             ],
-            'stream' => [
-                'ssl' => [
-                    'allow_self_signed' => true,
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
-                ],
-            ],
         ],
 
         'debug' => [
@@ -68,6 +61,13 @@ return [
             'from' => [
                 'address' => env('MAIL_DEBUG_FROM_ADDRESS'),
                 'name' => env('MAIL_FROM_NAME')
+            ],
+            'stream' => [
+                'ssl' => [
+                    'allow_self_signed' => true,
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                ],
             ],
         ],
 

@@ -41,7 +41,7 @@ return [
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
-            'timeout' => 5,
+            'timeout' => 300,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
             'from' => [
                 'address' => env('MAIL_FROM_ADDRESS'),
@@ -51,7 +51,7 @@ return [
 
         'debug' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_DEBUG_HOST', 'smtp.mailgun.org'),
+            'host' => env('MAIL_DEBUG_HOST', 'smtp.mail.ru'),
             'port' => env('MAIL_DEBUG_PORT', 587),
             'encryption' => env('MAIL_DEBUG_ENCRYPTION', 'tls'),
             'username' => env('MAIL_DEBUG_USERNAME'),

@@ -47,6 +47,28 @@ return [
                 'address' => env('MAIL_FROM_ADDRESS'),
                 'name' => env('MAIL_FROM_NAME')
             ],
+            'stream' => [
+                'ssl' => [
+                    'allow_self_signed' => true,
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                ],
+            ],
+        ],
+
+        'debug' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_DEBUG_HOST', 'smtp.mailgun.org'),
+            'port' => env('MAIL_DEBUG_PORT', 587),
+            'encryption' => env('MAIL_DEBUG_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_DEBUG_USERNAME'),
+            'password' => env('MAIL_DEBUG_PASSWORD'),
+            'timeout' => 5,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+            'from' => [
+                'address' => env('MAIL_DEBUG_FROM_ADDRESS'),
+                'name' => env('MAIL_FROM_NAME')
+            ],
         ],
 
         'ses' => [

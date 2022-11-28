@@ -3,9 +3,11 @@
 @section('title', 'Вечеринка')
 
 @auth
+@isOrdered($event)
     @php
         $currentUserOrder = $event->currentUserOrder()
     @endphp
+@endisOrdered
 @endauth
 
 @section('content')
@@ -96,6 +98,7 @@
                         </div>
                         <div>
                             @auth
+                            @isOrdered ($event)
                                 @if (in_array($currentUserOrder->status, [1, 3]))
                                     <div class="user__title__main">
                                         <p>Телефон: {{$event->formated_phone}}</p>
@@ -103,6 +106,7 @@
                                         <p>Предъявите код организатору при входе на мероприятие</p>
                                     </div>
                                 @endif
+                            @endisOrdered
                             @endauth
                         </div>
                     </div>

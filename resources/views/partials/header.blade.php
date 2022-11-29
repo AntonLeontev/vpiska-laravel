@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <div class="title__button">
-                        <a href="/assets/vk.php">
+                        <a href="{{route('vk-redirect')}}">
                             <div class="title__button__style">
                                 <div class="style__image">
                                     <img src="{{ Vite::image('vk.svg') }}" alt="auth__button">
@@ -114,7 +114,7 @@
                             </div>
                         </div>
                         <div class="title__button ">
-                            <a href="/assets/vk.php ">
+                            <a href="{{route('vk-redirect')}}">
                                 <div class="title__button__style ">
                                     <div class="style__image ">
                                         <img src="{{ Vite::image('vk.svg') }}" alt="auth__button ">

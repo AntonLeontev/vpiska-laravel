@@ -32,6 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'balance',
         'photo_path',
         'remember_token',
+        'vk_id',
     ];
 
     protected $hidden = [
@@ -50,7 +51,12 @@ class User extends Authenticatable implements MustVerifyEmail
         //TODO Refactor
         static::creating(function (User $user) {
             if (!empty($user->photo_path)) {
-                $user->photo_path = $user->photo_path;
+                return;
+            }
+
+            if ($user->sex === 'undefined') {
+                // TODO Images for undefined sex
+                return;
             }
 
             if ($user->sex === 'female') {

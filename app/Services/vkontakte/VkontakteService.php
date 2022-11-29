@@ -17,7 +17,7 @@ class VkontakteService
 			'first_name'        => $vkUser->first_name,
 			'last_name'         => $vkUser->last_name,
 			'photo_path'        => $vkUser->getAvatar(),
-			'password'          => Hash::make('12345678'),
+			'password'          => Hash::make(str()->random(12)),
 			'email_verified_at' => now(),
 			'sex'               => $this->convertSex($vkUser->sex),
 		]);

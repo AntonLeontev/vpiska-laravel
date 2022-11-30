@@ -48,7 +48,8 @@ class UserController extends Controller
 
         $outgoingOrders = Auth::user()->orders
         ->filter(function ($order) {
-            return $order->event->starts_at > now()->format('Y-m-d H:i:s');
+            return $order->event->starts_at > now()
+            && ;
         })
         ->sort(function ($a, $b) {
             $b->event->starts_at <=> $a->event->starts_at;

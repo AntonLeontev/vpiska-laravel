@@ -17,6 +17,14 @@ class CypixService
 
 	public function transactionIsPaid(string $transactionId): bool
 	{
+		if (is_null($transactionId)) {
+			return false;
+		}
+
+		if ($transactionId === 'balance') {
+			return true;
+		}
+
 		$body = [
 			"transactionId" => $transactionId,
 		];

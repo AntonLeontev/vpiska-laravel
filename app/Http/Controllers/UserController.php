@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EditUserRequest;
 use App\Models\Event;
 use App\Models\Order;
+use App\Services\Cypix\CypixService;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -36,7 +37,10 @@ class UserController extends Controller
         $incomingOrders = [];
         foreach ($userEvents as $event) {
             $event->orders->each(function ($order) use (&$incomingOrders) {
-                if ($order->status === OrderStatus::Undefined->value) {
+                if (
+                    $order->status === OrderStatus::Undefined->value
+                    && app(CypixService::class)->transactionIsPaid($order->payment_id)
+                ) {
                     $incomingOrders[] = $order;
                 }
             });

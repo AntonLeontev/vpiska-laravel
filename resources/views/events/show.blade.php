@@ -22,6 +22,7 @@
                         <x-common.form action="{{route('orders.store')}}" method="POST">
                             <input type="hidden" name="event_id" value="{{ $event->id }}">
                             <input type="hidden" name="customer_id" value="{{ auth()->user()->id }}">
+                            <input type="hidden" name="amount" value="{{$event->price + $event->fee}}">
                             <div class="submit__checkbox">
                                 <label class="checkbox" for="rules">
                                     <input type="checkbox" id="rules" name="scales" required checked>

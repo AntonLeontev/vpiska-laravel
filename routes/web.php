@@ -8,13 +8,13 @@ use App\Http\Controllers\HomepageController;
 use App\Http\Middleware\PaymentIdMiddleware;
 use App\Http\Controllers\UserImageController;
 use App\Http\Controllers\ChangeCityController;
+use App\Http\Controllers\CypixController;
 use App\Http\Controllers\EventImageController;
 use App\Http\Controllers\TemporaryImageController;
 use App\Http\Middleware\Event\TimeHandleMiddleware;
 use App\Http\Middleware\Event\PhoneFormatMiddleware;
 
 Route::get('/', HomepageController::class)->name('home');
-
 
 Route::post('/change_city', ChangeCityController::class)->name('change_city');
 
@@ -96,5 +96,11 @@ Route::view('/processing-of-personal-data', 'static.processing-of-personal-data'
 ->name('processing');
 Route::view('/dissemination-of-personal-data', 'static.dissemination-of-personal-data')
 ->name('dissemination');
+
+/*------------------Payments---------------------*/
+Route::get('/pay', [CypixController::class, 'pay'])->name('pay');
+
+Route::get('/pay/notification', [CypixController::class, 'notificationGet'])->name('pay.notification');
+Route::post('/pay/notification', [CypixController::class, 'notificationPost']);
 
 require __DIR__ . '/auth.php';

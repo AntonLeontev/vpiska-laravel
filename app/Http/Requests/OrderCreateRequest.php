@@ -18,7 +18,8 @@ class OrderCreateRequest extends FormRequest
             'customer_id'      => ['required', 'exists:users,id'],
             'event_id'         => ['required', 'exists:events,id'],
             'scales'           => ['required', 'accepted'],
-            'pay_from_account' => ['required'],
+            'pay_from_account' => ['sometimes'],
+            'amount'           => ['required', 'numeric'],
         ];
     }
 }

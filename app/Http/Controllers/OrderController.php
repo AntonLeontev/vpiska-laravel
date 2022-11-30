@@ -19,14 +19,26 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use App\Services\Cypix\CypixService;
+
 
 class OrderController extends Controller
 {
-    public function store(Order $order, OrderCreateRequest $request): JsonResponse
+    public function store(Order $order, OrderCreateRequest $request, CypixService $cypixService)
     {
-        $order = $order->create($request->except(['_token', 'scales', 'pay_from_account']));
-        event(new OrderCreated($order));
-        return Response::json(['status' => 'ok', 'redirect' => url()->previous('/')]);
+        $order = $order->create($request->except(['_token', 'scales', 'pay_from_account', 'amount']));
+
+        if ($request->boolean('pay_from_account')) {
+            event(new OrderCreated($order));
+
+            return Response::json(['status' => 'ok', 'redirect' => url()->previous('/')]);
+        }
+
+        $paymentData = $cypixService->transactionWithForm($order, $request);
+
+        $order->updateOrFail(['payment_id' => $paymentData['transaction']['id']]);
+
+        return Response::json(['status' => 'ok', 'redirect' => $paymentData['form']['url']]);
     }
 
     public function destroy(Order $order, OrderDeleteRequest $request): JsonResponse

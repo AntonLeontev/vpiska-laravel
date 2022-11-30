@@ -15,3 +15,4 @@ yarn-error.log
 /.idea
 /.vscode
 /resources/templates
+/resources/views/test.blade.php

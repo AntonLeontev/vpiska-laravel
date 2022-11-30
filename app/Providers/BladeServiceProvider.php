@@ -5,6 +5,7 @@ namespace App\Providers;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
+use App\Services\Cypix\CypixService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 
@@ -53,11 +54,8 @@ class BladeServiceProvider extends ServiceProvider
                 return false;
             }
 
-            $authenticatedUserOrders = $event->orders->filter(function ($value, $key) {
-                if ($value['customer_id'] === auth()->user()->id) {
-                    return true;
-                }
-                return false;
+            $authenticatedUserOrders = $event->orders->filter(function ($order, $key) {
+                return $order->customer_id === Auth::user()->id;
             })->count();
 
             return $authenticatedUserOrders > 0;
@@ -68,7 +66,7 @@ class BladeServiceProvider extends ServiceProvider
                 return false;
             }
 
-            $order = $event->orders->first(function ($order) {
+            $order = $event->orders->last(function ($order) {
                 return $order->customer_id === Auth::user()->id;
             });
 
@@ -79,8 +77,12 @@ class BladeServiceProvider extends ServiceProvider
             if ($order->payment_id === 'balance') {
                 return true;
             }
-            //TODO isPaid
-            return false;
+
+            if (is_null($order->payment_id)) {
+                return false;
+            }
+
+            return app(CypixService::class)->transactionIsPaid($order->payment_id);
         });
 
         Blade::if('hasTooManyEvents', function (User $user) {
@@ -90,11 +92,7 @@ class BladeServiceProvider extends ServiceProvider
         });
 
         Blade::if('userActivated', function (User $user) {
-            if (is_null($user->email_verified_at)) {
-                return false;
-            }
-
-            return true;
+            return !is_null($user->email_verified_at);
         });
     }
 }

@@ -17,7 +17,7 @@ class PaymentIdMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->input('pay_from_account') === 'on') {
+        if ($request->boolean('pay_from_account')) {
             $request->merge(['payment_id' => 'balance']);
         }
         return $next($request);

@@ -15,6 +15,7 @@ use App\Events\OrderDeclined;
 use App\Http\Requests\OrderCreateRequest;
 use App\Http\Requests\OrderDecisionRequest;
 use App\Http\Requests\OrderDeleteRequest;
+use App\Http\Requests\OrderHideRequest;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -56,14 +57,14 @@ class OrderController extends Controller
     {
         $order->updateOrFail(['status' => OrderStatus::Accepted->value]);
         event(new OrderAccepted($order));
-        return Response::json(['status' => 'ok', 'redirect' => url()->previous()]);
+        return Response::json(['status' => 'ok']);
     }
 
     public function decline(Order $order, OrderDecisionRequest $request): JsonResponse
     {
         $order->updateOrFail(['status' => OrderStatus::Declined->value]);
         event(new OrderDeclined($order));
-        return Response::json(['status' => 'ok', 'redirect' => url()->previous()]);
+        return Response::json(['status' => 'ok']);
     }
 
     public function activateCode(ActivateCodeRequest $request): JsonResponse
@@ -93,5 +94,11 @@ class OrderController extends Controller
         }
 
         return Response::json(['status' => 'message', 'message' => 'Код не найден']);
+    }
+
+    public function hide(Order $order, OrderHideRequest $request)
+    {
+        $order->updateOrFail(['show' => false]);
+        return Response::json(['status' => 'ok']);
     }
 }

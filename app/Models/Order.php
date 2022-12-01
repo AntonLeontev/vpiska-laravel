@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\OrderStatus;
 use Illuminate\Support\Str;
+use App\Services\Cypix\CypixService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,11 +19,16 @@ class Order extends Model
         'payment_id',
         'status',
         'code',
+        'show',
     ];
 
     protected $with = [
         'customer',
         'event'
+    ];
+
+    protected $casts = [
+        'show' => 'boolean',
     ];
 
     protected static function boot()
@@ -45,6 +51,19 @@ class Order extends Model
         if ($this->status === OrderStatus::Undefined->value) {
             return 'Заявка на рассмотрении';
         }
+    }
+
+    public function isPaid(): bool
+    {
+        if (is_null($this->payment_id)) {
+            return false;
+        }
+
+        if ($this->payment_id === 'balance') {
+            return true;
+        }
+
+        return app(CypixService::class)->transactionIsPaid($this->payment_id);
     }
 
     public function customer()

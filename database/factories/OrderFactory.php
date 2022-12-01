@@ -23,7 +23,7 @@ class OrderFactory extends Factory
         return [
             'event_id' => Event::inRandomOrder()->first(),
             'customer_id' => User::inRandomOrder()->first(),
-            'payment_id' => '',
+            'payment_id' => 'balance',
             'status' => rand(0, 2),
             'code' => Str::random(5),
         ];

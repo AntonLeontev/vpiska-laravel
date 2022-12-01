@@ -502,4 +502,26 @@ $(document).ready(function () {
             error: handleError,
         });
     });
+
+    /*--------------hiding orders----------------*/
+    $(document).on("click", ".order-hide", (event) => {
+        let item = event.target.closest(".weed-item");
+
+        $.ajax({
+            method: event.target.dataset.method,
+            url: event.target.dataset.url,
+            data: {
+                _token: event.target.dataset.token,
+            },
+            success: (data) => {
+                if (data.status === "ok") {
+                    $(item).on("transitionend", (event) => {
+                        item.remove();
+                    });
+                    $(item).addClass("weed-item_hiding");
+                }
+            },
+            error: handleError,
+        });
+    });
 });

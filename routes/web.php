@@ -69,7 +69,7 @@ Route::get('/events/{event}', [EventController::class, 'show'])
     ->name('events.show');
 
 /*------------------Orders---------------------*/
-Route::middleware('auth')->group(function () {
+Route::controller(OrderController::class)->middleware('auth')->group(function () {
     Route::post('/orders/create', [OrderController::class, 'store'])
         ->middleware(PaymentIdMiddleware::class)
         ->name('orders.store');
@@ -79,8 +79,9 @@ Route::middleware('auth')->group(function () {
         ->name('orders.accept');
     Route::post('/orders/decline/{order}', [OrderController::class, 'decline'])
         ->name('orders.decline');
-    Route::post('/activate_code', [OrderController::class, 'activateCode'])
+    Route::post('/activate_code', 'activateCode')
         ->name('activate_code');
+    Route::post('orders/hide/{order}', 'hide')->name('orders.hide');
 });
 
 /*------------------Static---------------------*/

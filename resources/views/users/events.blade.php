@@ -99,14 +99,18 @@
 
                                         <div class="weed-item__info">
                                             <div class="weed-item__name">
-                                                <x-common.form action="{{route('orders.accept', $order->id)}}" method="post">
-                                                    <input type="submit" class="weed-item__action" value="Принять">
-                                                </x-common.form>
+                                                <p class="weed-item__action order-hide"
+                                                data-method="POST"
+                                                data-url="{{route('orders.accept', $order->id)}}"
+                                                data-token="{{csrf_token()}}"
+                                                >Принять</p>
                                             </div>
                                             <div class="weed-item__price">
-                                                <x-common.form action="{{route('orders.decline', $order->id)}}" method="post">
-                                                    <input type="submit" class="weed-item__action" value="Отказать">
-                                                </x-common.form>
+                                                <p class="weed-item__action order-hide"
+                                                data-method="POST"
+                                                data-url="{{route('orders.decline', $order->id)}}"
+                                                data-token="{{csrf_token()}}"
+                                                >Отказать</p>
                                             </div>
                                         </div>
                                     </div>
@@ -155,7 +159,14 @@
                                     </div>
                                     <div class="weed-item__actions">
                                         {{-- //TODO Modal and links --}}
-                                        <a href="#{{$order->event->id}}" class="weed-item__action weed-item__action--grey">Подробнее</a>
+                                        <a href="{{route('events.show', $order->event->id)}}" class="weed-item__action weed-item__action--grey">Вписка</a>
+                                    </div>
+                                    <div>
+                                        <p class="weed-item__action weed-item__action--grey order-hide" 
+                                        data-method="POST"
+                                        data-url="{{route('orders.hide', $order->id)}}"
+                                        data-token="{{csrf_token()}}"
+                                        >Скрыть</p>
                                     </div>
                                 </div>
                             </div>

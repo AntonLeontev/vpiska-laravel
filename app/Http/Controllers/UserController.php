@@ -39,7 +39,7 @@ class UserController extends Controller
             $event->orders->each(function ($order) use (&$incomingOrders) {
                 if (
                     $order->status === OrderStatus::Undefined->value
-                    && app(CypixService::class)->transactionIsPaid($order->payment_id)
+                    && $order->isPaid()
                 ) {
                     $incomingOrders[] = $order;
                 }
@@ -48,8 +48,8 @@ class UserController extends Controller
 
         $outgoingOrders = Auth::user()->orders
         ->filter(function ($order) {
-            return $order->event->starts_at > now()
-            && ;
+            // TODO timezone
+            return $order->event->starts_at > now() && $order->isPaid() && $order->show;
         })
         ->sort(function ($a, $b) {
             $b->event->starts_at <=> $a->event->starts_at;

@@ -96,7 +96,7 @@ class Event extends Model
             throw new Exception("Поиск заказов у неавторизованного пользователя", 1);
         }
 
-        return $this->orders->first(function ($value) {
+        return $this->orders->last(function ($value) {
             return $value->customer_id === auth()->user()->id;
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Enums\OrderStatus;
 use App\Enums\TransactionType;
 use App\Events\EventArchived;
 use App\Events\OrderCompleted;
@@ -51,7 +52,7 @@ class TransferMoney
 	{
 		$orders = $eventCanceled->event->orders;
         foreach ($orders as $order) {
-            if (!$order->isPaid()) {
+            if (!$order->isPaid() || $order->status === OrderStatus::Completed->value) {
                 continue;
             }
 

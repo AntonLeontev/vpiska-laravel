@@ -62,8 +62,8 @@ Route::middleware('auth')->group(function () {
     ->middleware(PhoneFormatMiddleware::class)
         ->middleware(TimeHandleMiddleware::class)
         ->name('events.store');
-    Route::delete('/events/delete/{event}', [EventController::class, 'destroy'])
-    ->name('events.delete');
+    Route::put('/events/cancel/{event}', [EventController::class, 'cancel'])
+    ->name('events.cancel');
 });
 Route::get('/events/{event}', [EventController::class, 'show'])
     ->name('events.show');

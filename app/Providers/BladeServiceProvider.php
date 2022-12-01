@@ -88,6 +88,7 @@ class BladeServiceProvider extends ServiceProvider
         Blade::if('hasTooManyEvents', function (User $user) {
             return Event::where('ends_at', '>', now())
                 ->where('creator_id', $user->id)
+                ->where('status', Event::ACTIVE)
                 ->count() > 0;
         });
 

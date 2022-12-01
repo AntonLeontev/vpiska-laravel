@@ -12,6 +12,10 @@ class Event extends Model
 {
     use HasFactory;
 
+    const ARCHIVED = -1;
+    const CANCELED = 0;
+    const ACTIVE   = 1;
+
     protected $fillable = [
         'creator_id',
         'starts_at',
@@ -28,6 +32,7 @@ class Event extends Model
         'phone',
         'description',
         'max_members',
+        'status',
     ];
 
     protected $with = ['creator', 'images'];

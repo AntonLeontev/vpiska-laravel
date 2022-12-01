@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EventStatus;
 use App\Events\EventCanceled;
 use App\Models\Event;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class EventController extends Controller
 {
     public function index(Event $event, Request $request)
     {
-        $events = $event->with('orders')->get();
+        $events = $event->where('status', $event::ACTIVE)->with('orders')->get();
 
         //TODO Filtration
         if ($request->session()->has('city_fias_id')) {
@@ -80,10 +81,10 @@ class EventController extends Controller
         return Response::json(['status' => 'ok', 'redirect' => route('events.show', $event->id)]);
     }
 
-    public function destroy(Event $event)
+    public function cancel(Event $event)
     {
         event(new EventCanceled($event));
-        $event->deleteOrFail();
-        return Response::json(['status' => 'ok', 'redirect' => route('home')]);
+        $event = $event->updateOrFail(['status' => $event::CANCELED]);
+        return Response::json(['status' => 'ok', 'redirect' => url()->previous()]);
     }
 }

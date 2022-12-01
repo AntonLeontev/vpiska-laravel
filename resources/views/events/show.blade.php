@@ -15,6 +15,7 @@
         <div class="activity">
             <div class="container">
                 @auth
+                @if($event->status === $event::ACTIVE)
                     <x-common.modal id="modal_order">
                         <h4>Оплата вписки</h4>
                         <h4>Стоимость - {{ $event->price }} р + Комиссия - {{$event->fee}} р</h4>
@@ -44,6 +45,7 @@
                             <button type="submit" class="mobile__order btn">Вписаться</button>
                         </x-common.form>
                     </x-common.modal>
+                @endif
                 @endauth
             </div>
             <div class="activity__row">
@@ -112,102 +114,107 @@
                         </div>
                     </div>
                 </div>
-                @guest
-                    @isFilled ($event)
-                    <x-common.alert>Свободных мест на мероприятие нет</x-common.alert>
-                    @endif
-                @endguest
-
-                @auth
-                    @isCreator($event)
-                        <x-common.alert>Вы организатор этого мероприятия</x-common.alert>
-
-                        @php
-                            $hasOrders = (bool) $event->orders->count() > 0;
-                        @endphp
-                        <div class="creator_controls">
-                            <a @class([
-                                'creator_controls__edit',
-                                'creator_controls__edit_disabled' => $hasOrders,
-                            ]) @if (!$hasOrders)
-                                href="{{ route('events.edit', $event->id) }}"
-                                @endif
-                                >Редактировать</a>
-                                <form action="{{route('events.delete', $event->id)}}" method="delete" id="form__event-cancel" confirmable="confirmable">
-                                    @csrf
-                                    <input type="hidden" name="event_id" value="{{ $event->id }}">
-                                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                                    <button class="creator_controls__cancel">
-                                        Отменить
-                                    </button>
-                                </form>
-                        </div>
-                    @endisCreator
-
-                    @isOrdered($event)
-                        <x-common.alert>
-                            @isPaid($event)
-                                Вы подавали заявку на вписку. Заявка оплачена
-                                @if ($currentUserOrder->status === 0)
-                                    и на одобрении организатора
-                                @elseif ($currentUserOrder->status === 1)
-                                    и одобрена
-                                @elseif ($currentUserOrder->status === 2)
-                                    и отклонена. Деньги вернулись на счет
-                                @endif
-                            @else
-                                Вы подавали заявку на вписку. Заявка не оплачена. Оплатите заявку
-                            @endisPaid
-                        </x-common.alert>
-                    @else
+                @if ($event->status === $event::CANCELED)
+                    <x-common.alert>Мероприятие отменено организатором</x-common.alert>
+                @elseif ($event->status === $event::ARCHIVED)
+                    <x-common.alert>Архивное мероприятие</x-common.alert>
+                @elseif ($event->status === $event::ACTIVE)
+                    @guest
                         @isFilled ($event)
                         <x-common.alert>Свободных мест на мероприятие нет</x-common.alert>
                         @endif
-                    @endisOrdered
-                @endauth
+                    @endguest
 
-                {{-- Мобильные кнопки оплаты или отмены --}}
-                @unlessisPaid($event)
-                    <a @guest
-                        href="#register_2"
-                        @endguest
-                        @auth
-                        href="#modal_order"
-                        @endauth>
-                        <div class="button__pay">
-                            <div class="pay__image">
-                                <img src="{{ Vite::image('icons/create.png') }}" alt="pay">
+                    @auth
+                        @isCreator($event)
+                            <x-common.alert>Вы организатор этого мероприятия</x-common.alert>
+
+                            @php
+                                $hasOrders = (bool) $event->orders->count() > 0;
+                            @endphp
+                            <div class="creator_controls">
+                                <a @class([
+                                    'creator_controls__edit',
+                                    'creator_controls__edit_disabled' => $hasOrders,
+                                ]) @if (!$hasOrders)
+                                    href="{{ route('events.edit', $event->id) }}"
+                                    @endif
+                                    >Редактировать</a>
+                                    <x-common.form action="{{route('events.cancel', $event->id)}}" method="put" id="form__event-cancel" confirmable="confirmable">
+                                        <input type="hidden" name="event_id" value="{{ $event->id }}">
+                                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                        <button class="creator_controls__cancel">
+                                            Отменить
+                                        </button>
+                                    </x-common.form>
                             </div>
-                            <div class="pay__text">
-                                <p>
-                                    @guest
-                                        ВПИСАТЬСЯ
-                                    @endguest
-                                    @auth
-                                        @unlessisOrdered($event)
+                        @endisCreator
+
+                        @isOrdered($event)
+                            <x-common.alert>
+                                @isPaid($event)
+                                    Вы подавали заявку на вписку. Заявка оплачена
+                                    @if ($currentUserOrder->status === 0)
+                                        и на одобрении организатора
+                                    @elseif ($currentUserOrder->status === 1)
+                                        и одобрена
+                                    @elseif ($currentUserOrder->status === 2)
+                                        и отклонена. Деньги вернулись на счет
+                                    @endif
+                                @else
+                                    Вы подавали заявку на вписку. Заявка не оплачена. Оплатите заявку
+                                @endisPaid
+                            </x-common.alert>
+                        @else
+                            @isFilled ($event)
+                            <x-common.alert>Свободных мест на мероприятие нет</x-common.alert>
+                            @endif
+                        @endisOrdered
+                    @endauth
+                    {{-- Мобильные кнопки оплаты или отмены --}}
+                    @unlessisPaid($event)
+                        <a @guest
+                            href="#register_2"
+                            @endguest
+                            @auth
+                            href="#modal_order"
+                            @endauth>
+                            <div class="button__pay">
+                                <div class="pay__image">
+                                    <img src="{{ Vite::image('icons/create.png') }}" alt="pay">
+                                </div>
+                                <div class="pay__text">
+                                    <p>
+                                        @guest
                                             ВПИСАТЬСЯ
-                                        @else
-                                            ОПЛАТИТЬ
-                                        @endisOrdered
-                                    @endauth
-                                </p>
-                            </div>
-                            <div class="pay__sum">
-                                <p>{{ $event->price }} р</p>
-                            </div>
-                        </div>
-                    </a>
-                @else
-                    @if ($currentUserOrder->status != 2)
-                        <a class="button__cancel cancel_order_button" href="#cancel-order">
-                            <div class="pay__text">
-                                <p>
-                                    ОТМЕНИТЬ
-                                </p>
+                                        @endguest
+                                        @auth
+                                            @unlessisOrdered($event)
+                                                ВПИСАТЬСЯ
+                                            @else
+                                                ОПЛАТИТЬ
+                                            @endisOrdered
+                                        @endauth
+                                    </p>
+                                </div>
+                                <div class="pay__sum">
+                                    <p>{{ $event->price }} р</p>
+                                </div>
                             </div>
                         </a>
-                    @endif
-                @endisPaid
+                    @else
+                        @if ($currentUserOrder->status != 2)
+                            <a class="button__cancel cancel_order_button" href="#cancel-order">
+                                <div class="pay__text">
+                                    <p>
+                                        ОТМЕНИТЬ
+                                    </p>
+                                </div>
+                            </a>
+                        @endif
+                    @endisPaid
+                @endif
+
 
                 <div class="activity__main">
                     <div class="main__gallery">
@@ -254,97 +261,144 @@
                             >
                                 <div id="chatbro">
                                     <button id="chatbroOpenChat">Войти в общий чат</button>
-
                                 </div>
                             </div>
                         @endauth
                     </div>
                 </div>
 
-                <div class="activity__application">
-                    <div class="application__title">
-                        <div class="title__1">
-                            <p>Уже вписались</p>
+                @if ($event->status === $event::ACTIVE)
+                    <div class="activity__application">
+                        <div class="application__title">
+                            <div class="title__1">
+                                <p>Уже вписались</p>
+                            </div>
+                            <div class="title__2">
+                                <p>
+                                    {{ $event->orders->whereIn('status', [1, 3])->count() ?? 0 }}/{{ $event->max_members }}</p>
+                            </div>
                         </div>
-                        <div class="title__2">
-                            <p>
-                                {{ $event->orders->whereIn('status', [1, 3])->count() ?? 0 }}/{{ $event->max_members }}</p>
+                        <div class="application__main" id="application__main">
+
+                            @unlessisCreator ($event)
+                                @unlessisFilled ($event)
+                                    @isPaid ($event)
+                                        <a href="#cancel-order">
+                                            <div class="application__card__pay">
+                                                <div class="add__image">
+                                                    <img src="{{Vite::image('icons/create.png')}}" alt="add">
+                                                </div>
+                                                <div class="add__text">
+                                                    <p><b>
+                                                        @if ($currentUserOrder->status === 0)
+                                                            На рассмотрении
+                                                        @elseif ($currentUserOrder->status === 1)
+                                                            Одобрена
+                                                        @elseif ($currentUserOrder->status === 2)
+                                                            Отклонена
+                                                        @elseif ($currentUserOrder->status === 3)
+                                                            Одобрена
+                                                        @endif
+                                                    </b></p>
+                                                </div>
+                                                @if ($currentUserOrder->status < 2)
+                                                    <div class="add__text cancel_order_button">Отменить</div>
+                                                @endif
+                                            </div>
+                                        </a>
+                                    @else
+                                        <a
+                                        @guest
+                                            href="#register_2"
+                                        @endguest
+                                        @auth
+                                            href="#modal_order"
+                                        @endauth
+                                        >
+                                            <div class="application__card__pay">
+                                                <div class="add__image">
+                                                    <img src="{{Vite::image('icons/create.png')}}" alt="add">
+                                                </div>
+                                                <div class="add__text">
+                                                    <p><b>
+                                                        @guest
+                                                            Вписаться
+                                                        @endguest
+                                                        @auth
+                                                            @isOrdered($event)
+                                                                Оплатить
+                                                            @else
+                                                                Вписаться
+                                                            @endisOrdered
+                                                        @endauth
+                                                    </b></p>
+                                                </div>
+                                                <div class="add__text">
+                                                    <p><b>{{$event->price}} р</b></p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    @endisPaid
+                                @endisFilled
+                            @endisCreator
+
+
+                            @foreach ($event->orders->where('status', 1) as $order)
+                                <a href="{{route('users.show', $order->customer->id)}}">
+                                    <div class="application__card">
+                                        <div class="application__photo"><img src="{{$order->customer->photo_path}}" alt="user"></div>
+                                        <div class="application__name">
+                                            <p>{{$order->customer->full_name}}</p>
+                                        </div>
+                                        <div class="application__edit">
+                                            <p>
+                                                @guest
+                                                    <div class="rating-mini">
+                                                        <span class="active"></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                    </div>
+                                                @endguest
+                                                @auth
+                                                    @if ($order->customer->id === auth()->user()->id)
+                                                    <div class="add__text cancel_order_button">
+                                                        Это вы
+                                                    </div>
+                                                    @else
+                                                        <div class="rating-mini">
+                                                            <span class="active"></span>
+                                                            <span></span>
+                                                            <span></span>
+                                                            <span></span>
+                                                            <span></span>
+                                                        </div>
+                                                    @endif
+                                                @endauth
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endforeach
                         </div>
                     </div>
-                    <div class="application__main" id="application__main">
-
-                        @unlessisCreator ($event)
-                            @unlessisFilled ($event)
-                                @isPaid ($event)
-                                    <a href="#cancel-order">
-                                        <div class="application__card__pay">
-                                            <div class="add__image">
-                                                <img src="{{Vite::image('icons/create.png')}}" alt="add">
-                                            </div>
-                                            <div class="add__text">
-                                                <p><b>
-                                                    @if ($currentUserOrder->status === 0)
-                                                        На рассмотрении
-                                                    @elseif ($currentUserOrder->status === 1)
-                                                        Одобрена
-                                                    @elseif ($currentUserOrder->status === 2)
-                                                        Отклонена
-                                                    @elseif ($currentUserOrder->status === 3)
-                                                        Одобрена
-                                                    @endif
-                                                </b></p>
-                                            </div>
-                                            @if ($currentUserOrder->status < 2)
-                                                <div class="add__text cancel_order_button">Отменить</div>
-                                            @endif
+                    <div class="activity__application">
+                        <div class="application__title">
+                            <div class="title__1">
+                                <p>Уже на месте</p>
+                            </div>
+                        </div>
+                        <div class="application__main" id="application__main">
+                            @foreach ($event->orders->where('status', 3) as $order)
+                                <a href="{{route('users.show', $order->customer->id)}}">
+                                    <div class="application__card">
+                                        <div class="application__photo"><img src="{{$order->customer->photo_path}}" alt="user"></div>
+                                        <div class="application__name">
+                                            <p>{{$order->customer->full_name}}</p>
                                         </div>
-                                    </a>
-                                @else
-                                    <a
-                                    @guest
-                                        href="#register_2"
-                                    @endguest
-                                    @auth
-                                        href="#modal_order"
-                                    @endauth
-                                    >
-                                        <div class="application__card__pay">
-                                            <div class="add__image">
-                                                <img src="{{Vite::image('icons/create.png')}}" alt="add">
-                                            </div>
-                                            <div class="add__text">
-                                                <p><b>
-                                                    @guest
-                                                        Вписаться
-                                                    @endguest
-                                                    @auth
-                                                        @isOrdered($event)
-                                                            Оплатить
-                                                        @else
-                                                            Вписаться
-                                                        @endisOrdered
-                                                    @endauth
-                                                </b></p>
-                                            </div>
-                                            <div class="add__text">
-                                                <p><b>{{$event->price}} р</b></p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                @endisPaid
-                            @endisFilled
-                        @endisCreator
-
-
-                        @foreach ($event->orders->where('status', 1) as $order)
-                            <a href="{{route('users.show', $order->customer->id)}}">
-                                <div class="application__card">
-                                    <div class="application__photo"><img src="{{$order->customer->photo_path}}" alt="user"></div>
-                                    <div class="application__name">
-                                        <p>{{$order->customer->full_name}}</p>
-                                    </div>
-                                    <div class="application__edit">
-                                        <p>
+                                        <div class="application__edit">
+                                            <p>
                                             @guest
                                                 <div class="rating-mini">
                                                     <span class="active"></span>
@@ -356,9 +410,9 @@
                                             @endguest
                                             @auth
                                                 @if ($order->customer->id === auth()->user()->id)
-                                                <div class="add__text cancel_order_button">
-                                                    Это вы
-                                                </div>
+                                                    <div class="add__text cancel_order_button">
+                                                        Это вы
+                                                    </div>
                                                 @else
                                                     <div class="rating-mini">
                                                         <span class="active"></span>
@@ -369,63 +423,15 @@
                                                     </div>
                                                 @endif
                                             @endauth
-                                        </p>
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="activity__application">
-                            <div class="application__title">
-                                <div class="title__1">
-                                    <p>Уже на месте</p>
-                                </div>
-                            </div>
-                            <div class="application__main" id="application__main">
-
-                                    @foreach ($event->orders->where('status', 3) as $order)
-                                        <a href="{{route('users.show', $order->customer->id)}}">
-                                            <div class="application__card">
-                                                <div class="application__photo"><img src="{{$order->customer->photo_path}}" alt="user"></div>
-                                                <div class="application__name">
-                                                    <p>{{$order->customer->full_name}}</p>
-                                                </div>
-                                                <div class="application__edit">
-                                                    <p>
-                                                    @guest
-                                                        <div class="rating-mini">
-                                                            <span class="active"></span>
-                                                            <span></span>
-                                                            <span></span>
-                                                            <span></span>
-                                                            <span></span>
-                                                        </div>
-                                                    @endguest
-                                                    @auth
-                                                        @if ($order->customer->id === auth()->user()->id)
-                                                            <div class="add__text cancel_order_button">
-                                                                Это вы
-                                                            </div>
-                                                        @else
-                                                            <div class="rating-mini">
-                                                                <span class="active"></span>
-                                                                <span></span>
-                                                                <span></span>
-                                                                <span></span>
-                                                                <span></span>
-                                                            </div>
-                                                            @endif
-                                                            @endauth
-                                                            </p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    @endforeach
-                            </div>
+                                </a>
+                            @endforeach
                         </div>
-
-                <button id="share-button">Позвать друзей</button>
+                    </div>
+                    <button id="share-button">Позвать друзей</button>
+                @endif
             </div>
         </div>
         @auth

@@ -30,6 +30,7 @@ class UserController extends Controller
     public function userEvents()
     {
         $userEvents = Event::where('creator_id', Auth::user()->id)
+            ->where('status', Event::ACTIVE)
             ->where('ends_at', '>', now())
             ->with('orders')
             ->get();

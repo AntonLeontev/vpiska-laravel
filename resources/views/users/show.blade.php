@@ -177,9 +177,9 @@
                         @endif
                     @endauth
 
-                    <div class="reviews__title">
+                    {{-- <div class="reviews__title">
                         <p>Отзывы</p>
-                    </div>
+                    </div> --}}
                     {{-- //TODO Reviews --}}
 
 

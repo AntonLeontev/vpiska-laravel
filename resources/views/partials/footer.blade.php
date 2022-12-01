@@ -88,7 +88,7 @@
                         <img src="{{auth()->user()->photo_path}}" alt="profile_photo">
                     </div>
                     <div class="navbar__profile__title">
-                        <p>{{auth()->user()->full_name}}</p>
+                        <p>{{auth()->user()->first_name}}</p>
                     </div>
                 </div>
             </a>

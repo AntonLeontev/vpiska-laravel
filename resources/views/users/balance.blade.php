@@ -50,7 +50,6 @@
                             </form>
                         </div>
                         <div class="withdrawal__code activate-code">
-                            {{-- //TODO code activation --}}
                             <x-common.form action="{{route('activate_code')}}" method="POST">
                                 <h4 class="form-title">Активация кода</h4>
                                 <div class="activate-code__row">

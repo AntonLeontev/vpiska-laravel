@@ -85,6 +85,19 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
+    protected function getSexAttribute($value)
+    {
+        if ($value === 'male') {
+            return 'мужской';
+        }
+
+        if ($value === 'female') {
+            return 'женский';
+        }
+
+        return 'не указан';
+    }
+
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));

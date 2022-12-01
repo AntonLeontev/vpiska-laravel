@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\EventStatus;
+use App\Events\EventArchived;
 use App\Events\EventCanceled;
 use App\Models\Event;
 use Illuminate\Http\Request;
@@ -86,5 +87,18 @@ class EventController extends Controller
         event(new EventCanceled($event));
         $event = $event->updateOrFail(['status' => $event::CANCELED]);
         return Response::json(['status' => 'ok', 'redirect' => url()->previous()]);
+    }
+
+    public function archiveOld(Event $event)
+    {
+        $oldEvents = $event
+            ->where('ends_at', '<', now(+3))
+            ->where('status', Event::ACTIVE)
+            ->get();
+
+        foreach ($oldEvents as $event) {
+            $event->updateOrFail(['status' => Event::ARCHIVED]);
+            event(new EventArchived($event));
+        }
     }
 }

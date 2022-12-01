@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Events\EventArchived;
 use App\Events\OrderCreated;
 use App\Events\EventCanceled;
 use App\Events\OrderAccepted;
@@ -51,6 +52,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         EventCanceled::class => [
             SendEventCanceledNotification::class,
+        ],
+        EventArchived::class => [
+            //
         ],
     ];
 

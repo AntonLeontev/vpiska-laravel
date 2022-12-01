@@ -67,6 +67,7 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('/events/{event}', [EventController::class, 'show'])
     ->name('events.show');
+Route::get('/events/archive', [EventController::class, 'archiveOld']);
 
 /*------------------Orders---------------------*/
 Route::controller(OrderController::class)->middleware('auth')->group(function () {

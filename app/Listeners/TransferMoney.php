@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Enums\TransactionType;
+use App\Events\EventArchived;
 use App\Events\OrderCompleted;
 use App\Models\Order;
 use App\Models\User;
@@ -18,6 +19,7 @@ class TransferMoney
 	public function subscribe($events)
 	{
 		return [
+            EventArchived::class => 'handleEventCanceled',
 			EventCanceled::class => 'handleEventCanceled',
 			OrderCreated::class  => 'handleOrderCreated',
 			OrderCanceled::class => 'handleOrderCanceled',
@@ -45,10 +47,14 @@ class TransferMoney
         $this->createRefundPriceTransaction($orderCanceled->order);
 	}
 
-	public function handleEventCanceled(EventCanceled $eventCanceled): void
+    public function handleEventCanceled(EventCanceled | EventArchived $eventCanceled): void
 	{
 		$orders = $eventCanceled->event->orders;
         foreach ($orders as $order) {
+            if (!$order->isPaid()) {
+                continue;
+            }
+
             $this->doTransaction($order, false, true);
 
             $this->createRefundPriceTransaction($order);

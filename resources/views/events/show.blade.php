@@ -172,6 +172,7 @@
                         @endisOrdered
                     @endauth
                     {{-- Мобильные кнопки оплаты или отмены --}}
+                    @unlessisCreator($event)
                     @unlessisPaid($event)
                         <a @guest
                             href="#register_2"
@@ -213,6 +214,7 @@
                             </a>
                         @endif
                     @endisPaid
+                    @endisCreator
                 @endif
 
 

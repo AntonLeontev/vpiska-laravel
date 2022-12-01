@@ -77,11 +77,9 @@ $(document).ready(function () {
 
     /*----------------- input masks -----------------*/
     let timeDesktop = document.querySelector("#create_time-desktop");
-    let timeMobile = document.querySelector("#create_time-mobile");
     let phoneDesktop = document.querySelector("#phone_desktop");
-    let phoneMobile = document.querySelector("#phone_mobile");
 
-    if (timeDesktop || timeMobile) {
+    if (timeDesktop) {
         let timeOptions = {
             mask: "HH:MM - HH:MM",
             blocks: {
@@ -104,8 +102,6 @@ $(document).ready(function () {
         };
 
         IMask(timeDesktop, timeOptions);
-        IMask(timeMobile, timeOptions);
         IMask(phoneDesktop, phoneOptions);
-        IMask(phoneMobile, phoneOptions);
     }
 });

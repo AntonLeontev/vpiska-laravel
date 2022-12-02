@@ -14,4 +14,7 @@ return [
 		'beforeDaysCreating' => 3
 	],
 
+	//Часовой пояс по-умолчанию (Москва)
+	'utc_offset' => 3,
+
 ];

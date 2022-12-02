@@ -12,8 +12,8 @@ class TimeHandleMiddleware
     {
         [$timeStart, $timeEnd] = explode(' - ', $request->time);
 
-        $startsAt = Carbon::parse("{$request->date} $timeStart");
-        $endsAt = Carbon::parse("{$request->date} $timeEnd");
+        $startsAt = Carbon::parse("{$request->date} $timeStart", $request->utc_offset)->setTimezone(0);
+        $endsAt = Carbon::parse("{$request->date} $timeEnd", $request->utc_offset)->setTimezone(0);
 
         if ($timeStart > $timeEnd) {
             $endsAt->addDay();

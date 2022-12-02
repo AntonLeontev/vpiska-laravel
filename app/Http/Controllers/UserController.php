@@ -49,8 +49,7 @@ class UserController extends Controller
 
         $outgoingOrders = Auth::user()->orders
         ->filter(function ($order) {
-            // TODO timezone
-            return $order->event->starts_at > now() && $order->isPaid() && $order->show;
+            return $order->event->ends_at > now() && $order->isPaid() && $order->show;
         })
         ->sort(function ($a, $b) {
             $b->event->starts_at <=> $a->event->starts_at;

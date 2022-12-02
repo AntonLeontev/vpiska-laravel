@@ -50,13 +50,13 @@
                                     </div>
                                     <div class="find-card__date">
                                         <p>
-                                            <span>Начало:</span> {{ $event->starts_at }}
+                                            <span>Начало:</span> {{ $event->start_date }} {{ $event->start_time }}
                                         </p>
                                     </div>
 
                                     <div class="find-card__time">
                                         <p>
-                                            <span>Конец:</span> {{ $event->ends_at }}
+                                            <span>Конец:</span> {{ $event->end_date }} {{ $event->end_time }}
                                         </p>
                                     </div>
 

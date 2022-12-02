@@ -23,6 +23,7 @@ class Event extends Model
         'price',
         'fee',
         'city_fias_id',
+        'utc_offset',
         'street_fias_id',
         'building_fias_id',
         'city_name',
@@ -58,25 +59,31 @@ class Event extends Model
 
     public function getStartDateAttribute()
     {
-        $carbon =  Carbon::parse($this->starts_at);
+        $carbon =  Carbon::parse($this->starts_at)->setTimezone($this->utc_offset);
+        return $carbon->translatedFormat('d F');
+    }
+
+    public function getEndDateAttribute()
+    {
+        $carbon =  Carbon::parse($this->ends_at)->setTimezone($this->utc_offset);
         return $carbon->translatedFormat('d F');
     }
 
     public function getFullStartDateAttribute()
     {
-        $carbon =  Carbon::parse($this->starts_at);
+        $carbon =  Carbon::parse($this->starts_at)->setTimezone($this->utc_offset);
         return $carbon->translatedFormat('d.m.Y');
     }
 
     public function getStartTimeAttribute()
     {
-        $carbon =  Carbon::parse($this->starts_at);
+        $carbon =  Carbon::parse($this->starts_at)->setTimezone($this->utc_offset);
         return $carbon->translatedFormat('H:i');
     }
 
     public function getEndTimeAttribute()
     {
-        $carbon =  Carbon::parse($this->ends_at);
+        $carbon =  Carbon::parse($this->ends_at)->setTimezone($this->utc_offset);
         return $carbon->translatedFormat('H:i');
     }
 

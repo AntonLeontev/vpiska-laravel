@@ -17,15 +17,14 @@ class EventController extends Controller
 {
     public function index(Event $event, Request $request)
     {
-        $events = $event->where('status', $event::ACTIVE)->with('orders')->get();
+        $query = $event->where('status', $event::ACTIVE)
+            ->where('ends_at', '>', now());
 
-        //TODO Filtration
         if ($request->session()->has('city_fias_id')) {
-            $events = $events->filter(function ($event) {
-                return $event->city_fias_id === session('city_fias_id');
-            });
+            $query = $query->where('city_fias_id', session('city_fias_id'));
         }
 
+        $events = $query->with('orders')->get();
         return view('events.index', compact('events'));
     }
 
@@ -92,7 +91,7 @@ class EventController extends Controller
     public function archiveOld(Event $event)
     {
         $oldEvents = $event
-            ->where('ends_at', '<', now(+3))
+            ->where('ends_at', '<', now(3))
             ->where('status', Event::ACTIVE)
             ->get();
 

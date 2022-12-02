@@ -1,22 +1,23 @@
 import $ from "jquery";
 import "suggestions-jquery";
 import IMask from "imask";
+import { tokens } from "../tokens";
 
 $(document).ready(function () {
     /*-------------------- address tooltips --------------------*/
     let city = $(".select_city_input-desc");
     let form = city.closest("form");
     let cityFiasId = $(form).find("[name='city_fias_id']");
+    let utcOffset = $(form).find("[name='utc_offset']");
     let streetFiasId = $("[name='street_fias_id']");
     let streetType = $("[name='street_type']");
     let street = $(".select_street_input-desc");
     let buildingFiasId = $("[name='building_fias_id']");
     let building = $(".select_building_input-desc");
 
-    let token = "6258e1bec720b3a4c277c137fd96e32c57e2f39d";
-
     city.on("input", () => {
         cityFiasId.val("");
+        utcOffset.val("");
     });
     street.on("input", () => {
         streetFiasId.val("");
@@ -35,21 +36,38 @@ $(document).ready(function () {
         return suggestion.data.house;
     }
 
+    function getUtcOffset(lat, lon) {
+        $.get({
+            url: "https://api.ipgeolocation.io/timezone",
+            data: {
+                apiKey: tokens.geolocationApiKey,
+                lat: lat,
+                long: lon,
+            },
+            success: (data) => {
+                utcOffset.val(data.timezone_offset_with_dst);
+            },
+        });
+    }
+
     city.suggestions({
         type: "ADDRESS",
-        token: token,
+        token: tokens.dadataToken,
         minChars: 3,
         hint: false,
         bounds: "city",
         count: 8,
         onSelect: (suggestion) => {
             cityFiasId.val(suggestion.data.city_fias_id);
+            utcOffset.val(
+                getUtcOffset(suggestion.data.geo_lat, suggestion.data.geo_lon)
+            );
         },
         formatSelected: formatSelectedCity,
     });
     street.suggestions({
         type: "ADDRESS",
-        token: token,
+        token: tokens.dadataToken,
         minChars: 3,
         hint: false,
         bounds: "street",
@@ -63,7 +81,7 @@ $(document).ready(function () {
     });
     building.suggestions({
         type: "ADDRESS",
-        token: token,
+        token: tokens.dadataToken,
         minChars: 1,
         hint: false,
         bounds: "house",

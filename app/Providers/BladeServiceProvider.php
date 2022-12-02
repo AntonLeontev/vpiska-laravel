@@ -89,6 +89,7 @@ class BladeServiceProvider extends ServiceProvider
             return Event::where('ends_at', '>', now())
                 ->where('creator_id', $user->id)
                 ->where('status', Event::ACTIVE)
+                ->where('ends_at', '>', now())
                 ->count() > 0;
         });
 

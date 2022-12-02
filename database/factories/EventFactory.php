@@ -25,6 +25,7 @@ class EventFactory extends Factory
             'price' => rand(100, 2000),
             'fee' => rand(1, 100),
             'city_fias_id' => '0c5b2444-70a0-4932-980c-b4dc0d3f02b5', //Moscow,
+            'utc_offset' => 3,
             'city_name' => 'Москва',
             'street_fias_id' => 'null',
             'street' => fake()->streetName(),

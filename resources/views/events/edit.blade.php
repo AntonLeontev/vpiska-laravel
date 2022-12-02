@@ -35,6 +35,7 @@
                                         <p>Адрес мероприятия</p>
                                     </div>
                                     <div class="location__input">
+                                        <input type="hidden" name="utc_offset" value="{{$event->utc_offset}}">
                                         <input type="hidden" name="city_fias_id"  value="{{$event->city_fias_id}}">
                                         <div class="input__city">
                                             <input class="select_city_input-desc" autocomplete="off" list="city_create"  value="{{$event->city_name}}"

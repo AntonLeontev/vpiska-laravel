@@ -54,16 +54,16 @@ class User extends Authenticatable implements MustVerifyEmail
                 return;
             }
 
-            if ($user->sex === 'undefined') {
+            if ($user->sex === 'не указан') {
                 // TODO Images for undefined sex
                 return;
             }
 
-            if ($user->sex === 'female') {
+            if ($user->sex === 'женский') {
                 $all = Storage::disk('images')->allFiles('plugs/avatars/female');
             }
 
-            if ($user->sex === 'male') {
+            if ($user->sex === 'мужской') {
                 $all = Storage::disk('images')->allFiles('plugs/avatars/male');
             }
             $rand = Arr::random($all);

@@ -14,14 +14,15 @@ class EventRequest extends FormRequest
 
     public function rules()
     {
-        $yesterday = Carbon::yesterday()->format('d-m-Y');
-        $beforeDay = Carbon::tomorrow()
+        $yesterday = Carbon::yesterday($this->utc_offset)->format('d-m-Y');
+        $beforeDay = Carbon::tomorrow($this->utc_offset)
             ->addDays(config('vpiska.event.beforeDaysCreating', 3))
             ->format('d-m-Y');
 
         return [
             'creator_id' => ['required', 'exists:users,id'],
             'city_fias_id' => ['required', 'string'],
+            'utc_offset' => ['required', 'integer'],
             'city_name' => ['required', 'string'],
             'street_fias_id' => ['required', 'string'],
             'street' => ['required', 'string'],

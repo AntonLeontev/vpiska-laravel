@@ -2,14 +2,12 @@
 
 namespace App\Providers;
 
-use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
 use App\Services\Cypix\CypixService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 
-use function PHPUnit\Framework\isNull;
 use Illuminate\Support\ServiceProvider;
 
 class BladeServiceProvider extends ServiceProvider

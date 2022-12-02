@@ -91,7 +91,7 @@ class EventController extends Controller
     public function archiveOld(Event $event)
     {
         $oldEvents = $event
-            ->where('ends_at', '<', now(3))
+            ->where('ends_at', '<', now())
             ->where('status', Event::ACTIVE)
             ->get();
 

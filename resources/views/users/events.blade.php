@@ -4,6 +4,12 @@
     Мои вписки
 @endsection
 
+@section('page-scripts')
+    @auth
+        @vite(['resources/js/resetUserNotifications.js'])
+    @endauth
+@endsection
+
 @section('content')
     <div class="content">
         <div class="weed">

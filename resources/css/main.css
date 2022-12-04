@@ -2663,7 +2663,7 @@ ul#city_create_mob,
 	height: auto;
 	max-height: 200px;
 	padding: 0 15px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	background: rgba(0, 0, 0, 1);
 	backdrop-filter: blur(85px);
 	border-radius: 7px;

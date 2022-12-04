@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
     ->name('users.events');
     Route::post('/users/edit/{user}', [UserController::class, 'update'])
     ->name('users.update');
+    Route::put('users/events/{user}', [UserController::class, 'resetNotifications']);
 });
 Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 
@@ -36,15 +37,20 @@ Route::delete('/users/photo/delete/{userImage}', [UserImageController::class, 'd
     ->name('userImage.destroy');
 
 /*------------------Event photos---------------------*/
-Route::post('/events/photo/add', [EventImageController::class, 'store'])->name('eventImage.store');
-Route::delete('/events/photo/delete/{eventImage}', [EventImageController::class, 'destroy'])
+Route::controller(EventImageController::class)->group(function () {
+    Route::post('/events/photo/add', 'store')
+    ->name('eventImage.store');
+    Route::delete('/events/photo/delete/{eventImage}', 'destroy')
     ->name('eventImage.destroy');
+});
 
 /*------------------Temp photos---------------------*/
-Route::post('/events/photo/temp/preload', [TemporaryImageController::class, 'store'])
-    ->name('temporaryImage.store');
-Route::delete('/events/photo/temp/delete/{temporaryImage}', [TemporaryImageController::class, 'destroy'])
+Route::controller(TemporaryImageController::class)->group(function () {
+    Route::post('/events/photo/temp/preload', 'store')
+        ->name('temporaryImage.store');
+    Route::delete('/events/photo/temp/delete/{temporaryImage}', 'destroy')
     ->name('temporaryImage.destroy');
+});
 
 /*------------------Events---------------------*/
 Route::get('/events', [EventController::class, 'index'])
@@ -71,14 +77,14 @@ Route::get('/events/archive', [EventController::class, 'archiveOld']);
 
 /*------------------Orders---------------------*/
 Route::controller(OrderController::class)->middleware('auth')->group(function () {
-    Route::post('/orders/create', [OrderController::class, 'store'])
+    Route::post('/orders/create', 'store')
         ->middleware(PaymentIdMiddleware::class)
         ->name('orders.store');
-    Route::delete('/orders/delete/{order}', [OrderController::class, 'destroy'])
+    Route::delete('/orders/delete/{order}', 'destroy')
         ->name('orders.delete');
-    Route::post('/orders/accept/{order}', [OrderController::class, 'accept'])
+    Route::post('/orders/accept/{order}', 'accept')
         ->name('orders.accept');
-    Route::post('/orders/decline/{order}', [OrderController::class, 'decline'])
+    Route::post('/orders/decline/{order}', 'decline')
         ->name('orders.decline');
     Route::post('/activate_code', 'activateCode')
         ->name('activate_code');
@@ -100,9 +106,11 @@ Route::view('/dissemination-of-personal-data', 'static.dissemination-of-personal
 ->name('dissemination');
 
 /*------------------Payments---------------------*/
-Route::get('/pay', [CypixController::class, 'pay'])->name('pay');
+Route::controller(CypixController::class)->group(function () {
+    Route::get('/pay', 'pay')->name('pay');
 
-Route::get('/pay/notification', [CypixController::class, 'notificationGet'])->name('pay.notification');
-Route::post('/pay/notification', [CypixController::class, 'notificationPost']);
+    // Route::get('/pay/notification', 'notificationGet')->name('pay.notification');
+    // Route::post('/pay/notification', 'notificationPost');
+});
 
 require __DIR__ . '/auth.php';

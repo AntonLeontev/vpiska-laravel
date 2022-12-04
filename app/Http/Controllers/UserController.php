@@ -68,4 +68,10 @@ class UserController extends Controller
         $user->updateOrFail($request->except('_token'));
         return Response::json(['status' => 'ok', 'redirect' => url()->previous('/')]);
     }
+
+    public function resetNotifications(User $user)
+    {
+        $user->updateOrFail(['notifications' => 0]);
+        return Response::json(['status' => 'ok']);
+    }
 }

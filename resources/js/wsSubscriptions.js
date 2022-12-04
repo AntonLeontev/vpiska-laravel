@@ -16,7 +16,7 @@ if ($("meta[name='user_id']").length) {
         enabledTransports: ["ws", "wss"],
     });
 
-    let userId = $("[name='user_id']").attr("content");
+    let userId = $("meta[name='user_id']").attr("content");
 
     window.Echo.private(`App.Models.User.${userId}`).notification(
         (notification) => {

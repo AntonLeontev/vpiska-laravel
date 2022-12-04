@@ -14,6 +14,7 @@
 
         
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @yield('page-scripts')
     </head>
     <body>
         <div class="wrapper">

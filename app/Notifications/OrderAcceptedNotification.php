@@ -35,8 +35,7 @@ class OrderAcceptedNotification extends Notification implements ShouldBroadcast,
 
     public function toBroadcast($notifiable)
     {
-        return new BroadcastMessage([
-            'message' => 'Новый заказ на ваше мероприятие',
+        return new BroadcastMessage(['message' => 'Вас одобрили на мероприятие',
             'notifications' => $notifiable->notifications,
         ]);
     }

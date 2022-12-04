@@ -55,14 +55,14 @@ class OrderController extends Controller
 
     public function accept(Order $order, OrderDecisionRequest $request): JsonResponse
     {
-        $order->updateOrFail(['status' => OrderStatus::Accepted->value]);
+        $order->updateOrFail(['status' => OrderStatus::Accepted->value, 'show' => 1]);
         event(new OrderAccepted($order));
         return Response::json(['status' => 'ok']);
     }
 
     public function decline(Order $order, OrderDecisionRequest $request): JsonResponse
     {
-        $order->updateOrFail(['status' => OrderStatus::Declined->value]);
+        $order->updateOrFail(['status' => OrderStatus::Declined->value, 'show' => 1]);
         event(new OrderDeclined($order));
         return Response::json(['status' => 'ok']);
     }

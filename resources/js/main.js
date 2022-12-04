@@ -1,14 +1,8 @@
-import $ from "jquery";
-import Swal from "sweetalert2";
-import "suggestions-jquery";
-
-
-
-$("input").focus(function () {
+$("input").on("focus", function () {
     $(".navbar").addClass("hide");
 });
 
-$("input").focusout(function () {
+$("input").on("focusout", function () {
     $(".navbar").removeClass("hide");
 });
 

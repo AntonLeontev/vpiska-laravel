@@ -73,7 +73,7 @@
                         <img src="{{ Vite::image('icons/bell.png') }}" alt="feed">
                     </div>
                     <div class="navbar__feed__title">
-                        <p id="weed_mob">0</p>
+                        <p id="weed_mob">{{ auth()->user()->notifications }}</p>
                     </div>
                 </div>
             </a>

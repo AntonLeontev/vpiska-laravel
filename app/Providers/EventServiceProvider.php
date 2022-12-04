@@ -12,14 +12,10 @@ use App\Listeners\TransferMoney;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use App\Listeners\SendNewOrderNotification;
-use App\Listeners\TransferMoneyOrderCreated;
-use App\Listeners\TransferMoneyEventCanceled;
-use App\Listeners\TransferMoneyOrderCanceled;
 use App\Listeners\SendCancelOrderNotification;
 use App\Listeners\SendEventCanceledNotification;
-use App\Listeners\SendOrderAcceptedMail;
-use App\Listeners\SendOrderDeclinedMail;
-use App\Listeners\SendThanksForOrderNotification;
+use App\Listeners\SendOrderAcceptedNotification;
+use App\Listeners\SendOrderDeclinedNotification;
 use App\Services\vkontakte\CustomVKontakteExtendSocialite;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -45,10 +41,10 @@ class EventServiceProvider extends ServiceProvider
             SendCancelOrderNotification::class,
         ],
         OrderAccepted::class => [
-            SendOrderAcceptedMail::class,
+            SendOrderAcceptedNotification::class,
         ],
         OrderDeclined::class => [
-            SendOrderDeclinedMail::class,
+            SendOrderDeclinedNotification::class,
         ],
         EventCanceled::class => [
             SendEventCanceledNotification::class,

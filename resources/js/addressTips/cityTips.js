@@ -1,7 +1,3 @@
-import $ from "jquery";
-import "suggestions-jquery";
-import { tokens } from "../tokens";
-
 $(document).ready(function () {
     let city = $(".select_city_input");
     let form = city.closest("form");
@@ -17,7 +13,7 @@ $(document).ready(function () {
 
     city.suggestions({
         type: "ADDRESS",
-        token: tokens.dadataToken,
+        token: import.meta.env.VITE_DADATA_TOKEN,
         minChars: 3,
         hint: false,
         bounds: "city",

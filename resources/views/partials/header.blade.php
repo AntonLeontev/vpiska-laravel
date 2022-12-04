@@ -178,11 +178,11 @@
                 </div>
             </a>
             @auth
-                <a href="{{route('users.events')}}">
+                <a href="{{ route('users.events') }}">
                     <div class="header__message">
                         <div class="message__row">
                             <div class="message__status">
-                                <p id="weed">0</p>
+                                <p id="weed">{{ auth()->user()->notifications }}</p>
                             </div>
                             <div class="message__img">
                                 <img src="{{ Vite::image('icons/bell.png') }}" alt="message">

@@ -1,11 +1,9 @@
 import "./bootstrap";
-
-import "slick-carousel";
-import moment from "moment";
+import "./chatBroLoader";
 
 import.meta.glob(["../images/**", "../fonts/**"]);
 
+import "./wsSubscriptions";
 import "./main";
 import "./addressTips/Event";
 import "./addressTips/cityTips";
-import "./chatBroLoader";

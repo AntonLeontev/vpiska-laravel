@@ -1,5 +1,3 @@
-import $ from "jquery";
-
 function ChatbroLoader(chats, async) {
     async = !1 !== async;
     var params = {

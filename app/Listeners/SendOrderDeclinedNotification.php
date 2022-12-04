@@ -5,11 +5,12 @@ namespace App\Listeners;
 use App\Models\User;
 use App\Events\OrderDeclined;
 use App\Mail\Orders\OrderDeclined as MailOrderDeclined;
+use App\Notifications\OrderDeclinedNotification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendOrderDeclinedMail
+class SendOrderDeclinedNotification
 {
     /**
      * Create the event listener.
@@ -32,6 +33,7 @@ class SendOrderDeclinedMail
         $order = $orderDeclined->order;
         $customer = User::find($order->customer_id);
 
-        Mail::to($customer->email)->send(new MailOrderDeclined($order));
+        $customer->increment('notifications');
+        $customer->notify(new OrderDeclinedNotification($order));
     }
 }

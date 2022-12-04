@@ -1,8 +1,3 @@
-import $ from "jquery";
-import "suggestions-jquery";
-import IMask from "imask";
-import { tokens } from "../tokens";
-
 $(document).ready(function () {
     /*-------------------- address tooltips --------------------*/
     let city = $(".select_city_input-desc");
@@ -40,19 +35,25 @@ $(document).ready(function () {
         $.get({
             url: "https://api.ipgeolocation.io/timezone",
             data: {
-                apiKey: tokens.geolocationApiKey,
+                apiKey: import.meta.env.VITE_GEOLOCATION_API_KEY,
                 lat: lat,
                 long: lon,
             },
             success: (data) => {
                 utcOffset.val(data.timezone_offset_with_dst);
             },
+            error: (data) => {
+                Swal.fire({
+                    text: "Не удалось узнать часовой пояс этого города. Попробуйте выбрать еще раз",
+                    icon: "error",
+                });
+            },
         });
     }
 
     city.suggestions({
         type: "ADDRESS",
-        token: tokens.dadataToken,
+        token: import.meta.env.VITE_DADATA_TOKEN,
         minChars: 3,
         hint: false,
         bounds: "city",
@@ -67,7 +68,7 @@ $(document).ready(function () {
     });
     street.suggestions({
         type: "ADDRESS",
-        token: tokens.dadataToken,
+        token: import.meta.env.VITE_DADATA_TOKEN,
         minChars: 3,
         hint: false,
         bounds: "street",
@@ -81,7 +82,7 @@ $(document).ready(function () {
     });
     building.suggestions({
         type: "ADDRESS",
-        token: tokens.dadataToken,
+        token: import.meta.env.VITE_DADATA_TOKEN,
         minChars: 1,
         hint: false,
         bounds: "house",

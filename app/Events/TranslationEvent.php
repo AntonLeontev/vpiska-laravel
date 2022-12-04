@@ -14,12 +14,10 @@ class TranslationEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $id;
     public $message;
 
-    public function __construct(int $id, string $message)
+    public function __construct(string $message)
     {
-        $this->id = $id;
         $this->message = $message;
     }
 
@@ -30,6 +28,6 @@ class TranslationEvent implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new Channel('translation.' . $this->id);
+        return new PrivateChannel('test');
     }
 }

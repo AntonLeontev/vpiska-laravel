@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Events\OrderCreated;
 use App\Mail\Orders\ThanksForOrder;
 use App\Mail\Orders\YouHaveNewOrder;
+use App\Notifications\NewOrderNotification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,7 +31,7 @@ class SendNewOrderNotification
         $customer = $this->user->find($orderCreated->order->customer_id);
         $creator  = $this->user->find($orderCreated->order->event->creator_id);
 
-        Mail::to($customer->email)->send(new ThanksForOrder($customer));
-        Mail::to($creator->email)->send(new YouHaveNewOrder($creator));
+        $creator->increment('notifications');
+        $creator->notify(new NewOrderNotification($creator->notifications));
     }
 }

@@ -209,16 +209,39 @@ $(document).ready(function () {
         });
     });
 
+    // function createCard(imageData) {
+    //     let div = document.createElement("div");
+    //     div.className = "gallery__card";
+    //     div.innerHTML = `<img src="/storage/${imageData.path}" alt="profile photo">`;
+    //     div.innerHTML += `<div
+    //     class="btn__image-delete" data-action="${imageData.deletePath}" data-token="${imageData.token}"
+    //     data-user_id="${imageData.userId}">
+    //     <img src="https://vpiska.online/resources/images/icons/delete.svg" alt="delete">
+    //     </div>`;
+    //     return div;
+    // }
+
     function createCard(imageData) {
-        let div = document.createElement("div");
-        div.className = "gallery__card";
-        div.innerHTML = `<img src="/storage/${imageData.path}" alt="profile photo">`;
-        div.innerHTML += `<div 
-        class="btn__image-delete" data-action="${imageData.deletePath}" data-token="${imageData.token}"
-        data-user_id="${imageData.userId}">
-        <img src="https://vpiska.online/resources/images/icons/delete.svg" alt="delete">
-        </div>`;
-        return div;
+        let card = document.querySelector(".gallery__card_template");
+        card = card.cloneNode(true);
+        card.className = "gallery__card";
+        card.querySelector("img").setAttribute(
+            "src",
+            `/storage/${imageData.path}`
+        );
+        card.querySelector(".btn__image-delete").setAttribute(
+            "data-action",
+            imageData.deletePath
+        );
+        card.querySelector(".btn__image-delete").setAttribute(
+            "data-token",
+            imageData.token
+        );
+        card.querySelector(".btn__image-delete").setAttribute(
+            "data-user_id",
+            imageData.userId
+        );
+        return card;
     }
 
     function createInput(imageData) {

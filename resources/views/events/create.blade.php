@@ -310,6 +310,12 @@
                                         
                                     </div>
                                     <div class="img__list gallery__main" id="js-file-list2">
+                                        <div class="gallery__card gallery__card_template">
+                                            <img src="" alt="event photo">
+                                                <div class="btn__image-delete">
+                                                    <img src="{{ Vite::image('icons/delete.svg') }}" alt="delete">
+                                                </div>
+                                        </div>
                                         @if (auth()->user()->tempImages->count() > 0)
                                             @foreach (auth()->user()->tempImages as $image)
                                                 <div class="gallery__card">

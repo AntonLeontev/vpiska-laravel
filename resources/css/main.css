@@ -1579,6 +1579,10 @@ input#rules:checked+label::before {
 	box-sizing: border-box;
 }
 
+.gallery__card_template {
+	display: none;
+}
+
 .gallery__card>img,
 .img__item>img {
 	width: 192px;

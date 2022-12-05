@@ -118,6 +118,12 @@
                             <p>Ваша галерея</p>
                         </div>
                         <div class="gallery__main">
+                            <div class="gallery__card gallery__card_template">
+                                <img src="" alt="event photo">
+                                    <div class="btn__image-delete">
+                                        <img src="{{ Vite::image('icons/delete.svg') }}" alt="delete">
+                                    </div>
+                            </div>
                             @if ($user->images->count() <= 0)
                             @unless (auth()->user()->id ?? 0 === $user->id)
                                 <div class="gallery__add gallery__add_empty">

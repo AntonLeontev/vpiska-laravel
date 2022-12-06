@@ -226,9 +226,9 @@
                         <div class="main__photos">
                             <div class="slider-photos">
                                 @if ($event->images->count() === 0)
-                                    <ul>
-                                        <li><img src="{{Vite::image('plugs/event/2.jpg')}}" alt="Фото мероприятия"></li>
-                                    </ul>
+                                    <div class="default-event-photo">
+                                        <img src="{{Vite::randomFile('plugs/event')}}" alt="Фото мероприятия">
+                                    </div>
                                 @else
                                     <div class="carousel">
                                         @foreach ($event->images as $photo)

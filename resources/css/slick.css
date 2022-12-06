@@ -115,13 +115,15 @@
 
     border: 1px solid transparent;
 }
-.slick-arrow.slick-hidden {
-    display: none;
+.slick-list {
+    background: rgba(0,0,0,.3);
+    border-radius: 7px;
 }
 
 .slick-prev,
 .slick-next {
 	background: transparent;
+    line-height: 0;
 	cursor: pointer;
 }
 
@@ -131,9 +133,24 @@
     align-items: center;
     justify-content: center;
 }
+.slick-slide div {
+    line-height: 0;
+}
 .slick-slide img{
     object-fit: contain;
-    max-height: 300px;
-    border-radius: 7px;
+    width: 100%;
+    max-height: 100%;
+    display: block;
+    max-height: 271.5px;
 } 
+
+.carousel-controls {
+	display: flex;
+	justify-content: space-between;
+    align-items: center;
+    padding: 0 7px;
+    height: 42px;
+    background: rgba(0,0,0,.3);
+    border-radius: 7px;
+}
 

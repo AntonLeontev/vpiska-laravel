@@ -28,10 +28,9 @@ class SendNewOrderNotification
      */
     public function handle(OrderCreated $orderCreated)
     {
-        $customer = $this->user->find($orderCreated->order->customer_id);
         $creator  = $this->user->find($orderCreated->order->event->creator_id);
 
         $creator->increment('notifications');
-        $creator->notify(new NewOrderNotification($creator->notifications));
+        $creator->notify(new NewOrderNotification());
     }
 }

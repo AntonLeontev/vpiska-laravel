@@ -2,13 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\VerifyCsrfToken;
+use App\Http\Controllers\CypixController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Middleware\PaymentIdMiddleware;
 use App\Http\Controllers\UserImageController;
 use App\Http\Controllers\ChangeCityController;
-use App\Http\Controllers\CypixController;
 use App\Http\Controllers\EventImageController;
 use App\Http\Controllers\TemporaryImageController;
 use App\Http\Middleware\Event\TimeHandleMiddleware;
@@ -109,8 +110,9 @@ Route::view('/dissemination-of-personal-data', 'static.dissemination-of-personal
 Route::controller(CypixController::class)->group(function () {
     Route::get('/pay', 'pay')->name('pay');
 
-    Route::get('/pay/notification', 'notificationGet')->name('pay.notification');
-    Route::post('/pay/notification', 'notificationPost');
+    Route::post('/pay/notification', 'handlePayment')
+    ->withoutMiddleware([VerifyCsrfToken::class])
+        ->name('pay.notification');
 });
 
 require __DIR__ . '/auth.php';

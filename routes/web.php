@@ -109,8 +109,8 @@ Route::view('/dissemination-of-personal-data', 'static.dissemination-of-personal
 Route::controller(CypixController::class)->group(function () {
     Route::get('/pay', 'pay')->name('pay');
 
-    // Route::get('/pay/notification', 'notificationGet')->name('pay.notification');
-    // Route::post('/pay/notification', 'notificationPost');
+    Route::get('/pay/notification', 'notificationGet')->name('pay.notification');
+    Route::post('/pay/notification', 'notificationPost');
 });
 
 require __DIR__ . '/auth.php';

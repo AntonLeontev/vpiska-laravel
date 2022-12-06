@@ -17,8 +17,8 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignIdFor(Order::class)->nullable()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignIdFor(Order::class)->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('sum');
             $table->string('type');
             $table->string('description');

@@ -17,6 +17,7 @@
         "laravel/socialite": "^5.5",
         "laravel/telescope": "^4.9",
         "laravel/tinker": "^2.7",
+        "predis/predis": "^2.0",
         "pusher/pusher-php-server": "7.0",
         "socialiteproviders/vkontakte": "^5.0"
     },

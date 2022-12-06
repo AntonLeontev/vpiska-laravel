@@ -142,6 +142,8 @@
                                         {{Vite::image('icons/done-wed.svg')}}
                                         @elseif($order->status === 2)
                                         {{Vite::image('icons/cancel-wed.svg')}}
+                                        @elseif($order->status === 3)
+                                        {{Vite::image('icons/done-wed.svg')}}
                                         @endif
                                         " alt="Иконка заказа">
                                     </div>

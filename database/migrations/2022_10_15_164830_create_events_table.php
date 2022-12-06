@@ -16,7 +16,10 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'creator_id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignIdFor(User::class, 'creator_id')
+                ->constrained('users')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->dateTime('starts_at');
             $table->dateTime('ends_at');
             $table->unsignedInteger('price');

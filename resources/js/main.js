@@ -209,22 +209,10 @@ $(document).ready(function () {
         });
     });
 
-    // function createCard(imageData) {
-    //     let div = document.createElement("div");
-    //     div.className = "gallery__card";
-    //     div.innerHTML = `<img src="/storage/${imageData.path}" alt="profile photo">`;
-    //     div.innerHTML += `<div
-    //     class="btn__image-delete" data-action="${imageData.deletePath}" data-token="${imageData.token}"
-    //     data-user_id="${imageData.userId}">
-    //     <img src="https://vpiska.online/resources/images/icons/delete.svg" alt="delete">
-    //     </div>`;
-    //     return div;
-    // }
-
     function createCard(imageData) {
         let card = document.querySelector(".gallery__card_template");
         card = card.cloneNode(true);
-        card.className = "gallery__card";
+        card.classList.remove("gallery__card_template");
         card.querySelector("img").setAttribute(
             "src",
             `/storage/${imageData.path}`

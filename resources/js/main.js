@@ -251,9 +251,9 @@ $(document).ready(function () {
         let form = event.target.closest("form");
         let fileUpload = $(form).find("input[type=file]");
 
-        if (parseInt(fileUpload.get(0).files.length) > 5) {
+        if (parseInt(fileUpload.get(0).files.length) > 10) {
             Swal.fire({
-                text: "Максимальное число загружаемых файлов не более 5-ти",
+                text: "Максимальное число загружаемых файлов не более 10",
                 icon: "warning",
             });
             return;
@@ -293,9 +293,9 @@ $(document).ready(function () {
         let form = event.target.closest("form");
         let fileUpload = $(form).find("input[type=file]");
 
-        if (parseInt(fileUpload.get(0).files.length) > 5) {
+        if (parseInt(fileUpload.get(0).files.length) > 10) {
             Swal.fire({
-                text: "Максимальное число загружаемых файлов не более 5-ти",
+                text: "Максимальное число загружаемых файлов не более 10",
                 icon: "warning",
             });
             return;
@@ -339,6 +339,12 @@ $(document).ready(function () {
             success: (data) => {
                 if (data.status === "ok") {
                     this.closest(".gallery__card").remove();
+                }
+
+                if (data.path) {
+                    document
+                        .querySelector(`input[value="${data.path}"]`)
+                        .remove();
                 }
             },
             error: handleError,

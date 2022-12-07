@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TemporaryImageRequest;
 use Illuminate\Http\Request;
 use App\Models\TemporaryImage;
 use Illuminate\Support\Facades\Storage;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Response;
 
 class TemporaryImageController extends Controller
 {
-    public function store(Request $request, TemporaryImage $temporaryImage)
+    public function store(TemporaryImageRequest $request, TemporaryImage $temporaryImage)
     {
         //TODO Refactor. logic to separate class. Exceptions 
         $images = [];
@@ -28,8 +29,9 @@ class TemporaryImageController extends Controller
 
     public function destroy(TemporaryImage $temporaryImage)
     {
+        $path = $temporaryImage->path;
         Storage::delete($temporaryImage->path);
         $temporaryImage->deleteOrFail();
-        return Response::json(['status' => 'ok']);
+        return Response::json(['status' => 'ok', 'path' => $path]);
     }
 }

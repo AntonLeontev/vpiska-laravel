@@ -20,7 +20,7 @@
                             <p><a href="/"><img src="{{ Vite::image('icons/close.svg') }}" alt="close"></a></p>
                         </div>
                     </div>
-                    <x-common.form class="form-row" action="{{route('eventImage.store')}}" method="POST" enctype="multipart/form-data">
+                    <x-common.form class="form-row" action="{{route('eventImage.store', $event->id)}}" method="POST" enctype="multipart/form-data">
                         <input id="js-file" type="file" class="input_file_event hidden" name="images[]" multiple>
                         <input type="hidden" name="event_id" value="{{$event->id}}">
                     </x-common.form>

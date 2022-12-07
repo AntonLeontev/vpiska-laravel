@@ -43,7 +43,7 @@ Route::delete('/users/photo/delete/{userImage}', [UserImageController::class, 'd
 
 /*------------------Event photos---------------------*/
 Route::controller(EventImageController::class)->group(function () {
-    Route::post('/events/photo/add', 'store')
+    Route::post('/events/{event}/photo/add', 'store')
     ->name('eventImage.store');
     Route::delete('/events/photo/delete/{eventImage}', 'destroy')
     ->name('eventImage.destroy');

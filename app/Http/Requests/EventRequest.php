@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -14,6 +15,7 @@ class EventRequest extends FormRequest
 
     public function rules()
     {
+        $maxImages = config('vpiska.max_photo_per_event');
         $yesterday = Carbon::yesterday($this->utc_offset)->format('d-m-Y');
         $beforeDay = Carbon::tomorrow($this->utc_offset)
             ->addDays(config('vpiska.event.beforeDaysCreating', 3))
@@ -35,7 +37,8 @@ class EventRequest extends FormRequest
             'date' => ['required', 'date', "after:$yesterday", "before:$beforeDay"],
             'time' => ['required', 'string', 'regex:/^([0-1]?\d|2[0-3]):[0-5]\d - ([0-1]?\d|2[0-3]):[0-5]\d$/'],
             'description' => ['nullable', 'max:1000', 'string'],
-            'image.*' => ['image', 'nullable', 'max:5120'],
+            'images' => ['nullable', "max:$maxImages", 'bail'],
+            'images.*' => ['string', 'nullable'],
             'user_phone' => ['required', 'regex:/^\+7\(\d{3}\)\d{3}-\d\d-\d\d$/'],
             'phone' => ['sometimes', 'regex:/^[78]\d{10}$/'],
             'scales' => ['required', 'accepted'],
@@ -45,6 +48,7 @@ class EventRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'images.max' => 'Количество фотографий должно быть не более :max',
             'city_fias_id.required' => 'Город должен быть выбран из списка',
             'street_fias_id.required' => 'Улица должна быть выбрана из списка',
             'building_fias_id.required' => 'Номер дома должен быть выбран из списка',

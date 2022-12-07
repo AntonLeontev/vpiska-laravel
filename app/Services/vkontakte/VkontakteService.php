@@ -3,7 +3,10 @@
 namespace App\Services\vkontakte;
 
 use App\Models\User;
+use Exception;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Socialite\Facades\Socialite;
 
 class VkontakteService
@@ -12,15 +15,18 @@ class VkontakteService
 	{
 		$vkUser = Socialite::driver('vkontakte')->user();
 
-		$user = User::firstOrCreate(['email' => $vkUser->getEmail()], [
-			'vk_id'             => $vkUser->getId(),
-			'first_name'        => $vkUser->first_name,
-			'last_name'         => $vkUser->last_name,
-			'photo_path'        => $vkUser->getAvatar(),
-			'password'          => Hash::make(str()->random(12)),
-			'email_verified_at' => now(),
-			'sex'               => $this->convertSex($vkUser->sex),
-		]);
+		$user = User::firstOrCreate(
+			['email' => $vkUser->getEmail()],
+			[
+				'vk_id'             => $vkUser->getId(),
+				'first_name'        => $vkUser->first_name,
+				'last_name'         => $vkUser->last_name,
+				'photo_path'        => $vkUser->getAvatar(),
+				'password'          => Hash::make(str()->random(12)),
+				'email_verified_at' => now(),
+				'sex'               => $this->convertSex($vkUser->sex),
+			]
+		);
 
 		return $user;
 	}

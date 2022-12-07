@@ -88,7 +88,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected function getAvatarAttribute()
     {
-        return "/storage/$this->photo_path";
+        if (Storage::exists($this->photo_path)) {
+            return "/storage/$this->photo_path";
+        }
+
+        return $this->photo_path;
     }
 
     protected function getSexAttribute($value)

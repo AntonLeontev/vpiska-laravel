@@ -257,7 +257,7 @@
                             <div class="chat__main"
                             data-user_id="{{ auth()->user()->id }}"
                             data-user_name="{{auth()->user()->full_name}}"
-                            data-user_avatar="/storage/{{ auth()->user()->avatar }}"
+                            data-user_avatar="{{ auth()->user()->avatar }}"
                             data-user_link="{{ route('users.show', auth()->user()->id) }}"
                             data-chat_id="{{$event->id}}"
                             >

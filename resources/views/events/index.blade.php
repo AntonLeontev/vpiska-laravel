@@ -22,7 +22,7 @@
                                 <div class="find-card">
                                     <div class="find-card__user">
                                         <div class="find-card__image">
-                                            <img src="{{$event->creator->photo_path}}" alt="user">
+                                            <img src="{{$event->creator->avatar}}" alt="user">
                                         </div>
                                         <div class="find-card__title">
                                             <div class="find-card__main">

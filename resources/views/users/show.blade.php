@@ -57,7 +57,15 @@
                             <div class="user__1">
                                 <div class="user__block">
                                     <div class="user__photo">
-                                        <img src="{{ $user->photo_path }}" alt="фото профиля">
+                                        <img src="{{ $user->avatar }}" alt="фото профиля">
+                                        @auth
+                                            <label for="avatar_input" class="new-avatar-button">
+                                                <p>Сменить</p>
+                                                <x-common.form action="{{route('user.avatar.new')}}" method="post"  enctype="multipart/form-data">
+                                                    <input type="file" name="avatar" id="avatar_input" class="input_file_user hidden">
+                                                </x-common.form>
+                                            </label>
+                                        @endauth
                                     </div>
                                     <div class="user__name__mobile">
                                         <p><b>{{ $user->full_name }}</b></p>

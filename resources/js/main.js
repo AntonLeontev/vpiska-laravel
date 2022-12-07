@@ -171,6 +171,10 @@ $(document).ready(function () {
         let form = event.target.closest("form");
         let fileUpload = $(form).find("input[type=file]");
 
+        if (parseInt(fileUpload.get(0).files.length) === 0) {
+            return;
+        }
+
         if (parseInt(fileUpload.get(0).files.length) > 5) {
             Swal.fire({
                 text: "Максимальное число загружаемых файлов не более 5-ти",
@@ -194,16 +198,18 @@ $(document).ready(function () {
                     return;
                 }
 
-                let empty = form
-                    .closest(".gallery__main")
-                    .querySelector(".gallery__add_empty");
-                if (empty) empty.remove();
+                let gallery = form.closest(".gallery__main");
+                let userPhoto = form.closest(".user__photo");
 
-                data.images.forEach((image) => {
-                    document
-                        .querySelector(".gallery__main")
-                        .append(createCard(image));
-                });
+                if (!_.isNull(gallery)) {
+                    data.images.forEach((image) => {
+                        gallery.append(createCard(image));
+                    });
+                }
+
+                if (!_.isNull(userPhoto)) {
+                    $(userPhoto).find("img").first().attr("src", data.path);
+                }
             },
             error: handleError,
         });
@@ -277,7 +283,6 @@ $(document).ready(function () {
                         .querySelector(".form_event-create")
                         .append(createInput(image));
                 });
-                console.log(data);
             },
             error: handleError,
         });

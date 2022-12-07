@@ -60,7 +60,7 @@
                 <div class="activity__inforamtion__main">
                     <div class="inforamtion__body">
                         <div class="information__user">
-                            <div class="information__user__image"><img src="{{ $event->creator->photo_path }}"
+                            <div class="information__user__image"><img src="{{ $event->creator->avatar }}"
                                     alt="user"></div>
                             <div class="information__user__title">
                                 <div class="user__title__main">
@@ -257,7 +257,7 @@
                             <div class="chat__main"
                             data-user_id="{{ auth()->user()->id }}"
                             data-user_name="{{auth()->user()->full_name}}"
-                            data-user_avatar="{{ auth()->user()->photo_path }}"
+                            data-user_avatar="/storage/{{ auth()->user()->avatar }}"
                             data-user_link="{{ route('users.show', auth()->user()->id) }}"
                             data-chat_id="{{$event->id}}"
                             >
@@ -348,7 +348,7 @@
                             @foreach ($event->orders->where('status', 1) as $order)
                                 <a href="{{route('users.show', $order->customer->id)}}">
                                     <div class="application__card">
-                                        <div class="application__photo"><img src="{{$order->customer->photo_path}}" alt="user"></div>
+                                        <div class="application__photo"><img src="{{$order->customer->avatar}}" alt="user"></div>
                                         <div class="application__name">
                                             <p>{{$order->customer->full_name}}</p>
                                         </div>
@@ -395,7 +395,7 @@
                             @foreach ($event->orders->where('status', 3) as $order)
                                 <a href="{{route('users.show', $order->customer->id)}}">
                                     <div class="application__card">
-                                        <div class="application__photo"><img src="{{$order->customer->photo_path}}" alt="user"></div>
+                                        <div class="application__photo"><img src="{{$order->customer->avatar}}" alt="user"></div>
                                         <div class="application__name">
                                             <p>{{$order->customer->full_name}}</p>
                                         </div>

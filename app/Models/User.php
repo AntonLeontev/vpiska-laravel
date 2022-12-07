@@ -74,7 +74,7 @@ class User extends Authenticatable implements MustVerifyEmail
             $path = "images/user_photos/$fileName.$extension";
             Storage::put($path, $file);
 
-            $user->photo_path = '/storage/' . $path;
+            $user->photo_path = $path;
         });
     }
 
@@ -84,6 +84,11 @@ class User extends Authenticatable implements MustVerifyEmail
             get: fn ($value) => ($value / 100),
             set: fn ($value) => ($value * 100)
         );
+    }
+
+    protected function getAvatarAttribute()
+    {
+        return "/storage/$this->photo_path";
     }
 
     protected function getSexAttribute($value)

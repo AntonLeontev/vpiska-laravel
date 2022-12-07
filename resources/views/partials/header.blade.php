@@ -198,7 +198,7 @@
                             <div class="profile__name">
                                 <p>{{ auth()->user()->first_name }}</p>
                             </div>
-                            <div class="profile__img"><img src="{{ auth()->user()->photo_path }}" alt="profile_photo">
+                            <div class="profile__img"><img src="{{ auth()->user()->avatar }}" alt="profile_photo">
                             </div>
                         </div>
                     </a>

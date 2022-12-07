@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AvatarRequest;
 use App\Http\Requests\UserImageDeleteRequest;
 use App\Models\UserImage;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class UserImageController extends Controller
 
         foreach ($request->images as $image) {
             $path = $image->store('images/user_photos');
-            $id = $userImage->create(['user_id' => $request->input('user_id'), 'path' => "$path"])->id;
+            $id = $userImage->create(['user_id' => $request->input('user_id'), 'path' => $path])->id;
             $deletePath = route('userImage.destroy', $id);
             $token = csrf_token();
             $userId = $request->input('user_id');

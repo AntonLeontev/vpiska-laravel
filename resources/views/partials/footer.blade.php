@@ -85,7 +85,7 @@
             <a href="{{route('users.show', auth()->user()->id)}}">
                 <div class="navbar__profile__row">
                     <div class="navbar__profile__image">
-                        <img src="{{auth()->user()->photo_path}}" alt="profile_photo">
+                        <img src="{{auth()->user()->avatar}}" alt="profile_photo">
                     </div>
                     <div class="navbar__profile__title">
                         <p>{{auth()->user()->first_name}}</p>

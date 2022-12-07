@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Event;
+use App\Models\Order;
 use App\Enums\OrderStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\AvatarRequest;
+use App\Services\Cypix\CypixService;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EditUserRequest;
-use App\Models\Event;
-use App\Models\Order;
-use App\Services\Cypix\CypixService;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -73,5 +75,13 @@ class UserController extends Controller
     {
         $user->updateOrFail(['notifications' => 0]);
         return Response::json(['status' => 'ok']);
+    }
+
+    public function newAvatar(AvatarRequest $request)
+    {
+        Storage::delete(auth()->user()->photo_path);
+        $path = $request->avatar->store('images/user_photos');
+        auth()->user()->updateOrFail(['photo_path' => $path]);
+        return Response::json(['status' => 'ok', 'path' => "/storage/$path"]);
     }
 }

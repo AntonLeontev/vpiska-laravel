@@ -28,12 +28,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/edit/{user}', [UserController::class, 'update'])
     ->name('users.update');
     Route::put('users/events/{user}', [UserController::class, 'resetNotifications']);
+    Route::post('/users/avatar/new', [UserController::class, 'newAvatar'])
+    ->name('user.avatar.new');
 });
 Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 
 /*------------------User photos---------------------*/
 Route::post('/users/photo/add', [UserImageController::class, 'store'])
     ->name('userImage.store');
+Route::post('/users/photo/avatar/change', [UserImageController::class, 'changeAvatar'])
+    ->name('userImage.avatar.change');
 Route::delete('/users/photo/delete/{userImage}', [UserImageController::class, 'destroy'])
     ->name('userImage.destroy');
 

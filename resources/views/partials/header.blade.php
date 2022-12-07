@@ -2,22 +2,23 @@
     <h3 class="close__title">Выберите ваш город</h3>
     <div class="select__row">
         <div class="select__input">
-            <form action="{{route('change_city')}}"
+            <x-common.form action="{{route('change_city')}}"
             method="POST" id="select_cit" class="select_city_form">
-            @csrf
                 <input type="hidden" value="{{session('city_fias_id')}}" name="city_fias_id" id="city_fias_id">
                 <div class="input__select">
                     <input autocomplete="off" list="modal_select_city" name="city_name" type="text"
-                        id="select_city_input" value="{{session('city_name')}}" class="select_city_input" placeholder="Выберите город" required>
+                        id="select_city_input" value="{{session('city_name')}}" 
+                        class="select_city_input" placeholder="Выберите город" required>
                 </div>
                 @auth
-                    <input type="checkbox" id="make_default" name="make_default">
-                    <label class="checkbox" for="make_default">Сделать городом по-умолчанию</label>
+                    <x-common.checkbox class="select-city__checkbox" name="make_default">
+                        Запомнить выбор
+                    </x-common.checkbox>                
                 @endauth
                 <div class="edit__submit__button">
                     <button type="submit">Подтвердить</button>
                 </div>
-            </form>
+            </x-common.form>
         </div>
     </div>
 </x-common.modal>
@@ -117,7 +118,7 @@
                             <a href="{{route('vk-redirect')}}">
                                 <div class="title__button__style ">
                                     <div class="style__image ">
-                                        <img src="{{ Vite::image('vk.svg') }}" alt="auth__button ">
+                                        <img src="{{ Vite::image('vk.svg') }}" alt="auth__button">
                                     </div>
                                     <div class="style__text ">
                                         <p>Регистрация через Вконтакте</p>

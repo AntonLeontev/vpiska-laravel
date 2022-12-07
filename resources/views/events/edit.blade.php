@@ -22,7 +22,6 @@
                     </div>
                     <x-common.form class="form-row" action="{{route('eventImage.store', $event->id)}}" method="POST" enctype="multipart/form-data">
                         <input id="js-file" type="file" class="input_file_event hidden" name="images[]" multiple>
-                        <input type="hidden" name="event_id" value="{{$event->id}}">
                     </x-common.form>
 
 
@@ -171,7 +170,7 @@
                                 </div>
                                 <div class="actvity__submit">
                                     <div class="submit__checkbox">
-                                        <input type="checkbox" id="rules" name="scales" required checked>
+                                        <input type="checkbox" id="rules"  required checked>
                                         <label class="checkbox" for="rules">Согласен с <a
                                                 href="{{ route('policy') }}">политикой
                                                 конфидециальности</a>, а так же <a

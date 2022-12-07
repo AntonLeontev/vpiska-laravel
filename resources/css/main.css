@@ -55,23 +55,6 @@ body {
 	position: relative;
 }
 
-
-/* .content {
-	flex: 1 1 auto;
-} */
-
-
-/* .content {
-	padding-bottom: 90px;
-} */
-
-
-/* .content {
-	display: table-row;
-	height: 100%;
-	width: 100%;
-} */
-
 .content {
 	flex: 1 0 auto;
 }
@@ -152,6 +135,76 @@ body {
 	font-size: 24px;
 	color: #fff;
 	cursor: pointer;
+}
+
+.check {
+	padding-left: 1.5em;
+}
+
+.check__input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+}
+
+.check__input:hover {
+	border: none;
+}
+
+.check__box {
+	position: absolute;
+}
+
+.check__box::before {
+	content: "";
+	position: absolute;
+	width: 1em;
+	height: 1em;
+	margin-left: -1.5em;
+	background: transparent;
+	border: 2px solid #FD0081;
+	color: #FD0081;
+	border-radius: 4px;
+	line-height: 1em;
+	text-align: center;
+}
+
+.check__input:checked + .check__box::before {
+	content: '✔';
+}
+
+.check__input:focus + .check__box::before {
+	content: '';
+	box-shadow: 0 0 0 0.07em #fff;
+}
+
+.check__input:checked:focus + .check__box::before {
+	content: '✔';
+	box-shadow: 0 0 0 0.07em #fff;
+}
+
+.check__input:disabled + .check__box::before {
+	content: '';
+	border-color: #cacaca;
+	color: #cacaca;
+}
+
+.check__input:checked:disabled + .check__box::before {
+	content: '✔';
+	border-color: #cacaca;
+	color: #cacaca;
+}
+
+.submit__checkbox label,
+.submit__checkbox a {
+	font-family: "JostStandart", 'sans-serif';
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 1.21;
+	color: #ACACAC;
 }
 
 /*--------------------- ScrollBar ---------------------*/
@@ -283,6 +336,11 @@ body {
 	align-items: center;
 	height: 120px;
 	transition: all .4s;
+}
+
+.select-city__checkbox {
+	margin: 10px 0;
+	text-align: left;
 }
 
 .profile__name {
@@ -1218,20 +1276,8 @@ input#rules:checked+label::before {
 }
 
 
-/*
-.submit__checkbox {
-	margin: 0 0 0 24px;
-} */
 
-.submit__checkbox label,
-.submit__checkbox a {
-	font-family: "JostStandart", 'sans-serif';
-	font-style: normal;
-	font-weight: normal;
-	font-size: 14px;
-	line-height: 1.21;
-	color: #ACACAC;
-}
+
 
 .description__text {
 	flex: 1 1 auto;
@@ -2265,7 +2311,7 @@ input#rules:checked+label::before {
 
 .input__select>input {
 	border: 1px solid;
-	max-width: 310px;
+	max-width: 450px;
 	width: 100%;
 }
 
@@ -2321,7 +2367,7 @@ input[type=date] {
 .edit__submit__button>button {
 	margin: 15px 0px 0px 30px;
 	background: #8300b0;
-	max-width: 369px;
+	max-width: 450px;
 	font-size: 15px;
 	width: 100%;
 	padding: 10px;

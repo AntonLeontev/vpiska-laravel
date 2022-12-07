@@ -174,17 +174,13 @@
                                     </div>
                                     <!--   <div class="button_next" onclick="create_activity_4()"><p>Далее</p></div>   -->
                                 </div>
-                                <div class="actvity__submit">
-                                    <div class="submit__checkbox">
-                                        <input type="checkbox" id="rules" name="scales" required checked>
-                                        <label class="checkbox" for="rules">Согласен с <a
-                                                href="{{ route('policy') }}">политикой
-                                                конфидециальности</a>, а так же <a
-                                                href="{{ route('processing') }}">обработку</a>
-                                            и <a href="{{ route('dissemination') }}">распространение</a>
-                                            персональных данных.</label>
-                                    </div>
-                                </div>
+                                <x-common.checkbox class="submit__checkb" name="scales" check="true">
+                                    Согласен с 
+                                    <a href="{{ route('policy') }}">политикой конфидециальности</a>,
+                                    а так же на <a href="{{ route('processing') }}">обработку</a>
+                                    и <a href="{{ route('dissemination') }}">распространение</a>
+                                    персональных данных
+                                </x-common.checkbox>
                             </form>
                         @endhasTooManyEvents
                     @enduserActivated

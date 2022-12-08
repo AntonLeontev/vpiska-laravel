@@ -1,4 +1,7 @@
-<div class="navbar">
+<div class="navbar 
+    @auth navbar_auth @endauth
+    @guest navbar_guest @endguest
+    ">
     <div class="navbar__city">
         <a href="#select_city">
             <div class="navbar__city__row">

@@ -251,7 +251,10 @@ body {
 .navbar__balance,
 .navbar__logo,
 .navbar__feed {
+	display: flex;
+	align-items: center;
 	min-width: 0;
+	max-width: 100%;
 }
 
 .navbar__city>a,
@@ -260,6 +263,7 @@ body {
 .navbar__feed>a,
 .navbar__profile>a {
 	text-decoration: none;
+	max-width: 100%;
 }
 
 .navbar__city__image>img,
@@ -3495,6 +3499,13 @@ input[type="number"]:focus {
 	}
 	.navbar{
 		display: grid;
+		grid-template-rows: 1fr;
+		justify-items: center;
+	}
+	.navbar_guest {
+		grid-template-columns: repeat(3, 1fr);
+	}
+	.navbar_auth {
 		grid-template-columns: repeat(5, 1fr);
 	}
 

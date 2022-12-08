@@ -251,6 +251,8 @@ $(document).ready(function () {
         let form = event.target.closest("form");
         let fileUpload = $(form).find("input[type=file]");
 
+        if (parseInt(fileUpload.get(0).files.length) === 0) return;
+
         if (parseInt(fileUpload.get(0).files.length) > 10) {
             Swal.fire({
                 text: "Максимальное число загружаемых файлов не более 10",
@@ -292,6 +294,8 @@ $(document).ready(function () {
     $(".input_file_event").on("change", function (event) {
         let form = event.target.closest("form");
         let fileUpload = $(form).find("input[type=file]");
+
+        if (parseInt(fileUpload.get(0).files.length) === 0) return;
 
         if (parseInt(fileUpload.get(0).files.length) > 10) {
             Swal.fire({

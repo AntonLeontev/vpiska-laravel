@@ -36,9 +36,6 @@
 
                                     <div class="find-card__address">
                                         <div><span>Рейтинг:</span></div>
-
-
-
                                         <div class="rating-mini">
                                             <span class="active"></span>
                                             <span></span>
@@ -46,7 +43,6 @@
                                             <span></span>
                                             <span></span>
                                         </div>
-
                                     </div>
                                     <div class="find-card__date">
                                         <p>
@@ -60,23 +56,22 @@
                                         </p>
                                     </div>
 
-                                    <div class="find-card__address find-card__address--none">
+                                    <div class="find-card__address">
                                         <p>
                                             <span>Адрес:</span> г {{ $event->city_name }}, {{ $event->full_street }},
-                                            дом {{ $event->building }}
+                                            дом&nbsp;{{ $event->building }}
                                         </p>
                                     </div>
                                     <div class="find-card__busy">
                                         <p>
                                             <span>Свободно мест:</span>
-                                            {{ $event->max_members - ($event->orders->whereIn('status', [1, 3])->count() ?? 0) }}
-                                            из {{$event->max_members}}
+                                            {{ $event->max_members - ($event->orders->whereIn('status', [1, 3])->count() ?? 0) }}&nbsp;из&nbsp;{{$event->max_members}}
                                         </p>
                                     </div>
 
                                     <div class="find-card__busy">
                                         <p>
-                                            <span>Цена:</span> {{ $event->price }} р
+                                            <span>Цена:</span> {{ $event->price }}&nbsp;р
                                         </p>
                                     </div>
                                 </div>

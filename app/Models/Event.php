@@ -60,13 +60,13 @@ class Event extends Model
     public function getStartDateAttribute()
     {
         $carbon =  Carbon::parse($this->starts_at)->setTimezone($this->utc_offset);
-        return $carbon->translatedFormat('d F');
+        return $carbon->translatedFormat('j F');
     }
 
     public function getEndDateAttribute()
     {
         $carbon =  Carbon::parse($this->ends_at)->setTimezone($this->utc_offset);
-        return $carbon->translatedFormat('d F');
+        return $carbon->translatedFormat('j F');
     }
 
     public function getFullStartDateAttribute()

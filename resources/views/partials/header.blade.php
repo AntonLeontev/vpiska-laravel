@@ -98,18 +98,14 @@
                             </div>
                         </div>
                         <div class="registr_confirm">
-                            <div class="submit__checkbox">
-                                <input type="checkbox" id="rules" name="scales" required checked>
-                                <label class="checkbox" for="rules">
-                                    Согласен с
-                                    <a href="{{ route('policy') }}">
-                                        политикой конфидециальности
-                                    </a>, а так же
-                                    <a href="{{ route('processing') }}">обработку</a>
-                                    и
-                                    <a href="{{ route('dissemination') }}">распространение</a> персональных данных.
-                                </label>
-                            </div>
+                            <x-common.checkbox class="submit__checkbox" name="scales" check="true">
+                                Согласен с
+                                <a href="{{ route('policy') }}">политикой конфидециальности</a>,
+                                а так же на
+                                <a href="{{ route('processing') }}">обработку</a>
+                                и
+                                <a href="{{ route('dissemination') }}">распространение</a> персональных данных.
+                            </x-common.checkbox>
                             <div class="create__submit__button">
                                 <button id="register" type="submit">Подтвердить</button>
                             </div>

@@ -138,7 +138,8 @@ body {
 }
 
 .check {
-	padding-left: 1.5em;
+	padding-left: 1.5em !important;
+	font-size: inherit;
 }
 
 .check__input {
@@ -162,7 +163,7 @@ body {
 	position: absolute;
 	width: 1em;
 	height: 1em;
-	margin-left: -1.5em;
+	margin-left: -1.5em !important;
 	background: transparent;
 	border: 2px solid #FD0081;
 	color: #FD0081;
@@ -197,7 +198,12 @@ body {
 	color: #cacaca;
 }
 
-.submit__checkbox label,
+.submit__checkbox {
+	font-size: 14px;
+	margin-bottom: 15px;
+}
+
+/* .submit__checkbox label,
 .submit__checkbox a {
 	font-family: "JostStandart", 'sans-serif';
 	font-style: normal;
@@ -205,7 +211,7 @@ body {
 	font-size: 14px;
 	line-height: 1.21;
 	color: #ACACAC;
-}
+} */
 
 /*--------------------- ScrollBar ---------------------*/
 
@@ -229,17 +235,23 @@ body {
 
 .navbar {
 	display: none;
-	justify-content: space-evenly;
-	align-items: center;
 	background-color: rgb(98, 47, 92);
 	position: fixed;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	z-index: 16;
-	padding: 10px 0px;
+	padding: 10px;
 	width: 100%;
 	box-sizing: border-box;
+}
+
+.navbar__city,
+.navbar__profile,
+.navbar__balance,
+.navbar__logo,
+.navbar__feed {
+	min-width: 0;
 }
 
 .navbar__city>a,
@@ -267,7 +279,11 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 24px;
+}
+
+.navbar__city__title,
+.navbar__profile__title {
+	max-width: 100%;
 }
 
 .navbar__profile__title>p,
@@ -281,6 +297,9 @@ body {
 	font-size: 12px;
 	text-align: center;
 	color: #FFFFFF;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .navbar__profile__image>img {
@@ -2262,6 +2281,7 @@ input#rules:checked+label::before {
 	color: white;
 	text-align: center;
 	position: relative;
+	padding: 40px 0 20px;
 }
 
 .dm-modal .edit__submit__button button {
@@ -2835,15 +2855,12 @@ ul#city_create_mob li:hover,
 }
 
 .find__cards {
-	/* height: 546px; */
 	display: flex;
 	flex-wrap: wrap;
 	align-items: stretch;
 	row-gap: 20px;
 	overflow-y: auto;
-	white-space: nowrap;
 	margin: 65px 0 0 0;
-	/* padding: 65px 0 48px 0; */
 }
 
 .find__link {
@@ -3466,9 +3483,6 @@ input[type="number"]:focus {
 		width: 48%;
 		margin: 0;
 	}
-	.find-card {
-		margin: 0 0 15px 0;
-	}
 	.header,
 	.footer,
 	input#rules+label::before {
@@ -3479,7 +3493,11 @@ input[type="number"]:focus {
 		padding: 0;
 		margin: 12px 0 0 0;
 	}
-	.navbar,
+	.navbar{
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+	}
+
 	.submit__button {
 		display: flex;
 	}
@@ -3760,9 +3778,6 @@ input[type="number"]:focus {
 }
 
 @media (max-width: 525px) {
-	.find-card .find-card__address--none {
-		display: none;
-	}
 	.chatbro_message_td_message {
 		border-bottom: 1px solid rgba(24, 23, 23, .1)!important;
 	}
@@ -3884,7 +3899,6 @@ input[type="number"]:focus {
 		margin: 0 4px 0 0;
 	}
 	.find-card {
-		height: auto;
 		width: 100%;
 		padding: 12px;
 	}

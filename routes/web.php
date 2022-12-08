@@ -91,7 +91,7 @@ Route::controller(OrderController::class)->middleware('auth')->group(function ()
         ->name('orders.accept');
     Route::post('/orders/decline/{order}', 'decline')
         ->name('orders.decline');
-    Route::post('/activate_code', 'activateCode')
+    Route::middleware('throttle:5')->post('/activate_code', 'activateCode')
         ->name('activate_code');
     Route::post('orders/hide/{order}', 'hide')->name('orders.hide');
 });

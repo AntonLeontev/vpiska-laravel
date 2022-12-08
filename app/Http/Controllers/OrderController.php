@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\OrderStatus;
-use App\Events\OrderAccepted;
-use App\Events\OrderCanceled;
-use App\Events\OrderCompleted;
-use App\Exceptions\OrderDeletingException;
-use App\Http\Requests\ActivateCodeRequest;
+use Carbon\Carbon;
 use App\Models\Event;
 use App\Models\Order;
+use App\Enums\OrderStatus;
 use App\Events\OrderCreated;
+use App\Events\OrderAccepted;
+use App\Events\OrderCanceled;
 use App\Events\OrderDeclined;
-use App\Http\Requests\OrderCreateRequest;
-use App\Http\Requests\OrderDecisionRequest;
-use App\Http\Requests\OrderDeleteRequest;
-use App\Http\Requests\OrderHideRequest;
-use Carbon\Carbon;
+use App\Events\OrderCompleted;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response;
 use App\Services\Cypix\CypixService;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\OrderHideRequest;
+use Illuminate\Support\Facades\Response;
+use App\Exceptions\Orders\OrderException;
+use App\Http\Requests\OrderCreateRequest;
+use App\Http\Requests\OrderDeleteRequest;
+use App\Http\Requests\ActivateCodeRequest;
+use App\Http\Requests\OrderDecisionRequest;
+use App\Exceptions\Orders\OrderDeletingException;
 
 
 class OrderController extends Controller
@@ -71,6 +72,7 @@ class OrderController extends Controller
     {
         $userEvents = Event::where('creator_id', Auth::user()->id)
             ->where('ends_at', '>', now())
+            ->where('status', Event::ACTIVE)
             ->with('orders')
             ->get();
 
@@ -93,7 +95,13 @@ class OrderController extends Controller
             return Response::json(['status' => 'ok', 'redirect' => url()->previous('/')]);
         }
 
-        return Response::json(['status' => 'message', 'message' => 'Код не найден']);
+        throw new OrderException(
+            sprintf(
+                'Нет заказа с таким кодом. Пользователь %s. Код %s',
+                auth()->user->id,
+                $request->code
+            )
+        );
     }
 
     public function hide(Order $order, OrderHideRequest $request)

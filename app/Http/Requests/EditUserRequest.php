@@ -14,7 +14,7 @@ class EditUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->user()->id === $this->route('user')->id;
     }
 
     /**
@@ -24,12 +24,21 @@ class EditUserRequest extends FormRequest
      */
     public function rules()
     {
+        $yesterday = today()->subDay();
         return [
             'first_name' => ['string', 'nullable', 'max:25', 'min:2'],
             'last_name' => ['string', 'nullable', 'max:25', 'min:2'],
-            'city_fias_id' => ['required_with:city_name', 'string'],
+            'city_fias_id' => ['required_with:city_name', 'string', 'nullable'],
             'city_name' => ['string', 'nullable'],
-            'birth_date' => ['date', 'before:' . date('d-m-Y'), 'nullable'],
+            'birth_date' => ['date', "before:$yesterday", 'nullable'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'city_fias_id.required_with' => 'Город нужно выбрать из списка',
+            'birth_date.before' => 'Указана неподходящая дата рождения'
         ];
     }
 }

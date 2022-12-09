@@ -31,6 +31,7 @@ class TranslationMessage extends Command
         event(new TranslationEvent(
             $this->argument('message')
         ));
+        echo "Event fired\n";
         return Command::SUCCESS;
     }
 }

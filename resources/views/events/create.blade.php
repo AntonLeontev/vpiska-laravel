@@ -141,7 +141,7 @@
                                         @if (auth()->user()->tempImages->count() > 0)
                                             @foreach (auth()->user()->tempImages as $image)
                                                 <div class="gallery__card">
-                                                    <img src="/storage/{{$image->path}}" alt="event photo">
+                                                    <img src="{{$image->makeThumbnail('192x192')}}" alt="event photo">
                                                         <div class="btn__image-delete" data-action="{{route('temporaryImage.destroy', $image->id)}}" data-token="{{csrf_token()}}" data-user_id="{{$image->user_id}}">
                                                             <img src="{{ Vite::image('icons/delete.svg') }}" alt="delete">
                                                         </div>

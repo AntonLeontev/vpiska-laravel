@@ -132,7 +132,7 @@
                                     @if ($event->images->count() > 0)
                                     @foreach ($event->images as $image)
                                         <div class="gallery__card">
-                                            <img src="/storage/{{$image->path}}" alt="event photo">
+                                            <img src="{{$image->makeThumbnail('192x192')}}" alt="event photo">
                                                 <div class="btn__image-delete" data-action="{{route('eventImage.destroy', $image->id)}}" data-token="{{csrf_token()}}" data-user_id="{{$event->creator_id}}">
                                                     <img src="{{ Vite::image('icons/delete.svg') }}" alt="delete">
                                                 </div>

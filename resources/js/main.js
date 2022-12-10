@@ -208,7 +208,10 @@ $(document).ready(function () {
                 }
 
                 if (!_.isNull(userPhoto)) {
-                    $(userPhoto).find("img").first().attr("src", data.path);
+                    $(userPhoto)
+                        .find("img")
+                        .first()
+                        .attr("src", data.thumbnail);
                 }
             },
             error: handleError,
@@ -219,10 +222,7 @@ $(document).ready(function () {
         let card = document.querySelector(".gallery__card_template");
         card = card.cloneNode(true);
         card.classList.remove("gallery__card_template");
-        card.querySelector("img").setAttribute(
-            "src",
-            `/storage/${imageData.path}`
-        );
+        card.querySelector("img").setAttribute("src", imageData.thumbnail);
         card.querySelector(".btn__image-delete").setAttribute(
             "data-action",
             imageData.deletePath
@@ -241,7 +241,7 @@ $(document).ready(function () {
     function createInput(imageData) {
         let input = document.createElement("input");
         input.setAttribute("type", "hidden");
-        input.setAttribute("value", imageData.path);
+        input.setAttribute("value", imageData.imagePath);
         input.setAttribute("name", "images[]");
         return input;
     }

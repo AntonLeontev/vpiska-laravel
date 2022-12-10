@@ -749,7 +749,9 @@ ul>a {
 }
 
 .weed__important {
-	max-height: 326px;
+	position: relative;
+	max-height: 336px;
+	overflow-x: hidden;
 }
 
 

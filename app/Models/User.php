@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Support\Arr;
 use App\Models\TemporaryImage;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\Models\HasMoneyAttribute;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\VerifyEmailNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -18,6 +19,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use HasMoneyAttribute;
 
     protected $fillable = [
         'first_name',
@@ -68,22 +70,22 @@ class User extends Authenticatable implements MustVerifyEmail
                 $all = Storage::disk('images')->allFiles('plugs/avatars/male');
             }
             $rand = Arr::random($all);
-            $file = File::get(resource_path('images/' . $rand));
-            $fileName = time();
-            $extension = File::extension(resource_path('images/' . $rand));
-            $path = "images/user_photos/$fileName.$extension";
-            Storage::put($path, $file);
 
-            $user->photo_path = $path;
+            $name = str()->random(10) . time();
+
+            Image::make(resource_path('images/' . $rand))
+            ->fit(192, 192, function ($constraint) {
+                $constraint->upsize();
+            })
+            ->save(storage_path("app/public/images/user_photos/$name.webp"), 90, 'webp');
+
+            $user->photo_path = "images/user_photos/$name.webp";
         });
     }
 
     protected function balance(): Attribute
     {
-        return Attribute::make(
-            get: fn ($value) => ($value / 100),
-            set: fn ($value) => ($value * 100)
-        );
+        return $this->moneyAttribute();
     }
 
     protected function getAvatarAttribute()

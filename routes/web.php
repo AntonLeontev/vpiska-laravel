@@ -12,12 +12,18 @@ use App\Http\Controllers\UserImageController;
 use App\Http\Controllers\ChangeCityController;
 use App\Http\Controllers\EventImageController;
 use App\Http\Controllers\TemporaryImageController;
+use App\Http\Controllers\ThumbnailController;
 use App\Http\Middleware\Event\TimeHandleMiddleware;
 use App\Http\Middleware\Event\PhoneFormatMiddleware;
 
 Route::get('/', HomepageController::class)->name('home');
 
 Route::post('/change_city', ChangeCityController::class)->name('change_city');
+
+Route::get('/storage/images/{dir}/{size}/{file}', ThumbnailController::class)
+    ->where('size', '\d+x\d+')
+    ->where('file', '.+\.webp$')
+    ->name('thumbnail');
 
 /*------------------Users---------------------*/
 Route::middleware('auth')->group(function () {

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\FitAvatarAction;
+use Exception;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
@@ -12,8 +14,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\AvatarRequest;
 use App\Services\Cypix\CypixService;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 use App\Http\Requests\EditUserRequest;
-use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -78,13 +80,9 @@ class UserController extends Controller
         return Response::json(['status' => 'ok']);
     }
 
-    public function newAvatar(AvatarRequest $request)
+    public function newAvatar(AvatarRequest $request, FitAvatarAction $action)
     {
-        $path = $request->avatar->store('images/user_photos');
-
-        if (!$path) {
-            throw new Exception('Не удалось записать файл');
-        }
+        $path = $action->handle($request->avatar);
 
         $oldFile = auth()->user()->photo_path;
         auth()->user()->updateOrFail(['photo_path' => $path]);

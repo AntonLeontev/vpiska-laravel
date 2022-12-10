@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasMoneyAttribute;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Event extends Model
 {
     use HasFactory;
+    use HasMoneyAttribute;
 
     const ARCHIVED = -1;
     const CANCELED = 0;
@@ -46,15 +48,6 @@ class Event extends Model
     protected function fee(): Attribute
     {
         return $this->moneyAttribute();
-    }
-
-    protected function moneyAttribute(): Attribute
-    {
-        //TODO to separate class
-        return Attribute::make(
-            get: fn ($value) => ($value / 100),
-            set: fn ($value) => ($value * 100)
-        );
     }
 
     public function getStartDateAttribute()

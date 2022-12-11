@@ -32,7 +32,7 @@ class BroadcastMessageToUser extends Command
         $user = User::find($this->argument('user_id'));
 
         if (is_null($user)) {
-            print "Нет пользователя с таким ID";
+            print "Нет пользователя с таким ID\n";
             return Command::FAILURE;
         }
 

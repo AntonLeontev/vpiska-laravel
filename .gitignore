@@ -17,3 +17,4 @@ yarn-error.log
 /resources/templates
 /resources/views/test.blade.php
 /resources/js/tokens.js
+/redis

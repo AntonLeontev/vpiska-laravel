@@ -38,7 +38,6 @@ class OrderDeclinedNotification extends Notification implements ShouldBroadcast,
         return new BroadcastMessage([
             'message' => 'Ваш заказ отклонен организатором',
             'notifications' => $notifiable->notifications,
-
         ]);
     }
 

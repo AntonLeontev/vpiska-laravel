@@ -2,41 +2,54 @@
 
 namespace App\Notifications;
 
-use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 
-class OrderAcceptedNotification extends Notification implements ShouldBroadcast, ShouldQueue
+class TestBroadcastNotification extends Notification
 {
     use Queueable;
 
-    public Order $order;
-
-    public function __construct(Order $order)
+    /**
+     * Create a new notification instance.
+     *
+     * @return void
+     */
+    public function __construct(public string $message)
     {
-        $this->order = $order;
     }
 
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
     public function via($notifiable)
     {
-        return ['mail', 'broadcast'];
+        return ['broadcast'];
     }
 
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Вас одобрили')
-            ->view('mails.orders.acceptedToCustomer', ['order' => $this->order]);
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'message' => 'Вас одобрили на мероприятие',
+            'message' => $this->message,
             'notifications' => $notifiable->notifications,
         ]);
     }

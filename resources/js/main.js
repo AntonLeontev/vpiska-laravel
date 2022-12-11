@@ -208,10 +208,7 @@ $(document).ready(function () {
                 }
 
                 if (!_.isNull(userPhoto)) {
-                    $(userPhoto)
-                        .find("img")
-                        .first()
-                        .attr("src", data.thumbnail);
+                    $(userPhoto).find("img").first().attr("src", data.path);
                 }
             },
             error: handleError,

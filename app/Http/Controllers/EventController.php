@@ -87,17 +87,4 @@ class EventController extends Controller
         $event = $event->updateOrFail(['status' => $event::CANCELED]);
         return Response::json(['status' => 'ok', 'redirect' => url()->previous()]);
     }
-
-    public function archiveOld(Event $event)
-    {
-        $oldEvents = $event
-            ->where('ends_at', '<', now())
-            ->where('status', Event::ACTIVE)
-            ->get();
-
-        foreach ($oldEvents as $event) {
-            $event->updateOrFail(['status' => Event::ARCHIVED]);
-            event(new EventArchived($event));
-        }
-    }
 }

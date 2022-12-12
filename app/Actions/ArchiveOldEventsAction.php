@@ -11,6 +11,7 @@ class ArchiveOldEventsAction
 	{
 		Event::where('ends_at', '<', now())
 			->where('status', Event::ACTIVE)
+			->with('orders')
 			->chunkById(300, function ($events) {
 
 				foreach ($events as $event) {

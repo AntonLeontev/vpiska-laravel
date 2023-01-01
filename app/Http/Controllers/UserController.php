@@ -3,22 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Actions\FitAvatarAction;
-use Exception;
-use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
-use App\Models\Order;
 use App\Enums\OrderStatus;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\AvatarRequest;
-use App\Services\Cypix\CypixService;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\Facades\Image;
 use App\Http\Requests\EditUserRequest;
+use App\Models\Feedback;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UserController extends Controller
 {
@@ -65,7 +58,13 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        $feedbacks = Feedback::query()
+            ->where('user_id', $user->id)
+            ->orderByDesc('created_at')
+            ->with('author')
+            ->get();
+
+        return view('users.show', compact('user', 'feedbacks'));
     }
 
     public function update(EditUserRequest $request, User $user)

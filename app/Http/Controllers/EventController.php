@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\EventStatus;
-use App\Events\EventArchived;
 use App\Events\EventCanceled;
 use App\Models\Event;
 use Illuminate\Http\Request;
@@ -17,14 +15,16 @@ class EventController extends Controller
 {
     public function index(Event $event, Request $request)
     {
-        $query = $event->where('status', $event::ACTIVE)
-            ->where('ends_at', '>', now());
+        $events = $event->query()
+            ->where('status', $event::ACTIVE)
+            ->where('ends_at', '>', now())
+            ->when(session()->has('city_fias_id'), function ($query) {
+                $query->where('city_fias_id', session('city_fias_id'));
+            })
+            ->orderBy('starts_at')
+            ->with('orders')
+            ->get();
 
-        if ($request->session()->has('city_fias_id')) {
-            $query = $query->where('city_fias_id', session('city_fias_id'));
-        }
-
-        $events = $query->with('orders')->get();
         return view('events.index', compact('events'));
     }
 

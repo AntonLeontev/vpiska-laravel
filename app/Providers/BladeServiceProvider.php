@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Enums\OrderStatus;
 use App\Models\User;
 use App\Models\Event;
+use App\Models\Order;
 use App\Services\Cypix\CypixService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
@@ -93,6 +95,31 @@ class BladeServiceProvider extends ServiceProvider
 
         Blade::if('userActivated', function (User $user) {
             return !is_null($user->email_verified_at);
+        });
+
+        Blade::if('canWriteFeedbackOn', function (User $user) {
+            $events = Event::query()
+                ->whereIn('creator_id', [$user->id, auth()->id()])
+                ->whereIn('status', [Event::ACTIVE, Event::ARCHIVED])
+                ->get(['id', 'creator_id', 'status']);
+
+            $myOrders = Order::query()
+                ->where('customer_id', auth()->id())
+                ->where('status', OrderStatus::Completed->value)
+                ->whereIn('event_id', $events->modelKeys())
+                ->get(['customer_id', 'status', 'event_id']);
+
+            if ($myOrders->isNotEmpty()) {
+                return true;
+            }
+
+            $hisOrders = Order::query()
+                ->where('customer_id', $user->id)
+                ->where('status', OrderStatus::Completed->value)
+                ->whereIn('event_id', $events->modelKeys())
+                ->get(['customer_id', 'status', 'event_id']);
+
+            return $hisOrders->isNotEmpty();
         });
     }
 }

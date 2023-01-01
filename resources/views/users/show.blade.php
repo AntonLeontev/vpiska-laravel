@@ -59,12 +59,14 @@
                                     <div class="user__photo">
                                         <img src="{{ $user->avatar }}" alt="фото профиля">
                                         @auth
-                                            <label for="avatar_input" class="new-avatar-button">
-                                                <p>Сменить</p>
-                                                <x-common.form action="{{route('user.avatar.new')}}" method="post"  enctype="multipart/form-data">
-                                                    <input type="file" name="avatar" id="avatar_input" class="input_file_user hidden">
-                                                </x-common.form>
-                                            </label>
+                                            @if ($user->id === auth()->id())
+                                                <label for="avatar_input" class="new-avatar-button">
+                                                    <p>Сменить</p>
+                                                    <x-common.form action="{{route('user.avatar.new')}}" method="post"  enctype="multipart/form-data">
+                                                        <input type="file" name="avatar" id="avatar_input" class="input_file_user hidden">
+                                                    </x-common.form>
+                                                </label>
+                                            @endif
                                         @endauth
                                     </div>
                                     <div class="user__name__mobile">
@@ -132,20 +134,20 @@
                                         <img src="{{ Vite::image('icons/delete.svg') }}" alt="delete">
                                     </div>
                             </div>
-                            @if ($user->images->count() <= 0)
-                            @unless (auth()->user()->id ?? 0 === $user->id)
-                                <div class="gallery__add gallery__add_empty">
-                                    <div class="gallery__add__text">
-                                        <p><b>Фотографии отсутсвуют</b></p>
+                            @if ($user->images->isEmpty())
+                                @if($user->id !== auth()->id())
+                                    <div class="gallery__add gallery__add_empty">
+                                        <div class="gallery__add__text">
+                                            <p><b>Фотографии отсутсвуют</b></p>
+                                        </div>
                                     </div>
-                                </div>
-                            @endunless
+                                @endif
                             @else
                                 @foreach ($user->images as $image)
                                     <div class="gallery__card">
                                         <img src="/storage/{{$image->path}}" alt="profile photo">
                                         @auth
-                                            @if (auth()->user()->id === $user->id)
+                                            @if (auth()->id() === $user->id)
                                                 <button class="btn__image-delete" data-action="{{route('userImage.destroy', $image->id)}}" data-token="{{csrf_token()}}" data-user_id="{{$user->id}}">
                                                     <img src="{{ Vite::image('icons/delete.svg') }}" alt="delete">
                                                 </button>
@@ -191,13 +193,34 @@
                         @endif
                     @endauth
 
-                    {{-- <div class="reviews__title">
+                    <div class="reviews__title">
                         <p>Отзывы</p>
-                    </div> --}}
-                    {{-- //TODO Reviews --}}
+                        @canWriteFeedbackOn($user)
+                            <a href="#write_feedback" class="weed-item__action weed-item__action--grey">
+                                Написать отзыв
+                            </a>
+                        @endcanWriteFeedbackOn
+                    </div>
 
-
-
+                    @if($feedbacks->isEmpty())
+                        Отзывов нет
+                    @else
+                        @foreach ($feedbacks as $feedback)
+                            <x-user.feedback :$feedback />
+                        @endforeach
+                    @endif
+                    @canWriteFeedbackOn($user)
+                        <div class="reviews__card" id="write_feedback">
+                            <x-common.form class="card__form" action="{{ route('feedbacks.store') }}" method="post">
+                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                <input type="hidden" name="author_id" value="{{ auth()->id() }}">
+                                <textarea name="text" class="card__textarea" placeholder="Напишите свой отзыв"></textarea>
+                                <div class="create__submit__button">
+                                    <button type="submit">Отправить</button>
+                                </div>
+                            </x-common.form>
+                        </div>
+                    @endcanWriteFeedbackOn
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ use App\Http\Middleware\PaymentIdMiddleware;
 use App\Http\Controllers\UserImageController;
 use App\Http\Controllers\ChangeCityController;
 use App\Http\Controllers\EventImageController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\TemporaryImageController;
 use App\Http\Controllers\ThumbnailController;
 use App\Http\Middleware\Event\TimeHandleMiddleware;
@@ -38,6 +39,8 @@ Route::middleware('auth')->group(function () {
     ->name('user.avatar.new');
 });
 Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+
+Route::post('/feedbacks/store', [FeedbackController::class, 'store'])->name('feedbacks.store');
 
 /*------------------User photos---------------------*/
 Route::post('/users/photo/add', [UserImageController::class, 'store'])

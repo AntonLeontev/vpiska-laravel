@@ -17,6 +17,10 @@ class Feedback extends Model
         'text',
     ];
 
+    protected $with = [
+        'author'
+    ];
+
     public function author()
     {
         return $this->belongsTo(User::class);

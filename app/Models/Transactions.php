@@ -19,9 +19,11 @@ class Transactions extends Model
         'description',
     ];
 
+    protected $perPage = 10;
+
     public function getDateAttribute(): string
     {
-        return Carbon::parse($this->created_at)->translatedFormat('d M y');
+        return Carbon::parse($this->created_at)->translatedFormat('j M y');
     }
 
     public function getSignedSumAttribute(): string

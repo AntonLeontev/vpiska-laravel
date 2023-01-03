@@ -69,23 +69,17 @@
                                 История операций
                             </h4>
                             <table class="table-history" cellspacing="0">
-                                {{-- <thead>
-                                    <tr>
-                                        <th>Дата</th>
-                                        <th>Сумма</th>
-                                        <th>Описание</th>
-                                    </tr>
-                                </thead> --}}
                                 <tbody>
-                                    @foreach (auth()->user()->balanceTransfers->sortByDesc('created_at') as $transfer)
+                                    @foreach ($transactions as $transaction)
                                         <tr>
-                                            <td>{{$transfer->date}}</td>
-                                            <td>{{$transfer->description}}</td>
-                                            <td>{{$transfer->signedSum}} р</td>
+                                            <td>{{$transaction->date}}</td>
+                                            <td>{{$transaction->description}}</td>
+                                            <td>{{$transaction->signedSum}} р</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                            <x-common.pagination.simple :paginator="$transactions" />
                         </div>
                     </div>
                 </div>

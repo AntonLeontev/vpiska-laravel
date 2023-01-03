@@ -10,6 +10,7 @@ use App\Http\Requests\AvatarRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EditUserRequest;
 use App\Models\Feedback;
+use App\Models\Transactions;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 
@@ -22,7 +23,12 @@ class UserController extends Controller
      */
     public function balance()
     {
-        return view('users.balance');
+        $transactions = Transactions::query()
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->simplePaginate();
+
+        return view('users.balance', compact('transactions'));
     }
 
     public function userEvents()

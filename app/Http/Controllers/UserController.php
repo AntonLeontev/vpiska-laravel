@@ -62,7 +62,7 @@ class UserController extends Controller
             ->where('user_id', $user->id)
             ->orderByDesc('created_at')
             ->with('author')
-            ->get();
+            ->simplePaginate(1);
 
         return view('users.show', compact('user', 'feedbacks'));
     }

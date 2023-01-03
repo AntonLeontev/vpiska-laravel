@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Arr;
+use App\Events\UserCreating;
 use App\Models\TemporaryImage;
 use Laravel\Sanctum\HasApiTokens;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Traits\Models\HasMoneyAttribute;
 use Illuminate\Notifications\Notifiable;
@@ -47,41 +46,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'photo_path' => ''
     ];
 
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        //TODO Refactor
-        static::creating(function (User $user) {
-            if (!empty($user->photo_path)) {
-                return;
-            }
-
-            if ($user->sex === 'не указан') {
-                // TODO Images for undefined sex
-                return;
-            }
-
-            if ($user->sex === 'женский') {
-                $all = Storage::disk('images')->allFiles('plugs/avatars/female');
-            }
-
-            if ($user->sex === 'мужской') {
-                $all = Storage::disk('images')->allFiles('plugs/avatars/male');
-            }
-            $rand = Arr::random($all);
-
-            $name = str()->random(10) . time();
-
-            Image::make(resource_path('images/' . $rand))
-            ->fit(192, 192, function ($constraint) {
-                $constraint->upsize();
-            })
-            ->save(storage_path("app/public/images/user_photos/$name.webp"), 90, 'webp');
-
-            $user->photo_path = "images/user_photos/$name.webp";
-        });
-    }
+    protected $dispatchesEvents = [
+        'creating' => UserCreating::class,
+    ];
 
     protected function balance(): Attribute
     {

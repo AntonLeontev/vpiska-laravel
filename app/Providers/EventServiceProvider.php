@@ -8,6 +8,7 @@ use App\Events\EventCanceled;
 use App\Events\OrderAccepted;
 use App\Events\OrderCanceled;
 use App\Events\OrderDeclined;
+use App\Events\UserCreating;
 use App\Listeners\TransferMoney;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
@@ -16,6 +17,7 @@ use App\Listeners\SendCancelOrderNotification;
 use App\Listeners\SendEventCanceledNotification;
 use App\Listeners\SendOrderAcceptedNotification;
 use App\Listeners\SendOrderDeclinedNotification;
+use App\Listeners\CreateUserDefaultPhoto;
 use App\Services\vkontakte\CustomVKontakteExtendSocialite;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -52,6 +54,10 @@ class EventServiceProvider extends ServiceProvider
         EventArchived::class => [
             //
         ],
+        UserCreating::class => [
+            CreateUserDefaultPhoto::class,
+        ],
+
     ];
 
     protected $subscribe = [

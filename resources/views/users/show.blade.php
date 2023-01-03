@@ -62,8 +62,10 @@
                                             @if ($user->id === auth()->id())
                                                 <label for="avatar_input" class="new-avatar-button">
                                                     <p>Сменить</p>
-                                                    <x-common.form action="{{route('user.avatar.new')}}" method="post"  enctype="multipart/form-data">
-                                                        <input type="file" name="avatar" id="avatar_input" class="input_file_user hidden">
+                                                    <x-common.form action="{{ route('user.avatar.new') }}" method="post"
+                                                        enctype="multipart/form-data">
+                                                        <input type="file" name="avatar" id="avatar_input"
+                                                            class="input_file_user hidden">
                                                     </x-common.form>
                                                 </label>
                                             @endif
@@ -130,12 +132,12 @@
                         <div class="gallery__main">
                             <div class="gallery__card gallery__card_template">
                                 <img src="" alt="event photo">
-                                    <div class="btn__image-delete">
-                                        <img src="{{ Vite::image('icons/delete.svg') }}" alt="delete">
-                                    </div>
+                                <div class="btn__image-delete">
+                                    <img src="{{ Vite::image('icons/delete.svg') }}" alt="delete">
+                                </div>
                             </div>
                             @if ($user->images->isEmpty())
-                                @if($user->id !== auth()->id())
+                                @if ($user->id !== auth()->id())
                                     <div class="gallery__add gallery__add_empty">
                                         <div class="gallery__add__text">
                                             <p><b>Фотографии отсутсвуют</b></p>
@@ -145,10 +147,12 @@
                             @else
                                 @foreach ($user->images as $image)
                                     <div class="gallery__card">
-                                        <img src="/storage/{{$image->path}}" alt="profile photo">
+                                        <img src="/storage/{{ $image->path }}" alt="profile photo">
                                         @auth
                                             @if (auth()->id() === $user->id)
-                                                <button class="btn__image-delete" data-action="{{route('userImage.destroy', $image->id)}}" data-token="{{csrf_token()}}" data-user_id="{{$user->id}}">
+                                                <button class="btn__image-delete"
+                                                    data-action="{{ route('userImage.destroy', $image->id) }}"
+                                                    data-token="{{ csrf_token() }}" data-user_id="{{ $user->id }}">
                                                     <img src="{{ Vite::image('icons/delete.svg') }}" alt="delete">
                                                 </button>
                                             @endif
@@ -168,9 +172,12 @@
                                                 <p><b>Добавить фото</b></p>
                                             </div>
                                         </div>
-                                        <x-common.form class="form-row" action="{{route('userImage.store')}}" method="POST" enctype="multipart/form-data">
-                                            <input id="js-file" type="file" class="input_file_user hidden" name="images[]" multiple>
-                                            <input type="hidden" id="js-user_id" name="user_id" value="{{$user->id}}">
+                                        <x-common.form class="form-row" action="{{ route('userImage.store') }}"
+                                            method="POST" enctype="multipart/form-data">
+                                            <input id="js-file" type="file" class="input_file_user hidden"
+                                                name="images[]" multiple>
+                                            <input type="hidden" id="js-user_id" name="user_id"
+                                                value="{{ $user->id }}">
                                         </x-common.form>
                                     </label>
                                 @endif
@@ -196,13 +203,13 @@
                     <div class="reviews__title">
                         <p>Отзывы</p>
                         @canWriteFeedbackOn($user)
-                            <a href="#write_feedback" class="weed-item__action weed-item__action--grey">
-                                Написать отзыв
-                            </a>
+                        <a href="#write_feedback" class="weed-item__action weed-item__action--grey">
+                            Написать отзыв
+                        </a>
                         @endcanWriteFeedbackOn
                     </div>
 
-                    @if($feedbacks->isEmpty())
+                    @if ($feedbacks->isEmpty())
                         Отзывов нет
                     @else
                         @foreach ($feedbacks as $feedback)
@@ -210,21 +217,20 @@
                         @endforeach
                     @endif
                     @canWriteFeedbackOn($user)
-                        <div class="reviews__card" id="write_feedback">
-                            <x-common.form class="card__form" action="{{ route('feedbacks.store') }}" method="post">
-                                <input type="hidden" name="user_id" value="{{ $user->id }}">
-                                <input type="hidden" name="author_id" value="{{ auth()->id() }}">
-                                <textarea name="text" class="card__textarea" placeholder="Напишите свой отзыв"></textarea>
-                                <div class="create__submit__button">
-                                    <button type="submit">Отправить</button>
-                                </div>
-                            </x-common.form>
-                        </div>
+                    <div class="reviews__card" id="write_feedback">
+                        <x-common.form class="card__form" action="{{ route('feedbacks.store') }}" method="post">
+                            <input type="hidden" name="user_id" value="{{ $user->id }}">
+                            <input type="hidden" name="author_id" value="{{ auth()->id() }}">
+                            <textarea name="text" class="card__textarea" placeholder="Напишите свой отзыв"></textarea>
+                            <div class="create__submit__button">
+                                <button type="submit">Отправить</button>
+                            </div>
+                        </x-common.form>
+                    </div>
                     @endcanWriteFeedbackOn
+                    <x-common.pagination.simple :paginator="$feedbacks" />
                 </div>
             </div>
         </div>
-    </div>
-    </div>
     </div>
 @endsection

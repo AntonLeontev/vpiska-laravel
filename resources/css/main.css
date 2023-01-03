@@ -203,15 +203,18 @@ body {
 	margin-bottom: 15px;
 }
 
-/* .submit__checkbox label,
-.submit__checkbox a {
-	font-family: "JostStandart", 'sans-serif';
-	font-style: normal;
-	font-weight: normal;
-	font-size: 14px;
-	line-height: 1.21;
-	color: #ACACAC;
-} */
+/* Pagination */
+
+.pagination {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.pagination__link__disabled {
+	color: #acacac;
+}
 
 /*--------------------- ScrollBar ---------------------*/
 
@@ -1094,14 +1097,6 @@ input::-webkit-inner-spin-button {
 	/* <-- Apparently some margin are still there even though it's hidden */
 }
 
-
-/* .activity {
-	margin: 128px 0px;
-} */
-
-/* .activity__form--mobile {
-	display: none;
-} */
 
 .activity__row {
 	background: rgba(0, 0, 0, 0.3);

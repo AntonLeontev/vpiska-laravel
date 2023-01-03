@@ -21,6 +21,8 @@ class Feedback extends Model
         'author'
     ];
 
+    protected $perPage = 5;
+
     public function author()
     {
         return $this->belongsTo(User::class);

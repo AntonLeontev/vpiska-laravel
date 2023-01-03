@@ -46,12 +46,12 @@ class UserController extends Controller
         }
 
         $outgoingOrders = Auth::user()->orders
-        ->filter(function ($order) {
-            return $order->event->ends_at > now() && $order->isPaid() && $order->show;
-        })
-        ->sort(function ($a, $b) {
-            $b->event->starts_at <=> $a->event->starts_at;
-        });
+            ->filter(function ($order) {
+                return $order->event->ends_at > now() && $order->isPaid() && $order->show;
+            })
+            ->sort(function ($a, $b) {
+                $b->event->starts_at <=> $a->event->starts_at;
+            });
 
         return view('users.events', compact('userEvents', 'incomingOrders', 'outgoingOrders'));
     }
@@ -62,7 +62,7 @@ class UserController extends Controller
             ->where('user_id', $user->id)
             ->orderByDesc('created_at')
             ->with('author')
-            ->simplePaginate(1);
+            ->simplePaginate();
 
         return view('users.show', compact('user', 'feedbacks'));
     }
